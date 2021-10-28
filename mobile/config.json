@@ -1,0 +1,34 @@
+{
+  "name": "Wallet",
+  "css_prefix_text": "",
+  "css_use_suffix": false,
+  "hinting": true,
+  "units_per_em": 1000,
+  "ascent": 850,
+  "glyphs": [
+    {
+      "uid": "8b80d36d4ef43889db10bc1f0dc9a862",
+      "css": "user",
+      "code": 59392,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "0d0056ccd20b6fbbffa730e01593b1ec",
+      "css": "arrow_alt_circle_down",
+      "code": 62296,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "abe23fff31f0ced4990e59f299a23d57",
+      "css": "arrow_alt_circle_up",
+      "code": 62299,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "7184d8171b6a9b18eabbace94cca21db",
+      "css": "chart-line",
+      "code": 59393,
+      "src": "entypo"
+    }
+  ]
+}
