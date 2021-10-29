@@ -39,6 +39,27 @@ flutter:
     - family: Wallet
       fonts:
         - asset: fonts/Wallet.ttf
+    - family: Ubuntu
+      fonts:
+        - asset: fonts/Ubuntu-Regular.ttf
+          weight: 400
+        - asset: fonts/Ubuntu-Bold.ttf
+          weight: 700
+        - asset: fonts/Ubuntu-Italic.ttf
+          style: italic
+        - asset: fonts/Ubuntu-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: fonts/Ubuntu-Light.ttf
+          weight: 300
+        - asset: fonts/Ubuntu-LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: fonts/Ubuntu-Medium.ttf
+          weight: 500
+        - asset: fonts/Ubuntu-MediumItalic.ttf
+          weight: 500
+          style: italic
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

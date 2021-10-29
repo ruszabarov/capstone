@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wallet/screens/account/account.dart';
 import 'package:wallet/wallet_icons.dart';
 import 'package:wallet/screens/home/home.dart';
 
@@ -11,24 +12,26 @@ class Wrapper extends StatefulWidget {
 
 class _WrapperState extends State {
   int _currentIndex = 0;
+  String _currentTitle = "";
+
+  final List _children = [
+    Home(),
+    Account(),
+    Account(),
+  ];
 
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
+      _currentTitle = _children[index].title;
     });
   }
-
-  final List _children = [
-    Home(),
-    Home(),
-    Home(),
-  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Etherium"),
+        title: Text(_currentTitle),
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -48,7 +51,7 @@ class _WrapperState extends State {
             label: 'Account',
           ),
         ],
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Colors.black,
         showSelectedLabels: false,
         showUnselectedLabels: false,
       ),
