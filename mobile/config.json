@@ -29,6 +29,18 @@
       "css": "chart-line",
       "code": 59393,
       "src": "entypo"
+    },
+    {
+      "uid": "c3fd8648f20d8b2f864853c4af99089c",
+      "css": "ethereum",
+      "code": 62510,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "2cb15eb2b295ee3c33fab1530e18a924",
+      "css": "bitcoin",
+      "code": 61786,
+      "src": "fontawesome"
     }
   ]
 }

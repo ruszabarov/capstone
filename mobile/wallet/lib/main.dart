@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/wrapper.dart';
+import 'package:wallet/swatches.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,6 +11,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Etherium",
       home: Wrapper(),
+      theme: ThemeData(
+        fontFamily: 'Ubuntu',
+        primarySwatch: myCustomColor,
+      ),
     );
   }
 }

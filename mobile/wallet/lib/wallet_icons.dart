@@ -35,6 +35,8 @@ class Wallet {
 
   static const IconData user = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData chart_line = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData bitcoin = IconData(0xf15a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData arrow_alt_circle_down = IconData(0xf358, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData arrow_alt_circle_up = IconData(0xf35b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData ethereum = IconData(0xf42e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
