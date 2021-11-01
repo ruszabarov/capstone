@@ -15,8 +15,7 @@ class Home extends StatelessWidget {
               shrinkWrap: true,
               itemCount: cryptoWallets.length,
               itemBuilder: (BuildContext ctxt, int index) {
-                return new WalletCard(cryptoWallets[index].name,
-                    cryptoWallets[index].balance, cryptoWallets[index].icon);
+                return new WalletCard(cryptoWallets[index]);
               }),
         )
       ],

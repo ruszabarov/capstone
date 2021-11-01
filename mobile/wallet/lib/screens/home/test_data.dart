@@ -10,14 +10,6 @@ class CryptoWallet {
   CryptoWallet(this.name, this.balance, this.myAdress, this.icon);
 }
 
-class Transaction {
-  final String from;
-  final String to;
-  final String amount;
-
-  Transaction(this.from, this.to, this.amount);
-}
-
 var ethereum =
     new CryptoWallet("ethereum", "100", "adkaldajkdaksda", Icons.money);
 var bitcoin =
