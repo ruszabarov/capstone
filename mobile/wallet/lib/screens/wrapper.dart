@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/account/account.dart';
+import 'package:wallet/screens/shared/appBar.dart';
 import 'package:wallet/wallet_icons.dart';
 import 'package:wallet/screens/home/home.dart';
 
@@ -10,51 +11,98 @@ class Wrapper extends StatefulWidget {
   }
 }
 
+enum TabItem { home, market, account }
+
 class _WrapperState extends State {
-  int _currentIndex = 0;
-  String _currentTitle = "";
+  TabItem _currentItem = TabItem.home;
 
-  final List _children = [
-    Home(),
-    Account(),
-    Account(),
+  final List<TabItem> _bottomTabs = [
+    TabItem.home,
+    TabItem.market,
+    TabItem.account,
   ];
-
-  void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-      _currentTitle = _children[index].title;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_currentTitle),
+      backgroundColor: Colors.blueGrey[50],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(100.0),
+        child: SafeArea(
+          child: appBar(
+            title: _setTitle(_currentItem),
+          ),
+        ),
       ),
-      body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped,
-        currentIndex: _currentIndex,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet_rounded),
-            label: 'Wallet',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Wallet.chart_line),
-            label: 'Market',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Wallet.user),
-            label: 'Account',
-          ),
-        ],
-        selectedItemColor: Colors.black,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-      ),
+      body: _buildScreen(),
+      bottomNavigationBar: _bottomNavigationBar(),
     );
+  }
+
+  Widget _bottomNavigationBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      items: _bottomTabs
+          .map((tabItem) => _bottomNavigationBarItem(_icon(tabItem), tabItem))
+          .toList(),
+      onTap: _onSelectTab,
+      showUnselectedLabels: false,
+      showSelectedLabels: false,
+    );
+  }
+
+  BottomNavigationBarItem _bottomNavigationBarItem(
+      IconData icon, TabItem tabItem) {
+    final Color color =
+        _currentItem == tabItem ? Colors.black54 : Colors.black26;
+
+    return BottomNavigationBarItem(icon: Icon(icon, color: color), label: '');
+  }
+
+  void _onSelectTab(int index) {
+    TabItem selectedTabItem = _bottomTabs[index];
+
+    setState(() {
+      _currentItem = selectedTabItem;
+    });
+  }
+
+  String _setTitle(TabItem item) {
+    switch (item) {
+      case TabItem.home:
+        return "Wallets";
+      case TabItem.market:
+        return "Market";
+      case TabItem.account:
+        return "Account";
+      default:
+        throw 'Unknown $item';
+    }
+  }
+
+  IconData _icon(TabItem item) {
+    switch (item) {
+      case TabItem.home:
+        return Icons.account_balance_wallet_rounded;
+      case TabItem.market:
+        return Wallet.chart_line;
+      case TabItem.account:
+        return Wallet.user;
+      default:
+        throw 'Unknown $item';
+    }
+  }
+
+  Widget _buildScreen() {
+    switch (_currentItem) {
+      case TabItem.home:
+        return Home();
+      case TabItem.market:
+        return Account();
+      case TabItem.account:
+        return Account();
+      default:
+        return Home();
+    }
   }
 }
