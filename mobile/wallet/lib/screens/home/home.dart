@@ -16,9 +16,9 @@ class _HomeState extends State<Home> {
           height: 25,
         ),
         Expanded(
-            child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: new ListView.separated(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: new ListView.separated(
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(
                   height: 15,
@@ -30,8 +30,10 @@ class _HomeState extends State<Home> {
               itemCount: cryptoWallets.length,
               itemBuilder: (BuildContext ctxt, int index) {
                 return new WalletCard(cryptoWallets[index]);
-              }),
-        ))
+              },
+            ),
+          ),
+        ),
       ],
     );
   }
