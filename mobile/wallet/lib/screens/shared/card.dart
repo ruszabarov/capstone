@@ -4,7 +4,7 @@ Widget card(
     {double width = double.infinity,
     double padding = 20,
     required Widget child}) {
-  return Container(
+  return Ink(
     width: width,
     padding: EdgeInsets.all(padding),
     decoration: BoxDecoration(
