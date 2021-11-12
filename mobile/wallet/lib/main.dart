@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:wallet/screens/authentication/login.dart';
 import 'package:wallet/screens/wrapper.dart';
-import 'package:wallet/swatches.dart';
+import 'package:wallet/screens/shared/shared.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Etherium",
-      home: Wrapper(),
+      title: "Crypto Wallet",
+      home: LoginPage(),
       theme: ThemeData(
         fontFamily: 'Ubuntu',
-        primarySwatch: myCustomColor,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+            .copyWith(primary: Colors.blueAccent),
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

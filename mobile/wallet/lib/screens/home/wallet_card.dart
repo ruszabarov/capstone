@@ -1,55 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:wallet/screens/home/test_data.dart';
+import 'package:wallet/screens/home/wallet_details.dart';
+import 'package:wallet/screens/shared/shared.dart';
 
 class WalletCard extends StatelessWidget {
-  final String title;
-  final String balance;
-  final IconData icon;
-
-  WalletCard(this.title, this.balance, this.icon);
+  final CryptoWallet cryptoWallet;
+  WalletCard(this.cryptoWallet);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            children: [
-              SizedBox(width: 10),
-              Icon(
-                Icons.account_balance_wallet_outlined,
-                size: 30,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                title.toUpperCase(),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => WalletDetailsPage(cryptoWallet)),
+        );
+      },
+      borderRadius: BorderRadius.circular(15),
+      child: card(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ClipOval(
+                  child: Material(
+                    color: Colors.black87,
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Icon(
+                        cryptoWallet.icon,
+                        color: Colors.white,
+                        size: 25.0,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Text(
-                balance.toUpperCase(),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                SizedBox(width: 20),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        cryptoWallet.name,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        cryptoWallet.balance,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black45,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(width: 10),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.arrow_right_rounded),
-                iconSize: 50,
-              ),
-            ],
-          )
-        ],
+                Icon(Icons.keyboard_arrow_right),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
