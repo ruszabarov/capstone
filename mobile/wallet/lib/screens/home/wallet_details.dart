@@ -2,26 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/shared/shared.dart';
 
-class WalletDetails extends StatelessWidget {
+class WalletDetailsPage extends StatelessWidget {
   final CryptoWallet cryptoWallet;
 
-  WalletDetails(this.cryptoWallet);
+  WalletDetailsPage(this.cryptoWallet);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.0),
-        child: SafeArea(
-          child: appBar(
-            left: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Icon(Icons.arrow_back_ios, color: Colors.black54)),
-            title: cryptoWallet.name[0].toUpperCase() +
-                cryptoWallet.name.substring(1) +
-                ' Wallet',
-          ),
+        preferredSize: Size.fromHeight(75.0),
+        child: appBar(
+          title: cryptoWallet.name[0].toUpperCase() +
+              cryptoWallet.name.substring(1) +
+              ' Wallet',
         ),
       ),
       body: Padding(

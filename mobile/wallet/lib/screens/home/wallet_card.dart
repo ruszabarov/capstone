@@ -13,7 +13,8 @@ class WalletCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => WalletDetails(cryptoWallet)),
+          MaterialPageRoute(
+              builder: (context) => WalletDetailsPage(cryptoWallet)),
         );
       },
       borderRadius: BorderRadius.circular(15),

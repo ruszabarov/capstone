@@ -27,11 +27,9 @@ class _WrapperState extends State {
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.0),
-        child: SafeArea(
-          child: appBar(
-            title: _setTitle(_currentItem),
-          ),
+        preferredSize: Size.fromHeight(75.0),
+        child: appBar(
+          title: _setTitle(_currentItem),
         ),
       ),
       body: _buildScreen(),
@@ -54,7 +52,7 @@ class _WrapperState extends State {
   BottomNavigationBarItem _bottomNavigationBarItem(
       IconData icon, TabItem tabItem) {
     final Color color =
-        _currentItem == tabItem ? Colors.black54 : Colors.black26;
+        _currentItem == tabItem ? Colors.blueAccent : Colors.black26;
 
     return BottomNavigationBarItem(icon: Icon(icon, color: color), label: '');
   }
