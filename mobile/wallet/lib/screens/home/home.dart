@@ -12,26 +12,20 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 25,
-        ),
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: new ListView.separated(
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  height: 15,
-                );
-              },
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: cryptoWallets.length,
-              itemBuilder: (BuildContext ctxt, int index) {
-                return new WalletCard(cryptoWallets[index]);
-              },
-            ),
+          child: new ListView.separated(
+            padding: EdgeInsets.all(25),
+            separatorBuilder: (BuildContext context, int index) {
+              return SizedBox(
+                height: 15,
+              );
+            },
+            physics: BouncingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemCount: cryptoWallets.length,
+            itemBuilder: (BuildContext ctxt, int index) {
+              return new WalletCard(cryptoWallets[index]);
+            },
           ),
         ),
       ],

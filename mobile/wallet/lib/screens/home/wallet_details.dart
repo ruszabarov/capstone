@@ -65,9 +65,13 @@ class WalletDetailsPage extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: _actionButton(
-                    text: 'Send',
-                    color: Colors.blue,
+                  child: InkWell(
+                    onTap: () {},
+                    borderRadius: BorderRadius.circular(15),
+                    child: _actionButton(
+                      text: 'Send',
+                      color: Colors.blueAccent,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -94,18 +98,14 @@ class WalletDetailsPage extends StatelessWidget {
           ClipOval(
             child: Material(
               color: color,
-              child: InkWell(
-                splashColor: Colors.white, // inkwell color
-                child: SizedBox(
-                  width: 56,
-                  height: 56,
-                  child: Icon(
-                    Icons.attach_money,
-                    color: Colors.white,
-                    size: 25.0,
-                  ),
+              child: SizedBox(
+                width: 56,
+                height: 56,
+                child: Icon(
+                  Icons.attach_money,
+                  color: Colors.white,
+                  size: 25.0,
                 ),
-                onTap: () {},
               ),
             ),
           ),
