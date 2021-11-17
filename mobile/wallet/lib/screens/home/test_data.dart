@@ -4,12 +4,11 @@ import 'package:wallet/wallet_icons.dart';
 class CryptoWallet {
   final String name;
   final String balance;
-  final String myAdress;
+  final String adress;
   final IconData icon;
   final String shortName;
 
-  CryptoWallet(
-      this.name, this.balance, this.myAdress, this.icon, this.shortName);
+  CryptoWallet(this.name, this.balance, this.adress, this.icon, this.shortName);
 }
 
 var ethereum = new CryptoWallet(

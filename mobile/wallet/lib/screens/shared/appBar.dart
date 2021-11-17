@@ -8,6 +8,7 @@ Widget appBar({Widget? left, required String title}) {
     ),
     centerTitle: true,
     toolbarHeight: 75,
+    elevation: 1,
     backgroundColor: Colors.blueAccent,
     foregroundColor: Colors.white,
   );
