@@ -15,6 +15,9 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Ubuntu',
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
             .copyWith(primary: Colors.blueAccent),
+        pageTransitionsTheme: PageTransitionsTheme(builders: {
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+        }),
       ),
       debugShowCheckedModeBanner: false,
     );

@@ -77,7 +77,7 @@ class ReceiveCard extends StatelessWidget {
                       cryptoWallet.adress,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     ),
                   ),

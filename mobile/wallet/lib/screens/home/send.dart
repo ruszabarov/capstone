@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/shared/shared.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class SendCard extends StatefulWidget {
   final CryptoWallet cryptoWallet;
@@ -17,25 +19,62 @@ class SendCard extends StatefulWidget {
 }
 
 class _SendCardState extends State<SendCard> {
-  bool isAddressFocued = false;
-  void handleAdressFocus() {
-    setState(() {
-      isAddressFocued = !isAddressFocued;
-    });
-  }
+  bool isAddressFocused = false;
+  bool isAmountFocused = false;
+  String _scanBarcode = 'Unknown';
 
   late FocusNode addressFocusNode;
+  late FocusNode amountFocusNode;
+  late TextEditingController _addressTextController;
 
   @override
   void initState() {
     addressFocusNode = FocusNode();
+    amountFocusNode = FocusNode();
+
     addressFocusNode.addListener(() {
       setState(() {
-        isAddressFocued = addressFocusNode.hasFocus;
+        isAddressFocused = addressFocusNode.hasFocus;
+      });
+    });
+
+    amountFocusNode.addListener(() {
+      setState(() {
+        isAmountFocused = amountFocusNode.hasFocus;
       });
     });
 
     super.initState();
+    _addressTextController = TextEditingController(text: "");
+  }
+
+  Future<void> startBarcodeScanStream() async {
+    FlutterBarcodeScanner.getBarcodeStreamReceiver(
+            '#ff6666', 'Cancel', true, ScanMode.BARCODE)!
+        .listen((barcode) => print(barcode));
+  }
+
+  Future<void> scanQR() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.QR);
+      setState(() {
+        _addressTextController.text = barcodeScanRes;
+      });
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
   }
 
   @override
@@ -94,7 +133,7 @@ class _SendCardState extends State<SendCard> {
                     color: Colors.blue.shade900.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(
-                        color: isAddressFocued
+                        color: isAddressFocused
                             ? Colors.blueAccent
                             : Colors.blue.shade900.withOpacity(0.2),
                         width: 2),
@@ -104,6 +143,7 @@ class _SendCardState extends State<SendCard> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _addressTextController,
                           focusNode: addressFocusNode,
                           cursorColor: Colors.blueAccent,
                           style: TextStyle(
@@ -119,7 +159,9 @@ class _SendCardState extends State<SendCard> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          scanQR();
+                        },
                         icon: Icon(
                           Icons.qr_code,
                           color: Colors.white,
@@ -140,22 +182,29 @@ class _SendCardState extends State<SendCard> {
                 SizedBox(
                   height: 10,
                 ),
-                TextField(
-                  cursorColor: Colors.blueAccent,
-                  style: TextStyle(
-                    color: Colors.white,
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade900.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                        color: isAmountFocused
+                            ? Colors.blueAccent
+                            : Colors.blue.shade900.withOpacity(0.2),
+                        width: 2),
                   ),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                  child: TextField(
+                    focusNode: amountFocusNode,
+                    cursorColor: Colors.blueAccent,
+                    style: TextStyle(
+                      color: Colors.white,
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blueAccent),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Enter Amount",
+                      hintStyle: TextStyle(color: Colors.white, fontSize: 16),
+                      fillColor: Colors.blue,
                     ),
-                    hintText: "Enter Amount",
-                    hintStyle: TextStyle(color: Colors.white, fontSize: 16),
-                    fillColor: Colors.blue,
                   ),
                 ),
               ],
