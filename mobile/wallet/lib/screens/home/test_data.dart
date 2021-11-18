@@ -12,7 +12,7 @@ class CryptoWallet {
 }
 
 var ethereum = new CryptoWallet(
-    "ethereum", "200", "adkaldajkdaksda", Wallet.ethereum, 'ETH');
+    "ethereum", "201", "adkaldajkdaksda", Wallet.ethereum, 'ETH');
 var bitcoin = new CryptoWallet(
     "bitcoin", "200", "adjlkasdkjasddaasda", Wallet.bitcoin, 'BTC');
 var test = new CryptoWallet(

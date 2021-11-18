@@ -129,7 +129,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
             right: 0,
             bottom: isSendVisible ? 0 : -400,
             height: 400,
-            duration: Duration(milliseconds: 200),
+            duration: Duration(milliseconds: 100),
             child: SendCard(
               cryptoWallet: widget.cryptoWallet,
               handleSendButton: handleSendButton,

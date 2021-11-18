@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/home/test_data.dart';
-import 'package:wallet/screens/shared/shared.dart';
 import 'package:flutter/services.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class ReceiveCard extends StatelessWidget {
   final CryptoWallet cryptoWallet;
@@ -62,7 +62,7 @@ class ReceiveCard extends StatelessWidget {
             ),
             Container(
               width: double.maxFinite,
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              // padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(color: Colors.blueAccent, width: 2),
@@ -71,14 +71,20 @@ class ReceiveCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    cryptoWallet.adress,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      cryptoWallet.adress,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
                   Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blueAccent,
+                    ),
                     child: IconButton(
                       onPressed: () async {
                         await Clipboard.setData(
@@ -90,7 +96,25 @@ class ReceiveCard extends StatelessWidget {
                   )
                 ],
               ),
-            )
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                ),
+                child: QrImage(
+                  data: cryptoWallet.adress,
+                  version: QrVersions.auto,
+                  size: 200,
+                  foregroundColor: Colors.black,
+                  padding: EdgeInsets.all(15),
+                ),
+              ),
+            ),
           ],
         ),
       ),

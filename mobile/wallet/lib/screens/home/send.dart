@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/shared/shared.dart';
 
-class SendCard extends StatelessWidget {
+class SendCard extends StatefulWidget {
   final CryptoWallet cryptoWallet;
   final Function handleSendButton;
 
@@ -11,6 +11,32 @@ class SendCard extends StatelessWidget {
       required this.cryptoWallet,
       required Function this.handleSendButton})
       : super(key: key);
+
+  @override
+  State<SendCard> createState() => _SendCardState();
+}
+
+class _SendCardState extends State<SendCard> {
+  bool isAddressFocued = false;
+  void handleAdressFocus() {
+    setState(() {
+      isAddressFocued = !isAddressFocued;
+    });
+  }
+
+  late FocusNode addressFocusNode;
+
+  @override
+  void initState() {
+    addressFocusNode = FocusNode();
+    addressFocusNode.addListener(() {
+      setState(() {
+        isAddressFocued = addressFocusNode.hasFocus;
+      });
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +62,14 @@ class SendCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Send ${cryptoWallet.shortName}",
+                      "Send ${widget.cryptoWallet.shortName}",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     IconButton(
                       icon: Icon(Icons.close),
                       color: Colors.white,
                       onPressed: () {
-                        handleSendButton();
+                        widget.handleSendButton();
                       },
                       padding: EdgeInsets.zero,
                       constraints: BoxConstraints(),
@@ -62,26 +88,46 @@ class SendCard extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                TextField(
-                  cursorColor: Colors.blueAccent,
-                  style: TextStyle(
-                    color: Colors.white,
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade900.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                        color: isAddressFocued
+                            ? Colors.blueAccent
+                            : Colors.blue.shade900.withOpacity(0.2),
+                        width: 2),
                   ),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blueAccent),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    hintText: "Enter Address",
-                    hintStyle: TextStyle(color: Colors.white, fontSize: 16),
-                    fillColor: Colors.blue,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          focusNode: addressFocusNode,
+                          cursorColor: Colors.blueAccent,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Enter Address",
+                            hintStyle:
+                                TextStyle(color: Colors.white, fontSize: 16),
+                            fillColor: Colors.blue,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.qr_code,
+                          color: Colors.white,
+                        ),
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
+                      )
+                    ],
                   ),
                 ),
                 SizedBox(

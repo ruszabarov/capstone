@@ -13,7 +13,7 @@ class LoginPage extends StatelessWidget {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(data.name)) {
-        return 'User not exists';
+        return 'User does not exist';
       }
       if (users[data.name] != data.password) {
         return 'Password does not match';
