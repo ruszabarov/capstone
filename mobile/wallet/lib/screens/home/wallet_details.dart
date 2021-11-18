@@ -127,8 +127,8 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
           AnimatedPositioned(
             left: 0,
             right: 0,
-            bottom: 0,
-            height: isSendVisible ? 400 : 0,
+            bottom: isSendVisible ? 0 : -400,
+            height: 400,
             duration: Duration(milliseconds: 200),
             child: SendCard(
               cryptoWallet: widget.cryptoWallet,
@@ -138,9 +138,9 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
           AnimatedPositioned(
             left: 0,
             right: 0,
-            bottom: 0,
-            height: isReceiveVisible ? 400 : 0,
-            duration: Duration(milliseconds: 200),
+            bottom: isReceiveVisible ? 0 : -400,
+            height: 400,
+            duration: Duration(milliseconds: 100),
             child: ReceiveCard(
               cryptoWallet: widget.cryptoWallet,
               handleReceiveButton: handleReceiveButton,

@@ -68,12 +68,16 @@ class SendCard extends StatelessWidget {
                     color: Colors.white,
                   ),
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blueAccent),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     hintText: "Enter Address",
                     hintStyle: TextStyle(color: Colors.white, fontSize: 16),
@@ -114,6 +118,14 @@ class SendCard extends StatelessWidget {
               width: double.maxFinite,
               height: 50,
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blueAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                ),
                 onPressed: () {},
                 child: Text("GENERATE OTP"),
               ),

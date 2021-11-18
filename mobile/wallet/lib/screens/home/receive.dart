@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/shared/shared.dart';
+import 'package:flutter/services.dart';
 
 class ReceiveCard extends StatelessWidget {
   final CryptoWallet cryptoWallet;
@@ -63,7 +64,7 @@ class ReceiveCard extends StatelessWidget {
               width: double.maxFinite,
               padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(5),
                   border: Border.all(color: Colors.blueAccent, width: 2),
                   color: Colors.blue.shade900.withOpacity(0.2)),
               height: 50,
@@ -78,8 +79,12 @@ class ReceiveCard extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    child: Icon(
-                      Icons.copy,
+                    child: IconButton(
+                      onPressed: () async {
+                        await Clipboard.setData(
+                            ClipboardData(text: cryptoWallet.adress));
+                      },
+                      icon: Icon(Icons.copy),
                       color: Colors.white,
                     ),
                   )
