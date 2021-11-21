@@ -36,7 +36,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(75.0),
+        preferredSize: Size.fromHeight(50.0),
         child: appBar(
           title: widget.cryptoWallet.name[0].toUpperCase() +
               widget.cryptoWallet.name.substring(1) +

@@ -128,7 +128,7 @@ class _SendCardState extends State<SendCard> {
                   height: 10,
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.only(left: 10),
                   decoration: BoxDecoration(
                     color: Colors.blue.shade900.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(5),
@@ -141,7 +141,7 @@ class _SendCardState extends State<SendCard> {
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Expanded(
+                      Flexible(
                         child: TextField(
                           controller: _addressTextController,
                           focusNode: addressFocusNode,
@@ -158,16 +158,30 @@ class _SendCardState extends State<SendCard> {
                           ),
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {
-                          scanQR();
-                        },
-                        icon: Icon(
-                          Icons.qr_code,
-                          color: Colors.white,
+                      Material(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(3),
+                          bottomRight: Radius.circular(3),
                         ),
-                        padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
+                        child: Ink(
+                          decoration: BoxDecoration(
+                            color: Colors.blueAccent,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(3),
+                              bottomRight: Radius.circular(3),
+                            ),
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              scanQR();
+                            },
+                            icon: Icon(
+                              Icons.qr_code,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       )
                     ],
                   ),

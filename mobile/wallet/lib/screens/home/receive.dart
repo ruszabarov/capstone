@@ -81,19 +81,28 @@ class ReceiveCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blueAccent,
+                  Material(
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        color: Colors.blueAccent,
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          // Clipboard.setData(
+                          //   ClipboardData(text: cryptoWallet.adress),
+                          // ).then((_) => {
+                          //       ScaffoldMessenger.of(context).showSnackBar(
+                          //         SnackBar(
+                          //           content: Text('Address copied'),
+                          //         ),
+                          //       )
+                          //     });
+                        },
+                        icon: Icon(Icons.copy),
+                        color: Colors.white,
+                      ),
                     ),
-                    child: IconButton(
-                      onPressed: () async {
-                        await Clipboard.setData(
-                            ClipboardData(text: cryptoWallet.adress));
-                      },
-                      icon: Icon(Icons.copy),
-                      color: Colors.white,
-                    ),
-                  )
+                  ),
                 ],
               ),
             ),

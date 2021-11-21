@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/account/account.dart';
+import 'package:wallet/screens/market/market_page.dart';
 import 'package:wallet/screens/shared/appBar.dart';
 import 'package:wallet/wallet_icons.dart';
 import 'package:wallet/screens/home/home.dart';
@@ -27,7 +28,7 @@ class _WrapperState extends State {
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(75.0),
+        preferredSize: Size.fromHeight(50),
         child: appBar(
           title: _setTitle(_currentItem),
         ),
@@ -96,7 +97,7 @@ class _WrapperState extends State {
       case TabItem.home:
         return Home();
       case TabItem.market:
-        return Account();
+        return MarketPage();
       case TabItem.account:
         return Account();
       default:
