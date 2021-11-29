@@ -1,13 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/home/wallet_details.dart';
+import 'package:wallet/screens/market/api.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:wallet/wallet_icons.dart';
 
-class MarketCard extends StatelessWidget {
+class MarketCard extends StatefulWidget {
   final String marketName;
-  final String price = '\$100';
+
   MarketCard(this.marketName);
+
+  @override
+  State<MarketCard> createState() => _MarketCardState();
+}
+
+class _MarketCardState extends State<MarketCard> {
+  double price = 0.0;
+  bool priceGoingUp = true;
+
+  @override
+  initState() {
+    updateValues();
+    super.initState();
+  }
+
+  updateValues() async {
+    Map<String, dynamic> data = await getPrice(widget.marketName);
+    price = data['current_price'];
+    priceGoingUp = data['price_change_percent'] > 0 ? true : false;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,16 +72,27 @@ class MarketCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          marketName,
+                          widget.marketName,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                         SizedBox(height: 10),
-                        Text(
-                          price,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black45,
+                        RichText(
+                          text: TextSpan(
+                            text: "Current: ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black45,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: "\$${price.toString()}",
+                                style: TextStyle(
+                                    color: priceGoingUp
+                                        ? Colors.green
+                                        : Colors.red),
+                              )
+                            ],
                           ),
                         ),
                       ],
