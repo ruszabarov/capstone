@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/home/wallet_details.dart';
 import 'package:wallet/screens/market/api.dart';
+import 'package:wallet/screens/market/coin_details.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:wallet/wallet_icons.dart';
 
@@ -25,7 +26,7 @@ class _MarketCardState extends State<MarketCard> {
   }
 
   updateValues() async {
-    Map<String, dynamic> data = await getPrice(widget.marketName);
+    Map<String, dynamic> data = await getCoinData(widget.marketName);
     price = data['current_price'];
     priceGoingUp = data['price_change_percent'] > 0 ? true : false;
     setState(() {});
@@ -35,12 +36,10 @@ class _MarketCardState extends State<MarketCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) => WalletDetailsPage(cryptoWallet)
-        //       ),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CoinDetailsPage()),
+        );
       },
       borderRadius: BorderRadius.circular(15),
       child: card(
