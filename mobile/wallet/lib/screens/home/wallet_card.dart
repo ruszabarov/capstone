@@ -1,11 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:wallet/logic.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/home/wallet_details.dart';
 import 'package:wallet/screens/shared/shared.dart';
 
-class WalletCard extends StatelessWidget {
+class WalletCard extends StatefulWidget {
   final CryptoWallet cryptoWallet;
   WalletCard(this.cryptoWallet);
+
+  @override
+  State<WalletCard> createState() => _WalletCardState();
+}
+
+class _WalletCardState extends State<WalletCard> {
+  String price = "2";
+  @override
+  void initState() {
+    updateValues();
+    super.initState();
+  }
+
+  updateValues() async {
+    dynamic data = await getBalance(myAddress);
+    setState(() {
+      price = data;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +34,7 @@ class WalletCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => WalletDetailsPage(cryptoWallet)),
+              builder: (context) => WalletDetailsPage(widget.cryptoWallet)),
         );
       },
       borderRadius: BorderRadius.circular(15),
@@ -33,7 +53,7 @@ class WalletCard extends StatelessWidget {
                       width: 50,
                       height: 50,
                       child: Icon(
-                        cryptoWallet.icon,
+                        widget.cryptoWallet.icon,
                         color: Colors.white,
                         size: 25.0,
                       ),
@@ -47,7 +67,7 @@ class WalletCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        cryptoWallet.name,
+                        widget.cryptoWallet.name,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
@@ -55,7 +75,7 @@ class WalletCard extends StatelessWidget {
                         height: 5,
                       ),
                       Text(
-                        cryptoWallet.balance,
+                        price.toString(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black45,

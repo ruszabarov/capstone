@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/shared/shared.dart';
+import 'package:wallet/logic.dart';
 
-class WalletDetailsPage extends StatelessWidget {
+
+class WalletDetailsPage extends StatefulWidget {
   final CryptoWallet cryptoWallet;
 
   WalletDetailsPage(this.cryptoWallet);
 
+  @override
+  State<WalletDetailsPage> createState() => _WalletDetailsPageState();
+}
+
+class _WalletDetailsPageState extends State<WalletDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,8 +21,8 @@ class WalletDetailsPage extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(75.0),
         child: appBar(
-          title: cryptoWallet.name[0].toUpperCase() +
-              cryptoWallet.name.substring(1) +
+          title: widget.cryptoWallet.name[0].toUpperCase() +
+              widget.cryptoWallet.name.substring(1) +
               ' Wallet',
         ),
       ),
@@ -35,14 +42,14 @@ class WalletDetailsPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Icon(
-                        cryptoWallet.icon,
+                        widget.cryptoWallet.icon,
                         color: Colors.black,
                         size: 35.0,
                       ),
                       SizedBox(width: 20),
                       Expanded(
                         child: Text(
-                          cryptoWallet.name,
+                          widget.cryptoWallet.name,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
@@ -52,7 +59,7 @@ class WalletDetailsPage extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    cryptoWallet.balance + " " + cryptoWallet.shortName,
+                    "0",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 30,

@@ -7,7 +7,7 @@ import 'package:wallet/screens/shared/shared.dart';
 import 'package:web3dart/web3dart.dart';
 
 bool data = false;
-int myAmount = 0;
+int myAmount = 3;
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 
 var myData;
@@ -16,7 +16,7 @@ Web3Client ethClient = Web3Client("https://rinkeby.infura.io/v3/38ba5f4475644e4b
 
   Future<DeployedContract> loadContract() async {
     String abi = await rootBundle.loadString("assets/build/contracts/abi.json");
-    String contractAddress = "0x2B067c28D03C84563Dab3A92767c473f8e2235a9";
+    String contractAddress = "0x294e0287B83DD6f5b177C631A0636C04c4C5b8f4";
 
     final contract = DeployedContract(ContractAbi.fromJson(abi, "Ethereum"), EthereumAddress.fromHex(contractAddress));
 
@@ -37,5 +37,5 @@ Web3Client ethClient = Web3Client("https://rinkeby.infura.io/v3/38ba5f4475644e4b
 
     myData = result[0];
     data = true;
-    return result;
+    return myData.toString();
   }
