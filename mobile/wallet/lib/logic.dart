@@ -39,3 +39,19 @@ Web3Client ethClient = Web3Client("https://rinkeby.infura.io/v3/38ba5f4475644e4b
     data = true;
     return myData.toString();
   }
+
+  Future<String> withdrawCoin() async {
+    var bigAmount = BigInt.from(myAmount);
+    var response = await submit("withdrawBalance",[bigAmount]);
+    return response;
+  }
+
+  Future<String> submit(String funtionName, List<dynamic> args) async {
+    EthPrivateKey credential = EthPrivateKey.fromHex("hex");
+    DeployedContract contract = await loadContract();
+    final ethFunction = contract.function(funtionName);
+    final result = await ethClient.sendTransaction(credential, Transaction.callContract(contract: contract, function: ethFunction,
+     parameters: args, maxGas: 100000), chainId: 4);
+    
+    return result;
+  }
