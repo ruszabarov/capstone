@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/account/account.dart';
-import 'package:wallet/screens/market/market_page.dart';
+import 'package:wallet/screens/market/market.dart';
 import 'package:wallet/screens/shared/appBar.dart';
 import 'package:wallet/wallet_icons.dart';
 import 'package:wallet/screens/home/home.dart';

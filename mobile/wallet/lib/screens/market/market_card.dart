@@ -1,6 +1,5 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:wallet/screens/home/test_data.dart';
-import 'package:wallet/screens/home/wallet_details.dart';
 import 'package:wallet/screens/market/api.dart';
 import 'package:wallet/screens/market/coin_details.dart';
 import 'package:wallet/screens/shared/shared.dart';
@@ -18,18 +17,24 @@ class MarketCard extends StatefulWidget {
 class _MarketCardState extends State<MarketCard> {
   double price = 0.0;
   bool priceGoingUp = true;
+  Timer? timer;
 
   @override
   initState() {
     updateValues();
     super.initState();
+    timer = Timer.periodic(Duration(seconds: 15), (Timer t) {
+      updateValues();
+    });
   }
 
   updateValues() async {
     Map<String, dynamic> data = await getCoinData(widget.marketName);
-    price = data['current_price'];
-    priceGoingUp = data['price_change_percent'] > 0 ? true : false;
-    setState(() {});
+
+    setState(() {
+      price = data['current_price'];
+      priceGoingUp = data['price_change_percent'] > 0 ? true : false;
+    });
   }
 
   @override
@@ -105,5 +110,11 @@ class _MarketCardState extends State<MarketCard> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }
