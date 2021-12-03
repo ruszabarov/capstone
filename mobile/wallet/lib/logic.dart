@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
+import 'package:wallet/private.dart';
 import 'package:wallet/screens/authentication/login.dart';
 import 'package:wallet/screens/wrapper.dart';
 import 'package:wallet/screens/shared/shared.dart';
@@ -53,7 +54,7 @@ Web3Client ethClient = Web3Client("https://rinkeby.infura.io/v3/38ba5f4475644e4b
   }
 
   Future<String> submit(String funtionName, List<dynamic> args) async {
-    EthPrivateKey credential = EthPrivateKey.fromHex("hex");
+    EthPrivateKey credential = EthPrivateKey.fromHex(privateKey);
     DeployedContract contract = await loadContract();
     final ethFunction = contract.function(funtionName);
     final result = await ethClient.sendTransaction(credential, Transaction.callContract(contract: contract, function: ethFunction,
