@@ -43,7 +43,8 @@ class _MarketCardState extends State<MarketCard> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CoinDetailsPage()),
+          MaterialPageRoute(
+              builder: (context) => CoinDetailsPage(widget.marketName)),
         );
       },
       borderRadius: BorderRadius.circular(15),
