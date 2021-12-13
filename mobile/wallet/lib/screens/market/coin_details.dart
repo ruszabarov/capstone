@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wallet/screens/market/api.dart';
 import 'package:wallet/screens/market/market_chart.dart';
 import 'package:wallet/screens/shared/shared.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'dart:math';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CoinDetailsPage extends StatefulWidget {
   final String coinName;
@@ -15,9 +14,8 @@ class CoinDetailsPage extends StatefulWidget {
 }
 
 class _CoinDetailsPageState extends State<CoinDetailsPage> {
-  List<charts.Series<LinearPrice, DateTime>> seriesList = [];
-  num minPrice = 0;
-  num maxPrice = 100000;
+  var data = <LinearPrice>[];
+  int decimalPlaces = 0;
 
   @override
   void initState() {
@@ -26,37 +24,24 @@ class _CoinDetailsPageState extends State<CoinDetailsPage> {
   }
 
   _getCoinData(int days) async {
+    data = [];
     List prices = await getMarketData(widget.coinName, days);
-    var data = <LinearPrice>[];
-    num min = 100000;
-    num max = 0;
 
     prices.forEach((price) {
       data.add(
           LinearPrice(DateTime.fromMillisecondsSinceEpoch(price[0]), price[1]));
-
-      if (price[1] < min) {
-        min = price[1];
-      }
-      if (price[1] > max) {
-        max = price[1];
-      }
     });
 
-    setState(() {
-      minPrice = min;
-      maxPrice = max;
+    String priceString = await getCoinData(widget.coinName)
+        .then((value) => value['current_price'].toString());
+    for (int i = 0; i < priceString.length; i++) {
+      decimalPlaces++;
+      if (priceString[i] == '.') {
+        decimalPlaces = 0;
+      }
+    }
 
-      seriesList = [
-        new charts.Series<LinearPrice, DateTime>(
-          id: 'Prices',
-          colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-          domainFn: (LinearPrice prices, _) => prices.date,
-          measureFn: (LinearPrice prices, _) => prices.price,
-          data: data,
-        )
-      ];
-    });
+    setState(() {});
   }
 
   @override
@@ -72,9 +57,35 @@ class _CoinDetailsPageState extends State<CoinDetailsPage> {
       body: Column(
         children: [
           Container(
-            height: 480,
-            width: 390,
-            child: SimpleLineChart(seriesList, false, maxPrice, minPrice),
+            child: SfCartesianChart(
+              primaryXAxis: DateTimeAxis(
+                isVisible: false,
+              ),
+              primaryYAxis: NumericAxis(
+                isVisible: false,
+              ),
+              zoomPanBehavior: ZoomPanBehavior(
+                  enablePinching: true,
+                  enablePanning: true,
+                  zoomMode: ZoomMode.x),
+              trackballBehavior: TrackballBehavior(
+                enable: true,
+                tooltipSettings: InteractiveTooltip(
+                    enable: true,
+                    color: Colors.blueAccent,
+                    decimalPlaces: decimalPlaces,
+                    format: 'point.x : \$point.y'),
+              ),
+              title: ChartTitle(text: "Coin Price"),
+              series: <FastLineSeries<LinearPrice, DateTime>>[
+                FastLineSeries<LinearPrice, DateTime>(
+                  // Bind data source
+                  dataSource: data,
+                  xValueMapper: (LinearPrice prices, _) => prices.date,
+                  yValueMapper: (LinearPrice prices, _) => prices.price,
+                )
+              ],
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -13,8 +13,10 @@ class SimpleLineChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return new charts.TimeSeriesChart(
       seriesList,
-      animate: animate,
-      behaviors: [new charts.PanAndZoomBehavior()],
+      animate: true,
+      behaviors: [
+        new charts.PanAndZoomBehavior(),
+      ],
       primaryMeasureAxis: charts.NumericAxisSpec(
         viewport: charts.NumericExtents(minPrice, maxPrice),
       ),
