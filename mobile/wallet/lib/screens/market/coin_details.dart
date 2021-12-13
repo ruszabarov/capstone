@@ -14,7 +14,7 @@ class CoinDetailsPage extends StatefulWidget {
 }
 
 class _CoinDetailsPageState extends State<CoinDetailsPage> {
-  var data = <LinearPrice>[];
+  late var data = <LinearPrice>[];
   int decimalPlaces = 0;
 
   @override
@@ -80,7 +80,8 @@ class _CoinDetailsPageState extends State<CoinDetailsPage> {
               series: <FastLineSeries<LinearPrice, DateTime>>[
                 FastLineSeries<LinearPrice, DateTime>(
                   // Bind data source
-                  dataSource: data,
+                  dataSource:
+                      data.isNotEmpty ? data : [LinearPrice(DateTime.now(), 0)],
                   xValueMapper: (LinearPrice prices, _) => prices.date,
                   yValueMapper: (LinearPrice prices, _) => prices.price,
                 )
