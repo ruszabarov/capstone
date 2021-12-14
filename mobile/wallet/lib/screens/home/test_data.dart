@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wallet/logic.dart';
 import 'package:wallet/wallet_icons.dart';
 
 class CryptoWallet {
@@ -14,9 +15,9 @@ class CryptoWallet {
 var ethereum = new CryptoWallet(
     "ethereum", "201", "adkaldajkdaksda", Wallet.ethereum, 'ETH');
 var bitcoin = new CryptoWallet(
-    "bitcoin", "200", "adjlkasdkjasddaasda", Wallet.bitcoin, 'BTC');
+    "bitcoin", "100", "adjlkasdkjasddaasda", Wallet.bitcoin, 'BTC');
 var test = new CryptoWallet(
-    "test", "1", "asdjlkajsdklas", Icons.attach_money_rounded, 'TST');
+    "test", "100", "asdjlkajsdklas", Icons.attach_money_rounded, 'TST');
 
 var cryptoWallets = [
   ethereum,

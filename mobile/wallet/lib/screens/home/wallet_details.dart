@@ -3,6 +3,7 @@ import 'package:wallet/screens/home/receive.dart';
 import 'package:wallet/screens/home/send.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/shared/shared.dart';
+import 'package:wallet/logic.dart';
 
 class WalletDetailsPage extends StatefulWidget {
   final CryptoWallet cryptoWallet;

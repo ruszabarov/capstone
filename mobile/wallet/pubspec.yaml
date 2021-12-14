@@ -26,9 +26,13 @@ dependencies:
     sdk: flutter
   flutter_login: ^3.0.0
   web3dart: ^2.3.1
+<<<<<<< HEAD
   qr_flutter: ^4.0.0
   flutter_barcode_scanner: ^2.0.0
   syncfusion_flutter_charts: ^19.3.57
+=======
+  http: ^0.13.4
+>>>>>>> backend
 
 dev_dependencies:
   flutter_test:
@@ -66,7 +70,8 @@ flutter:
           style: italic
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/
+     - assets/images/
+     - assets/build/contracts/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
