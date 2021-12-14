@@ -24,6 +24,7 @@ class _WalletCardState extends State<WalletCard> {
     dynamic data = await getBalance(myAddress);
     setState(() {
       price = data;
+      widget.cryptoWallet.balance = data;
     });
   }
 

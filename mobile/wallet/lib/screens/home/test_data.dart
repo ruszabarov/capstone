@@ -4,7 +4,7 @@ import 'package:wallet/wallet_icons.dart';
 
 class CryptoWallet {
   final String name;
-  final String balance;
+  String balance;
   final String adress;
   final IconData icon;
   final String shortName;
