@@ -10,11 +10,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Crypto Wallet",
-      home: LoginPage(),
+      home: Wrapper(),
       theme: ThemeData(
         fontFamily: 'Ubuntu',
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
             .copyWith(primary: Colors.blueAccent),
+        pageTransitionsTheme: PageTransitionsTheme(builders: {
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+        }),
       ),
       debugShowCheckedModeBanner: false,
     );

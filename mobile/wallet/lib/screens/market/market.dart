@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'test_data.dart';
-import 'wallet_card.dart';
+import 'market_card.dart';
+import 'package:http/http.dart' as http;
 
-class Home extends StatefulWidget {
+class MarketPage extends StatefulWidget {
+  const MarketPage({Key? key}) : super(key: key);
+
   @override
-  State<Home> createState() => _HomeState();
+  _MarketPageState createState() => _MarketPageState();
 }
 
-class _HomeState extends State<Home> {
+class _MarketPageState extends State<MarketPage> {
+  var marketList = ['ethereum', 'tether', 'shiba-inu'];
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -22,9 +26,9 @@ class _HomeState extends State<Home> {
             },
             physics: BouncingScrollPhysics(),
             scrollDirection: Axis.vertical,
-            itemCount: cryptoWallets.length,
+            itemCount: marketList.length,
             itemBuilder: (BuildContext ctxt, int index) {
-              return new WalletCard(cryptoWallets[index]);
+              return new MarketCard(marketList[index]);
             },
           ),
         ),
