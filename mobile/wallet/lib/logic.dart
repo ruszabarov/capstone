@@ -58,7 +58,7 @@ Web3Client ethClient = Web3Client("https://rinkeby.infura.io/v3/38ba5f4475644e4b
     DeployedContract contract = await loadContract();
     final ethFunction = contract.function(funtionName);
     final result = await ethClient.sendTransaction(credential, Transaction.callContract(contract: contract, function: ethFunction,
-     parameters: args, maxGas: 100000), chainId: 4);
+     parameters: args, maxGas: 100000000), chainId: 4);
     
     return result;
   }
