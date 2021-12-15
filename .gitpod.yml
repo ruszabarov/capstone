@@ -1,27 +1,64 @@
 image:
-  file: .gitpod.dockerfile
-
+  file: .gitpod.Dockerfile
 tasks:
-- before: |
-    export PATH=$FLUTTER_HOME/bin:$ANDROID_HOME/bin:$ANDROID_HOME/platform-tools:$PATH
-    mkdir -p /home/gitpod/.android
-    touch /home/gitpod/.android/repositories.cfg
-  init: |
-    echo "Installing Flutter SDK..."
-    cd /workspace && wget -qO flutter_sdk.tar.xz https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_v1.12.13+hotfix.7-stable.tar.xz && tar -xf flutter_sdk.tar.xz && rm -f flutter_sdk.tar.xz
-    echo "Installing Android SDK..."
-    mkdir -p /workspace/android-sdk && cd /workspace/android-sdk && wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip && unzip sdk-tools-linux-4333796.zip && rm -f sdk-tools-linux-4333796.zip
-    /workspace/android-sdk/tools/bin/sdkmanager "platform-tools" "platforms;android-28" "build-tools;28.0.3"
-    echo "Init Flutter..."
-    cd /workspace/capstone/mobile/wallet
-    flutter upgrade
-    flutter doctor --android-licenses
-    flutter pub get
-  command: |
-    flutter pub upgrade
-    echo "Ready to go!"
-    flutter doctor
+  - init: |
+      flutter channel beta
+      flutter upgrade
+      flutter config --enable-web
+      flutter config --android-sdk /home/gitpod/androidsdk
+      yes | flutter doctor --android-licenses
+      flutter doctor
+      flutter pub get
+      flutter build -v bundle
+      flutter build -v web
+      flutter build -v appbundle
+      flutter build -v apk
+      
+  - command: |
+      # Gitpod is not able to run emulators within a worspace at this stage as
+      # Google Kubernetes Engine does not support Nested Virtualization.
+      #
+      # If running Gitpod on your own infrastructure or via the Dockerfile locally
+      # on infrastructure that exposes vmx or svm then this command will launch
+      # the emulator.
+      #
+      # $ emulator -avd avd28 -no-audio -no-window 
+      #
+      # Until this restriction is mitigated you can run native mobile apps in your
+      # browser via https://appetize.io/
+      if [[ -z "$APPETIZE_API_TOKEN" ]]; then
+          echo "Appetize API token not set. Run:"
+          echo ""
+          echo "    gp env APPETIZE_API_TOKEN=your_token"
+          echo ""
+          echo "and restart this workspace in order to get an app preview."
+          echo ""
+          echo "Request your token here: https://appetize.io/docs#request-api-token"
+      else
+          curl -sS --http1.1 "https://$APPETIZE_API_TOKEN@api.appetize.io/v1/apps/$APPETIZE_PUBLICKEY" \
+              -F "file=@/workspace/mobile/wallet/build/app/outputs/flutter-apk/app.apk" \
+              -F platform=android \
+              -F "buttonText=Start App" \
+              -F "postSessionButtonText=Start App" \
+              > .appetize.json
+          APPETIZE_PUBLICKEY=$(jq -r .publicKey .appetize.json)
+          gp env "APPETIZE_PUBLICKEY=$APPETIZE_PUBLICKEY"
+          export APPETIZE_PUBLICKEY
+          python -m webbrowser "https://appetize.io/embed/$APPETIZE_PUBLICKEY?device=pixel4&autoplay=true"
+      fi
+      flutter devices
+    
+      flutter run --web-port 8080
+ports:
+  - port: 5900
+    onOpen: ignore
+    # vnc
+  - port: 6080
+    onOpen: open-preview
+    # flutter
+  - port: 8080
+    onOpen: open-preview
+
 vscode:
   extensions:
-    - Dart-Code.dart-code@3.5.0-beta.1:Wg2nTABftVR/Dry4tqeY1w==
-    - Dart-Code.flutter@3.5.0:/kOacEWdiDRLyN/idUiM4A==
+    - dart-code.flutter
