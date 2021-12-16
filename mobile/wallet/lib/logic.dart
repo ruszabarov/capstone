@@ -13,7 +13,7 @@ final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 
 var myData;
 Client httpClient = Client();
-Web3Client ethClient = Web3Client("https://rinkeby.infura.io/v3/38ba5f4475644e4ba48d25313c80347b", httpClient);
+Web3Client ethClient = Web3Client("https://ropsten.infura.io/v3/38ba5f4475644e4ba48d25313c80347b", httpClient);
 
   Future<DeployedContract> loadContract() async {
     String abi = await rootBundle.loadString("assets/build/contracts/abi.json");
