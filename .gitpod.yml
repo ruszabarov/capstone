@@ -26,6 +26,7 @@ tasks:
       #
       # Until this restriction is mitigated you can run native mobile apps in your
       # browser via https://appetize.io/
+      
       if [[ -z "$APPETIZE_API_TOKEN" ]]; then
           echo "Appetize API token not set. Run:"
           echo ""
@@ -46,6 +47,7 @@ tasks:
           export APPETIZE_PUBLICKEY
           python -m webbrowser "https://appetize.io/embed/$APPETIZE_PUBLICKEY?device=pixel4&autoplay=true"
       fi
+      cd mobile/wallet/
       flutter devices
     
       flutter run --web-port 8080
