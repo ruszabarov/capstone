@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/market/api.dart';
-import 'package:wallet/screens/market/coin_details.dart';
+import 'package:wallet/screens/market/market_details.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:wallet/wallet_icons.dart';
 
@@ -44,7 +44,7 @@ class _MarketCardState extends State<MarketCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => CoinDetailsPage(widget.marketName)),
+              builder: (context) => MarketDetailsPage(widget.marketName)),
         );
       },
       borderRadius: BorderRadius.circular(15),
