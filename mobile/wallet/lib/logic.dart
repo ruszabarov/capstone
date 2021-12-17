@@ -38,7 +38,10 @@ Web3Client ethClient = Web3Client("https://ropsten.infura.io/v3/38ba5f4475644e4b
 
     myData = result[0];
     data = true;
-    return myData.toString();
+    
+    double newBalance = myData.toDouble();
+    newBalance = newBalance / 100;
+    return newBalance.toString();
   }
 
   Future<String> withdrawCoin() async {
