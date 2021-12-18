@@ -18,19 +18,16 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
   double minPrice = 0;
   double maxPrice = 0;
   late TrackballBehavior _trackballBehavior;
-  double currentCoinPrice = 0;
+  late ValueNotifier<String> currentCoinPrice;
 
   @override
   void initState() {
     super.initState();
+    currentCoinPrice = ValueNotifier<String>("\$0");
     _getCoinData(1);
     _trackballBehavior = TrackballBehavior(
       enable: true,
-      tooltipSettings: InteractiveTooltip(
-          enable: false,
-          color: Colors.blueAccent,
-          decimalPlaces: decimalPlaces,
-          format: 'point.x : \$point.y'),
+      tooltipSettings: InteractiveTooltip(enable: false),
     );
   }
 
@@ -54,7 +51,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
 
     double price = await getCoinData(widget.coinName)
         .then((value) => value['current_price']);
-    currentCoinPrice = price;
+    currentCoinPrice = ValueNotifier<String>(price.toString());
 
     String priceString = price.toString();
     for (int i = 0; i < priceString.length; i++) {
@@ -84,23 +81,23 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  "\$ ${currentCoinPrice.toString()}",
-                  style: TextStyle(fontSize: 20),
+                ValueListenableBuilder(
+                  valueListenable: currentCoinPrice,
+                  builder: (context, value, child) => Text(
+                    value.toString(),
+                    style: TextStyle(fontSize: 20),
+                  ),
                 ),
               ],
             ),
           ),
           Container(
             child: SfCartesianChart(
-              onTrackballPositionChanging: (TrackballArgs trackballArgs) {
-                setState(
-                  () {
-                    currentCoinPrice = double.parse(
-                        (trackballArgs.chartPointInfo.chartDataPoint!.yValue)
-                            .toStringAsFixed(decimalPlaces));
-                  },
-                );
+              trackballBehavior: _trackballBehavior,
+              onTrackballPositionChanging: (TrackballArgs args) {
+                currentCoinPrice.value = args
+                    .chartPointInfo.chartDataPoint!.yValue
+                    .toStringAsFixed(decimalPlaces);
               },
               primaryXAxis: DateTimeAxis(
                 isVisible: false,
@@ -114,8 +111,6 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
                   enablePinching: true,
                   enablePanning: true,
                   zoomMode: ZoomMode.x),
-              trackballBehavior: _trackballBehavior,
-              title: ChartTitle(text: "Coin Price"),
               series: <FastLineSeries<LinearPrice, DateTime>>[
                 FastLineSeries<LinearPrice, DateTime>(
                   // Bind data source
@@ -165,6 +160,12 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    currentCoinPrice.dispose();
+    super.dispose();
   }
 }
 
