@@ -71,6 +71,8 @@ analysis_benchmark.json
 **/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
 *.jks
+**/android/app/google-services.json
+**/ios/Runner/GoogleService-Info.plist
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
