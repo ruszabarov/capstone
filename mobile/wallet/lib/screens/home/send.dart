@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wallet/screens/home/test_data.dart';
@@ -235,7 +236,11 @@ class _SendCardState extends State<SendCard> {
                     ),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  FirebaseFirestore.instance
+                      .collection('test')
+                      .add({'timestamp': Timestamp.fromDate(DateTime.now())});
+                },
                 child: Text("GENERATE OTP"),
               ),
             )
