@@ -20,19 +20,20 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
   double maxPrice = 0;
   late TrackballBehavior _trackballBehavior;
   late ValueNotifier<String> currentCoinPrice;
+  late double lastPrice = 0;
 
   @override
   void initState() {
     super.initState();
-    currentCoinPrice = ValueNotifier<String>("\$0");
-    _getCoinData(1);
+    currentCoinPrice = ValueNotifier<String>("0");
+    _getCoinData('1');
     _trackballBehavior = TrackballBehavior(
       enable: true,
       tooltipSettings: InteractiveTooltip(enable: false),
     );
   }
 
-  _getCoinData(int days) async {
+  _getCoinData(String days) async {
     data = [];
 
     List prices = await getMarketData(widget.coinName, days);
@@ -50,11 +51,11 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
       }
     });
 
-    double price = await getCoinData(widget.coinName)
+    lastPrice = await getCoinData(widget.coinName)
         .then((value) => value['current_price']);
-    currentCoinPrice = ValueNotifier<String>(price.toString());
+    currentCoinPrice = ValueNotifier<String>(lastPrice.toString());
 
-    String priceString = price.toString();
+    String priceString = lastPrice.toString();
     for (int i = 0; i < priceString.length; i++) {
       decimalPlaces++;
       if (priceString[i] == '.') {
@@ -85,7 +86,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
                 ValueListenableBuilder(
                   valueListenable: currentCoinPrice,
                   builder: (context, value, child) => Text(
-                    value.toString(),
+                    "\$ ${value.toString()}",
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
@@ -93,15 +94,22 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
             ),
           ),
           MarketChart(_trackballBehavior, currentCoinPrice, minPrice, maxPrice,
-              data, decimalPlaces),
+              data, decimalPlaces, lastPrice),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TimeRangeButton(days: 1, label: "1D", getCoinData: _getCoinData),
-              TimeRangeButton(days: 7, label: "1W", getCoinData: _getCoinData),
-              TimeRangeButton(days: 30, label: "1M", getCoinData: _getCoinData),
-              TimeRangeButton(days: 90, label: "3M", getCoinData: _getCoinData),
-              TimeRangeButton(days: 365, label: "1Y", getCoinData: _getCoinData)
+              TimeRangeButton(
+                  days: '1', label: "1D", getCoinData: _getCoinData),
+              TimeRangeButton(
+                  days: '7', label: "1W", getCoinData: _getCoinData),
+              TimeRangeButton(
+                  days: '30', label: "1M", getCoinData: _getCoinData),
+              TimeRangeButton(
+                  days: '90', label: "3M", getCoinData: _getCoinData),
+              TimeRangeButton(
+                  days: '365', label: "1Y", getCoinData: _getCoinData),
+              TimeRangeButton(
+                  days: 'max', label: "All", getCoinData: _getCoinData),
             ],
           )
         ],
@@ -117,12 +125,12 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
 }
 
 class TimeRangeButton extends StatelessWidget {
-  final int days;
+  final String days;
   final String label;
   final Function getCoinData;
   const TimeRangeButton(
       {Key? key,
-      required int this.days,
+      required this.days,
       required this.label,
       required this.getCoinData})
       : super(key: key);

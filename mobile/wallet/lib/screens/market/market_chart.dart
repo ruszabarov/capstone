@@ -8,9 +8,10 @@ class MarketChart extends StatelessWidget {
   final double maxPrice;
   final List<LinearPrice> data;
   final int decimalPlaces;
+  final double lastPrice;
 
   MarketChart(this.trackballBehavior, this.currentCoinPrice, this.minPrice,
-      this.maxPrice, this.data, this.decimalPlaces);
+      this.maxPrice, this.data, this.decimalPlaces, this.lastPrice);
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,9 @@ class MarketChart extends StatelessWidget {
         onTrackballPositionChanging: (TrackballArgs args) {
           currentCoinPrice.value = args.chartPointInfo.chartDataPoint!.yValue
               .toStringAsFixed(decimalPlaces);
+        },
+        onChartTouchInteractionUp: (ChartTouchInteractionArgs args) {
+          currentCoinPrice.value = lastPrice.toString();
         },
         primaryXAxis: DateTimeAxis(
           isVisible: false,

@@ -20,7 +20,7 @@ Future<Map<String, dynamic>> getCoinData(String id) async {
   }
 }
 
-Future<List> getMarketData(String id, int days) async {
+Future<List> getMarketData(String id, String days) async {
   try {
     var url = Uri.parse(
         "https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${days}");
