@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/market/api.dart';
+import 'package:wallet/screens/market/market_chart.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -91,70 +92,16 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
               ],
             ),
           ),
-          Container(
-            child: SfCartesianChart(
-              trackballBehavior: _trackballBehavior,
-              onTrackballPositionChanging: (TrackballArgs args) {
-                currentCoinPrice.value = args
-                    .chartPointInfo.chartDataPoint!.yValue
-                    .toStringAsFixed(decimalPlaces);
-              },
-              primaryXAxis: DateTimeAxis(
-                isVisible: false,
-              ),
-              primaryYAxis: NumericAxis(
-                isVisible: false,
-                minimum: minPrice - minPrice * 0.1,
-                maximum: maxPrice + maxPrice * 0.1,
-              ),
-              zoomPanBehavior: ZoomPanBehavior(
-                  enablePinching: true,
-                  enablePanning: true,
-                  zoomMode: ZoomMode.x),
-              series: <FastLineSeries<LinearPrice, DateTime>>[
-                FastLineSeries<LinearPrice, DateTime>(
-                  // Bind data source
-                  dataSource:
-                      data.isNotEmpty ? data : [LinearPrice(DateTime.now(), 0)],
-                  xValueMapper: (LinearPrice prices, _) => prices.date,
-                  yValueMapper: (LinearPrice prices, _) => prices.price,
-                )
-              ],
-            ),
-          ),
+          MarketChart(_trackballBehavior, currentCoinPrice, minPrice, maxPrice,
+              data, decimalPlaces),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextButton(
-                onPressed: () {
-                  _getCoinData(1);
-                },
-                child: Text("1D"),
-              ),
-              TextButton(
-                onPressed: () {
-                  _getCoinData(7);
-                },
-                child: Text("1W"),
-              ),
-              TextButton(
-                onPressed: () {
-                  _getCoinData(30);
-                },
-                child: Text("1M"),
-              ),
-              TextButton(
-                onPressed: () {
-                  _getCoinData(90);
-                },
-                child: Text("3M"),
-              ),
-              TextButton(
-                onPressed: () {
-                  _getCoinData(365);
-                },
-                child: Text("1Y"),
-              ),
+              TimeRangeButton(days: 1, label: "1D", getCoinData: _getCoinData),
+              TimeRangeButton(days: 7, label: "1W", getCoinData: _getCoinData),
+              TimeRangeButton(days: 30, label: "1M", getCoinData: _getCoinData),
+              TimeRangeButton(days: 90, label: "3M", getCoinData: _getCoinData),
+              TimeRangeButton(days: 365, label: "1Y", getCoinData: _getCoinData)
             ],
           )
         ],
@@ -169,9 +116,24 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
   }
 }
 
-class LinearPrice {
-  final DateTime date;
-  final double price;
+class TimeRangeButton extends StatelessWidget {
+  final int days;
+  final String label;
+  final Function getCoinData;
+  const TimeRangeButton(
+      {Key? key,
+      required int this.days,
+      required this.label,
+      required this.getCoinData})
+      : super(key: key);
 
-  LinearPrice(this.date, this.price);
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        getCoinData(days);
+      },
+      child: Text(label),
+    );
+  }
 }
