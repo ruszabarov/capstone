@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/account/account.dart';
 import 'package:wallet/screens/market/market.dart';
@@ -6,6 +7,10 @@ import 'package:wallet/wallet_icons.dart';
 import 'package:wallet/screens/home/home.dart';
 
 class Wrapper extends StatefulWidget {
+  final User user;
+
+  const Wrapper(this.user);
+
   @override
   State createState() {
     return _WrapperState();

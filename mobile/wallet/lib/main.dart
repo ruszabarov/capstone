@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Crypto Wallet",
-      home: Wrapper(),
+      home: LoginPage(),
       theme: ThemeData(
         fontFamily: 'Ubuntu',
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
