@@ -19,7 +19,7 @@ class Wrapper extends StatefulWidget {
 
 enum TabItem { home, market, account }
 
-class _WrapperState extends State {
+class _WrapperState extends State<Wrapper> {
   TabItem _currentItem = TabItem.home;
 
   final List<TabItem> _bottomTabs = [
@@ -104,7 +104,7 @@ class _WrapperState extends State {
       case TabItem.market:
         return MarketPage();
       case TabItem.account:
-        return Account();
+        return Account(widget.user);
       default:
         return Home();
     }

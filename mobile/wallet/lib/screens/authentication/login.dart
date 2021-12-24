@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:wallet/screens/home/home.dart';
 import 'package:wallet/screens/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'auth.dart';
@@ -35,17 +34,17 @@ class _LoginPageState extends State<LoginPage> {
     return firebaseApp;
   }
 
-  Future<String?> _authUser(LoginData data) {
-    debugPrint('Name: ${data.name}, Password: ${data.password}');
-    return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(data.name)) {
-        return 'User does not exist';
-      }
-      if (users[data.name] != data.password) {
-        return 'Password does not match';
-      }
+  Future<String?> _authUser(LoginData data) async {
+    user = await FireAuth.signInUsingEmailPassword(
+        email: data.name, password: data.password);
+
+    print("Login: $user");
+
+    if (user != null) {
       return null;
-    });
+    }
+
+    return "Invalid email or password";
   }
 
   Future<String?> _signupUser(SignupData data) async {
@@ -54,9 +53,8 @@ class _LoginPageState extends State<LoginPage> {
     if (user != null) {
       return null;
     }
-    ;
 
-    return "Authentication error";
+    return "Invalid email or password";
   }
 
   Future<String?> _recoverPassword(String name) {
@@ -80,9 +78,11 @@ class _LoginPageState extends State<LoginPage> {
             onLogin: _authUser,
             onSignup: _signupUser,
             onSubmitAnimationCompleted: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => Wrapper(user!),
-              ));
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => Wrapper(user!),
+                ),
+              );
             },
             onRecoverPassword: _recoverPassword,
             theme: LoginTheme(

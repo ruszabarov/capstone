@@ -4,11 +4,15 @@ import 'package:wallet/screens/authentication/login.dart';
 
 class Account extends StatelessWidget {
   final String title = "Account";
+  final User user;
+
+  const Account(this.user);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Text(user.email!),
         ElevatedButton(
           onPressed: () async {
             await FirebaseAuth.instance.signOut();
