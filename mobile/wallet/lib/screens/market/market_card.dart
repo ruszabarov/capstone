@@ -4,6 +4,7 @@ import 'package:wallet/screens/market/api.dart';
 import 'package:wallet/screens/market/market_details.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:wallet/wallet_icons.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class MarketCard extends StatefulWidget {
   final String marketName;
@@ -17,12 +18,13 @@ class MarketCard extends StatefulWidget {
 class _MarketCardState extends State<MarketCard> {
   double price = 0.0;
   bool priceGoingUp = true;
+  late String imageURL = '';
   Timer? timer;
 
   @override
   initState() {
-    updateValues();
     super.initState();
+    updateValues();
     timer = Timer.periodic(Duration(seconds: 15), (Timer t) {
       updateValues();
     });
@@ -34,6 +36,7 @@ class _MarketCardState extends State<MarketCard> {
     setState(() {
       price = data['current_price'];
       priceGoingUp = data['price_change_percent'] > 0 ? true : false;
+      imageURL = data['icon'];
     });
   }
 
@@ -59,17 +62,14 @@ class _MarketCardState extends State<MarketCard> {
                 Row(
                   children: [
                     ClipOval(
-                      child: Material(
-                        color: Colors.black87,
-                        child: SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Icon(
-                            Wallet.ethereum,
-                            color: Colors.white,
-                            size: 25.0,
-                          ),
-                        ),
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: imageURL == ''
+                            ? CircularProgressIndicator()
+                            : CachedNetworkImage(
+                                imageUrl: '$imageURL',
+                              ),
                       ),
                     ),
                     SizedBox(width: 15),

@@ -18,6 +18,8 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
   int decimalPlaces = 0;
   double minPrice = 0;
   double maxPrice = 0;
+  double priceChangeInRange = 0;
+  double percentChangeInRange = 0;
   late TrackballBehavior _trackballBehavior;
   late ValueNotifier<String> currentCoinPrice;
   late double lastPrice = 0;
@@ -37,19 +39,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
     data = [];
 
     List prices = await getMarketData(widget.coinName, days);
-    minPrice = prices[0][1];
-    maxPrice = prices[0][1];
-
-    prices.forEach((price) {
-      data.add(
-          LinearPrice(DateTime.fromMillisecondsSinceEpoch(price[0]), price[1]));
-
-      if (price[1] < minPrice) {
-        minPrice = price[1];
-      } else if (price[1] > maxPrice) {
-        maxPrice = price[1];
-      }
-    });
+    _calculateBounds(prices);
 
     lastPrice = await getCoinData(widget.coinName)
         .then((value) => value['current_price']);
@@ -63,7 +53,33 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
       }
     }
 
+    _calculatePriceChange(prices);
+
     setState(() {});
+  }
+
+  _calculateBounds(List prices) {
+    minPrice = prices[0][1];
+    maxPrice = prices[0][1];
+
+    prices.forEach((price) {
+      data.add(
+          LinearPrice(DateTime.fromMillisecondsSinceEpoch(price[0]), price[1]));
+
+      if (price[1] < minPrice) {
+        minPrice = price[1];
+      } else if (price[1] > maxPrice) {
+        maxPrice = price[1];
+      }
+    });
+  }
+
+  _calculatePriceChange(List prices) {
+    double firstPrice = prices[0][1];
+    double lastPrice = prices.last[1];
+
+    priceChangeInRange = lastPrice - firstPrice;
+    percentChangeInRange = (lastPrice / firstPrice) * 100 - 100;
   }
 
   @override
@@ -90,6 +106,16 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10, top: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                    '${priceChangeInRange.toStringAsFixed(2)} (${percentChangeInRange.toStringAsFixed(2)}%)'),
               ],
             ),
           ),
