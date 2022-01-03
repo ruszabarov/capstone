@@ -15,19 +15,16 @@ class MarketCard extends StatefulWidget {
   State<MarketCard> createState() => _MarketCardState();
 }
 
-class _MarketCardState extends State<MarketCard> {
+class _MarketCardState extends State<MarketCard>
+    with AutomaticKeepAliveClientMixin {
   double price = 0.0;
   bool priceGoingUp = true;
   late String imageURL = '';
-  Timer? timer;
 
   @override
   initState() {
     super.initState();
     updateValues();
-    timer = Timer.periodic(Duration(seconds: 15), (Timer t) {
-      updateValues();
-    });
   }
 
   updateValues() async {
@@ -115,7 +112,9 @@ class _MarketCardState extends State<MarketCard> {
 
   @override
   void dispose() {
-    timer?.cancel();
     super.dispose();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -26,7 +26,9 @@ class _LoginPageState extends State<LoginPage> {
     if (user != null) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => Wrapper(user!),
+          builder: (context) => Wrapper(
+            user!,
+          ),
         ),
       );
     }
