@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
-class AddWalletPage extends StatelessWidget {
-  const AddWalletPage({Key? key}) : super(key: key);
+class AddWalletCard extends StatelessWidget {
+  final Function handleAddButton;
+
+  const AddWalletCard(this.handleAddButton);
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      width: 200,
+      height: 200,
+      color: Colors.blue,
+    );
   }
 }

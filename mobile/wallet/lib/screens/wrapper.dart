@@ -27,15 +27,8 @@ class _WrapperState extends State<Wrapper> {
   late Widget home;
   late Widget market;
   late Widget account;
-  late IconButton? _currentRight =
-      IconButton(onPressed: () {}, icon: Icon(Icons.add));
 
   List<String> titles = ["Wallets", "Market", "Account"];
-  late List rights = [
-    IconButton(onPressed: () {}, icon: Icon(Icons.add)),
-    null,
-    null
-  ];
 
   @override
   void initState() {
@@ -60,7 +53,6 @@ class _WrapperState extends State<Wrapper> {
         preferredSize: Size.fromHeight(50),
         child: appBar(
           title: "$_currentTitle",
-          right: _currentRight,
         ),
       ),
       body: PageView(
@@ -105,7 +97,6 @@ class _WrapperState extends State<Wrapper> {
     setState(() {
       _selectedIndex = index;
       _currentTitle = titles[index];
-      _currentRight = rights[index];
       _pageController.animateToPage(index,
           duration: Duration(milliseconds: 300), curve: Curves.easeOut);
     });

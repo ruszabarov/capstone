@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/authentication/login.dart';
+import 'package:wallet/screens/home/add_wallet.dart';
+import 'package:wallet/screens/home/home.dart';
 import 'package:wallet/screens/wrapper.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,7 +17,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Crypto Wallet",
-      home: LoginPage(),
       theme: ThemeData(
         fontFamily: 'Ubuntu',
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
@@ -24,6 +25,11 @@ class MyApp extends StatelessWidget {
           TargetPlatform.android: CupertinoPageTransitionsBuilder(),
         }),
       ),
+      initialRoute: '/auth',
+      routes: {
+        '/auth': (context) => LoginPage(),
+        '/home': (context) => Home(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }

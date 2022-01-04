@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wallet/screens/home/account_card.dart';
+import 'package:wallet/screens/home/add_wallet.dart';
+import 'package:wallet/screens/shared/card.dart';
 import 'test_data.dart';
 import 'wallet_card.dart';
 
@@ -8,11 +11,61 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool isAddWalletVisible = false;
+
+  void handleAddButton() {
+    setState(() {
+      isAddWalletVisible = !isAddWalletVisible;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Expanded(
+        Ink(
+          color: Colors.grey[200],
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Padding(
+              padding: const EdgeInsets.all(25),
+              child: Row(
+                children: [
+                  AccountCard("Main Account", "0x389537929832...", "\$2250.12"),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  AccountCard("Second Account", "0x2378429832...", "\$1023.68"),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Ink(
+                    padding: EdgeInsets.all(15),
+                    width: 200,
+                    height: 150,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Add Account"),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Icon(
+                          Icons.add,
+                          size: 70,
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Flexible(
           child: new ListView.separated(
             padding: EdgeInsets.all(25),
             separatorBuilder: (BuildContext context, int index) {
