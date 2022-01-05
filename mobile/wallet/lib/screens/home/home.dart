@@ -19,6 +19,8 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void handleSelectAccount() {}
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -26,7 +28,7 @@ class _HomeState extends State<Home> {
         Material(
           child: Ink(
             color: Colors.grey[200],
-            height: 193,
+            height: 210,
             child: new ListView.separated(
               padding: EdgeInsets.all(25),
               separatorBuilder: (BuildContext context, int index) {
@@ -62,7 +64,7 @@ class _HomeState extends State<Home> {
                   );
                 }
 
-                return new AccountCard(accounts[index].name,
+                return AccountCard(accounts[index].name,
                     accounts[index].address, accounts[index].balance);
               },
             ),
