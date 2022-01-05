@@ -27,16 +27,25 @@ class _AccountCardState extends State<AccountCard> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(widget.name),
-          SizedBox(
-            height: 10,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.name,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(widget.address),
+            ],
           ),
-          Text(widget.address),
-          SizedBox(
-            height: 55,
-          ),
-          Text(widget.balance.toString())
+          Text(
+            "\$ ${widget.balance.toString()}",
+            style: TextStyle(fontSize: 20),
+          )
         ],
       ),
     );

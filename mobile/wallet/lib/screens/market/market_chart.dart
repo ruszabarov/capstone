@@ -30,8 +30,8 @@ class MarketChart extends StatelessWidget {
         ),
         primaryYAxis: NumericAxis(
           isVisible: false,
-          minimum: minPrice - minPrice * 0.1,
-          maximum: maxPrice + maxPrice * 0.1,
+          minimum: minPrice - minPrice * 0.01,
+          maximum: maxPrice + maxPrice * 0.01,
         ),
         zoomPanBehavior: ZoomPanBehavior(
             enablePinching: true, enablePanning: true, zoomMode: ZoomMode.x),

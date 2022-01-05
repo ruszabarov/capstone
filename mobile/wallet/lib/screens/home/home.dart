@@ -101,8 +101,33 @@ class _HomeState extends State<Home> {
                 },
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
-                itemCount: currentWallets.length,
+                itemCount: currentWallets.length + 1,
                 itemBuilder: (BuildContext ctxt, int index) {
+                  if (index == currentWallets.length) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: InkWell(
+                          onTap: () {},
+                          borderRadius: BorderRadius.circular(25),
+                          child: Ink(
+                            width: 100,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              color: Colors.blueAccent,
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Add Token",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
                   return new WalletCard(currentWallets[index]);
                 },
               ),
