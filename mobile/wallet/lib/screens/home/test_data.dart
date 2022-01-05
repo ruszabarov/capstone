@@ -26,17 +26,25 @@ var cryptoWallets = [
   test,
 ];
 
+var accountTwo = [
+  bitcoin,
+  ethereum,
+  test,
+];
+
 class Account {
   final String name;
   final String address;
   final double balance;
+  final List<CryptoWallet> wallets;
 
-  Account(this.name, this.address, this.balance);
+  Account(this.name, this.address, this.balance, this.wallets);
 }
 
-Account mainAccount = Account("Main Account", "0x38953792983228592", 2250.12);
+Account mainAccount =
+    Account("Main Account", "0x38953792983228592", 2250.12, cryptoWallets);
 Account secondAccount =
-    Account("Second Account", "0x2378429832295292", 1023.68);
+    Account("Second Account", "0x2378429832295292", 1023.68, accountTwo);
 
 var accounts = [
   mainAccount,
