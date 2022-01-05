@@ -4,7 +4,7 @@ import 'package:wallet/screens/shared/card.dart';
 class AccountCard extends StatelessWidget {
   final String name;
   final String address;
-  final String balance;
+  final double balance;
 
   const AccountCard(this.name, this.address, this.balance);
 
@@ -28,7 +28,7 @@ class AccountCard extends StatelessWidget {
           SizedBox(
             height: 55,
           ),
-          Text(balance)
+          Text(balance.toString())
         ],
       ),
     );
