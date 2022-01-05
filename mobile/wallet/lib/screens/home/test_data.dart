@@ -30,3 +30,11 @@ var cryptoWallets = [
   test,
   test
 ];
+
+class Account {
+  final String name;
+  final String address;
+  final double balance;
+
+  Account(this.name, this.address, this.balance);
+}
