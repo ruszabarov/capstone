@@ -10,14 +10,19 @@ import 'package:web3dart/web3dart.dart';
 bool data = false;
 int myAmount = 3;
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
+EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
+
 
 var myData;
-Client httpClient = Client();
-Web3Client ethClient = Web3Client("https://ropsten.infura.io/v3/38ba5f4475644e4ba48d25313c80347b", httpClient);
+Client httpClient = new Client();
+Web3Client ethClient = new Web3Client("https://rinkeby.infura.io/v3/38ba5f4475644e4ba48d25313c80347b", httpClient);
+
+Future<dynamic> balance = ethClient.getBalance(EthereumAddress.fromHex(myAddress));
+
 
   Future<DeployedContract> loadContract() async {
     String abi = await rootBundle.loadString("assets/build/contracts/abi.json");
-    String contractAddress = "0x1592F9deD5C346Eb40908820fcF324d295556331";
+    String contractAddress = "0x776af82a00E115A0Ce2e47ae5A1d77ce1bB19A19";
 
     final contract = DeployedContract(ContractAbi.fromJson(abi, "Ethereum"), EthereumAddress.fromHex(contractAddress));
 
@@ -31,7 +36,7 @@ Web3Client ethClient = Web3Client("https://ropsten.infura.io/v3/38ba5f4475644e4b
 
     return result;
   }
-
+/*
   Future<dynamic> getBalance(String targetAddress) async {
     // EthereumAddress address = EthereumAddress.fromHex(targetAddress);
     List<dynamic> result = await query("getBalance", []);
@@ -43,7 +48,7 @@ Web3Client ethClient = Web3Client("https://ropsten.infura.io/v3/38ba5f4475644e4b
     newBalance = newBalance / 1000000000000000000;
     return newBalance.toString();
   }
-
+*/
   Future<String> withdrawCoin() async {
     var bigAmount = BigInt.from(myAmount);
     var response = await submit("withdrawBalance",[bigAmount]);
@@ -57,10 +62,10 @@ Web3Client ethClient = Web3Client("https://ropsten.infura.io/v3/38ba5f4475644e4b
   }
 
   Future<String> submit(String funtionName, List<dynamic> args) async {
-    EthPrivateKey credential = EthPrivateKey.fromHex(privateKey);
+    EthPrivateKey credentials = EthPrivateKey.fromHex(privateKey);
     DeployedContract contract = await loadContract();
     final ethFunction = contract.function(funtionName);
-    final result = await ethClient.sendTransaction(credential, Transaction.callContract(contract: contract, function: ethFunction,
+    final result = await ethClient.sendTransaction(credentials, Transaction.callContract(contract: contract, function: ethFunction,
      parameters: args, maxGas: 100000000), chainId: 4);
     
     return result;
