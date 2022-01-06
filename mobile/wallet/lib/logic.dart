@@ -17,7 +17,7 @@ Web3Client ethClient = Web3Client("https://ropsten.infura.io/v3/38ba5f4475644e4b
 
   Future<DeployedContract> loadContract() async {
     String abi = await rootBundle.loadString("assets/build/contracts/abi.json");
-    String contractAddress = "0x294e0287B83DD6f5b177C631A0636C04c4C5b8f4";
+    String contractAddress = "0x1592F9deD5C346Eb40908820fcF324d295556331";
 
     final contract = DeployedContract(ContractAbi.fromJson(abi, "Ethereum"), EthereumAddress.fromHex(contractAddress));
 
@@ -40,7 +40,7 @@ Web3Client ethClient = Web3Client("https://ropsten.infura.io/v3/38ba5f4475644e4b
     data = true;
     
     double newBalance = myData.toDouble();
-    newBalance = newBalance / 100;
+    newBalance = newBalance / 1000000000000000000;
     return newBalance.toString();
   }
 
