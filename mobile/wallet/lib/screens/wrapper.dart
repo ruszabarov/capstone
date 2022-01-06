@@ -33,7 +33,7 @@ class _WrapperState extends State<Wrapper> {
   @override
   void initState() {
     _pageController = PageController();
-    home = Home();
+    home = Home(widget.user);
     market = MarketPage();
     account = Account(widget.user);
     super.initState();
@@ -64,9 +64,9 @@ class _WrapperState extends State<Wrapper> {
           });
         },
         children: <Widget>[
-          Home(),
-          MarketPage(),
-          Account(widget.user),
+          home,
+          market,
+          account,
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/authentication/login.dart';
-import 'package:wallet/screens/home/add_wallet.dart';
-import 'package:wallet/screens/home/home.dart';
-import 'package:wallet/screens/wrapper.dart';
-import 'package:wallet/screens/shared/shared.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
@@ -28,7 +25,6 @@ class MyApp extends StatelessWidget {
       initialRoute: '/auth',
       routes: {
         '/auth': (context) => LoginPage(),
-        '/home': (context) => Home(),
       },
       debugShowCheckedModeBanner: false,
     );

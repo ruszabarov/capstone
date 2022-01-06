@@ -1,24 +1,46 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/home/account_card.dart';
+import 'package:wallet/screens/home/add_token.dart';
 import 'package:wallet/screens/home/add_wallet.dart';
 import 'package:wallet/screens/shared/card.dart';
 import 'test_data.dart';
 import 'wallet_card.dart';
 
 class Home extends StatefulWidget {
+  final User user;
+
+  const Home(this.user);
+
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool isAddWalletVisible = false;
+  bool isAddTokenVisible = false;
   List<CryptoWallet> currentWallets = mainAccount.wallets;
   int accountSelectedIndex = 0;
 
-  void handleAddButton() {
+  void handleAddWalletButton() {
     setState(() {
+      isAddTokenVisible = false;
       isAddWalletVisible = !isAddWalletVisible;
     });
+  }
+
+  void handleAddTokenButton() {
+    setState(() {
+      isAddWalletVisible = false;
+      isAddTokenVisible = !isAddTokenVisible;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -45,7 +67,7 @@ class _HomeState extends State<Home> {
                     if (index == accounts.length) {
                       return InkWell(
                         onTap: () {
-                          handleAddButton();
+                          handleAddWalletButton();
                         },
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         child: Ink(
@@ -108,7 +130,9 @@ class _HomeState extends State<Home> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            handleAddTokenButton();
+                          },
                           borderRadius: BorderRadius.circular(25),
                           child: Ink(
                             width: 100,
@@ -140,9 +164,50 @@ class _HomeState extends State<Home> {
           bottom: isAddWalletVisible ? 0 : -300,
           height: 300,
           duration: Duration(milliseconds: 100),
-          child: AddWalletCard(handleAddButton),
+          child: AddWalletCard(handleAddWalletButton),
+        ),
+        AnimatedPositioned(
+          left: 0,
+          right: 0,
+          bottom: isAddTokenVisible ? 0 : -450,
+          height: 450,
+          duration: Duration(milliseconds: 100),
+          child: AddTokenCard(handleAddTokenButton),
         ),
       ],
+    );
+  }
+}
+
+class GetUserName extends StatelessWidget {
+  final String documentId;
+
+  GetUserName(this.documentId);
+
+  @override
+  Widget build(BuildContext context) {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    return FutureBuilder<DocumentSnapshot>(
+      future: users.doc(documentId).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+
+        if (snapshot.hasData && !snapshot.data!.exists) {
+          return Text("Document does not exist");
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data =
+              snapshot.data!.data() as Map<String, dynamic>;
+          return Text("Accounts: ${data['accounts']}");
+        }
+
+        return Text("loading");
+      },
     );
   }
 }
