@@ -79,9 +79,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        widget.cryptoWallet.balance +
-                            " " +
-                            widget.cryptoWallet.shortName,
+                        "${widget.cryptoWallet.balance} ${widget.cryptoWallet.shortName}",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 30,

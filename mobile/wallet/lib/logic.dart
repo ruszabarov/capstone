@@ -17,7 +17,28 @@ var myData;
 Client httpClient = new Client();
 Web3Client ethClient = new Web3Client("https://rinkeby.infura.io/v3/38ba5f4475644e4ba48d25313c80347b", httpClient);
 
-Future<dynamic> balance = ethClient.getBalance(EthereumAddress.fromHex(myAddress));
+String getBalance() {
+  dynamic newBalance = ethClient.getBalance(EthereumAddress.fromHex(myAddress));
+  int balance = httpClient.utils.fromWei(newBalance, unit])
+  return balance.toString();
+}
+
+
+void sendEth(String targetAddress, int value) async {
+  EthPrivateKey credentials = EthPrivateKey.fromHex(privateKey);
+
+  await ethClient.sendTransaction(
+  credentials,
+  Transaction(
+    to: EthereumAddress.fromHex(targetAddress),
+    gasPrice: EtherAmount.inWei(BigInt.one),
+    maxGas: 100000000,
+    value: EtherAmount.fromUnitAndValue(EtherUnit.ether, value),
+    
+
+  ),
+  );
+}
 
 
   Future<DeployedContract> loadContract() async {

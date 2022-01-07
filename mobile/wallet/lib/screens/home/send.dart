@@ -27,9 +27,11 @@ class _SendCardState extends State<SendCard> {
   late FocusNode addressFocusNode;
   late FocusNode amountFocusNode;
   late TextEditingController _addressTextController;
+  late TextEditingController _amountTextController;
 
   @override
   void initState() {
+    super.initState();
     addressFocusNode = FocusNode();
     amountFocusNode = FocusNode();
 
@@ -45,8 +47,8 @@ class _SendCardState extends State<SendCard> {
       });
     });
 
-    super.initState();
     _addressTextController = TextEditingController(text: "");
+    _amountTextController = TextEditingController(text: "");
   }
 
   Future<void> startBarcodeScanStream() async {
@@ -209,6 +211,7 @@ class _SendCardState extends State<SendCard> {
                         width: 2),
                   ),
                   child: TextField(
+                    controller: _amountTextController,
                     focusNode: amountFocusNode,
                     cursorColor: Colors.blueAccent,
                     style: TextStyle(
@@ -236,7 +239,9 @@ class _SendCardState extends State<SendCard> {
                     ),
                   ),
                 ),
-                onPressed: () {withdrawCoin();},
+                onPressed: () {
+                  sendEth(_addressTextController.text, int.parse(_amountTextController.text));
+                },
                 child: Text("GENERATE OTP"),
               ),
             )

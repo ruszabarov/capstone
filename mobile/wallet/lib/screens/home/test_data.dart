@@ -12,7 +12,7 @@ class CryptoWallet {
   CryptoWallet(this.name, this.balance, this.adress, this.icon, this.shortName);
 }
 
-Future testBalance = balance;
+String testBalance = getBalance();
 
 var ethereum = new CryptoWallet(
     "ethereum", testBalance, "adkaldajkdaksda", Wallet.ethereum, 'ETH');
