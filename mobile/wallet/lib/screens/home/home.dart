@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:wallet/screens/home/account_card.dart';
 import 'package:wallet/screens/home/add_token.dart';
 import 'package:wallet/screens/home/add_wallet.dart';
+import 'package:wallet/screens/home/firestore.dart';
 import 'package:wallet/screens/shared/card.dart';
 import 'test_data.dart';
 import 'wallet_card.dart';
@@ -23,7 +24,7 @@ class _HomeState extends State<Home> {
   bool isAddTokenVisible = false;
   List<CryptoWallet> currentWallets = mainAccount.wallets;
   int accountSelectedIndex = 0;
-  String testText = "";
+  Map<String, dynamic>? userData = {};
 
   void handleAddWalletButton() {
     setState(() {
@@ -46,8 +47,8 @@ class _HomeState extends State<Home> {
   }
 
   void testFunc() async {
-    var result = await fetchUser(widget.user.uid);
-    print(result);
+    userData = await fetchUser(widget.user.uid);
+    print(userData!['accounts']);
   }
 
   @override
@@ -56,7 +57,6 @@ class _HomeState extends State<Home> {
       children: [
         Column(
           children: [
-            Text(testText),
             Material(
               child: Ink(
                 color: Colors.grey[200],
@@ -185,15 +185,4 @@ class _HomeState extends State<Home> {
       ],
     );
   }
-}
-
-fetchUser(String userId) async {
-  var collection = FirebaseFirestore.instance.collection('users');
-  var docSnapshot = await collection.doc(userId).get();
-  if (docSnapshot.exists) {
-    Map<String, dynamic>? data = docSnapshot.data();
-    return data!['accounts'];
-  }
-
-  return {};
 }
