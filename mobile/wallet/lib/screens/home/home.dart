@@ -23,6 +23,7 @@ class _HomeState extends State<Home> {
   bool isAddTokenVisible = false;
   List<CryptoWallet> currentWallets = mainAccount.wallets;
   int accountSelectedIndex = 0;
+  String testText = "";
 
   void handleAddWalletButton() {
     setState(() {
@@ -41,6 +42,12 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    testFunc();
+  }
+
+  void testFunc() async {
+    var result = await fetchUser(widget.user.uid);
+    print(result);
   }
 
   @override
@@ -49,6 +56,7 @@ class _HomeState extends State<Home> {
       children: [
         Column(
           children: [
+            Text(testText),
             Material(
               child: Ink(
                 color: Colors.grey[200],
@@ -179,35 +187,13 @@ class _HomeState extends State<Home> {
   }
 }
 
-class GetUserName extends StatelessWidget {
-  final String documentId;
-
-  GetUserName(this.documentId);
-
-  @override
-  Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-
-    return FutureBuilder<DocumentSnapshot>(
-      future: users.doc(documentId).get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Text("Something went wrong");
-        }
-
-        if (snapshot.hasData && !snapshot.data!.exists) {
-          return Text("Document does not exist");
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data =
-              snapshot.data!.data() as Map<String, dynamic>;
-          return Text("Accounts: ${data['accounts']}");
-        }
-
-        return Text("loading");
-      },
-    );
+fetchUser(String userId) async {
+  var collection = FirebaseFirestore.instance.collection('users');
+  var docSnapshot = await collection.doc(userId).get();
+  if (docSnapshot.exists) {
+    Map<String, dynamic>? data = docSnapshot.data();
+    return data!['accounts'];
   }
+
+  return {};
 }
