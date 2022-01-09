@@ -12,12 +12,12 @@ class CryptoWallet {
   CryptoWallet(this.name, this.balance, this.adress, this.icon, this.shortName);
 }
 
-var ethereum = new CryptoWallet(
+CryptoWallet ethereum = new CryptoWallet(
     "ethereum", "201", "adkaldajkdaksda", Wallet.ethereum, 'ETH');
-var bitcoin = new CryptoWallet(
-    "bitcoin", "100", "adjlkasdkjasddaasda", Wallet.bitcoin, 'BTC');
-var test = new CryptoWallet(
-    "test", "100", "asdjlkajsdklas", Icons.attach_money_rounded, 'TST');
+CryptoWallet bitcoin = new CryptoWallet(
+    "bitcoin", "200", "adjlkasdkjasddaasda", Wallet.bitcoin, 'BTC');
+CryptoWallet test = new CryptoWallet(
+    "test", "1", "asdjlkajsdklas", Icons.attach_money_rounded, 'TST');
 
 var cryptoWallets = [
   ethereum,
@@ -25,9 +25,29 @@ var cryptoWallets = [
   test,
   test,
   test,
+];
+
+var accountTwo = [
+  bitcoin,
+  ethereum,
   test,
-  test,
-  test,
-  test,
-  test
+];
+
+class Account {
+  final String name;
+  final String address;
+  final double balance;
+  final List<CryptoWallet> wallets;
+
+  Account(this.name, this.address, this.balance, this.wallets);
+}
+
+Account mainAccount =
+    Account("Main Account", "0x38953792983228592", 2250.12, cryptoWallets);
+Account secondAccount =
+    Account("Second Account", "0x2378429832295292", 1023.68, accountTwo);
+
+var accounts = [
+  mainAccount,
+  secondAccount,
 ];

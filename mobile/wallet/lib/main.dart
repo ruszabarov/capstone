@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:wallet/screens/authentication/login.dart';
-import 'package:wallet/screens/wrapper.dart';
-import 'package:wallet/screens/shared/shared.dart';
-import 'package:web3dart/web3dart.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Crypto Wallet",
-      home: Wrapper(),
       theme: ThemeData(
         fontFamily: 'Ubuntu',
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
@@ -23,6 +24,10 @@ class MyApp extends StatelessWidget {
           TargetPlatform.android: CupertinoPageTransitionsBuilder(),
         }),
       ),
+      initialRoute: '/auth',
+      routes: {
+        '/auth': (context) => LoginPage(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }
