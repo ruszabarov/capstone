@@ -21,7 +21,7 @@ class _WalletCardState extends State<WalletCard> {
   }
 
   updateValues() async {
-    dynamic data = await getBalance();
+    dynamic data = await getEthBalance(myAddress1);
     setState(() {
       price = data.toString();
       widget.cryptoWallet.balance = data;

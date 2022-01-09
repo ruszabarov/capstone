@@ -12,10 +12,13 @@ class CryptoWallet {
   CryptoWallet(this.name, this.balance, this.adress, this.icon, this.shortName);
 }
 
-String testBalance = getBalance();
+Future<double> getEtherBalance() async {
+  double testBalance = await getEthBalance(myAddress1);
+  return testBalance;
+}
 
 var ethereum = new CryptoWallet(
-    "ethereum", testBalance, "adkaldajkdaksda", Wallet.ethereum, 'ETH');
+    "ethereum", getEtherBalance(), "adkaldajkdaksda", Wallet.ethereum, 'ETH');
 var bitcoin = new CryptoWallet(
     "bitcoin", "100", "adjlkasdkjasddaasda", Wallet.bitcoin, 'BTC');
 var test = new CryptoWallet(
