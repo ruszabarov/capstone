@@ -27,16 +27,17 @@ Future<double> getEthBalance(EthereumAddress from) async {
 }
 
 void sendEth(String targetAddress, int value) async {
-  EthPrivateKey credentials = EthPrivateKey.fromHex(privateKey);
+  var credentials = EthPrivateKey.fromHex(privateKey);
 
   await ethClient.sendTransaction(
     credentials,
     Transaction(
       to: EthereumAddress.fromHex(targetAddress),
-      gasPrice: EtherAmount.inWei(BigInt.one),
-      maxGas: 100000000,
-      value: EtherAmount.fromUnitAndValue(EtherUnit.ether, value),
+      // gasPrice: EtherAmount.inWei(BigInt.one),
+      maxGas: 10000000,
+      value: EtherAmount.fromUnitAndValue(EtherUnit.finney, value),
     ),
+    chainId: 4,
   );
 }
 
