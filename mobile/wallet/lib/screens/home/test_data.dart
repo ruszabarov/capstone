@@ -12,8 +12,8 @@ class CryptoWallet {
   CryptoWallet(this.name, this.balance, this.adress, this.icon, this.shortName);
 }
 
-Future<double> getEtherBalance() async {
-  double testBalance = await getEthBalance(myAddress1);
+Future<String> getEtherBalance() async {
+  String testBalance = await getEthBalance(myAddress1);
   return testBalance;
 }
 

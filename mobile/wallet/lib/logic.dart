@@ -19,11 +19,12 @@ Web3Client ethClient = new Web3Client(
     "https://rinkeby.infura.io/v3/38ba5f4475644e4ba48d25313c80347b",
     httpClient);
 
-Future<double> getEthBalance(EthereumAddress from) async {
+Future<String> getEthBalance(EthereumAddress from) async {
   EtherAmount balance = await ethClient.getBalance(from);
   BigInt newBalance = balance.getInWei;
+  double newerBalance = newBalance.toDouble();
 
-  return newBalance.toDouble() / 1000000000000000000;
+  return newerBalance.toStringAsFixed(4);
 }
 
 void sendEth(String targetAddress, int value) async {
