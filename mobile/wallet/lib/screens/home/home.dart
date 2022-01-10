@@ -55,116 +55,121 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Column(
-          children: [
-            Material(
-              child: Ink(
-                color: Colors.grey[200],
-                height: 210,
+        SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Material(
+                child: Ink(
+                  color: Colors.grey[200],
+                  height: 210,
+                  child: new ListView.separated(
+                    padding: EdgeInsets.all(25),
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(
+                        width: 15,
+                      );
+                    },
+                    physics: BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: accounts.length + 1,
+                    itemBuilder: (BuildContext ctxt, int index) {
+                      if (index == accounts.length) {
+                        return InkWell(
+                          onTap: () {
+                            handleAddWalletButton();
+                          },
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          child: Ink(
+                            padding: EdgeInsets.all(15),
+                            width: 200,
+                            height: 150,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15))),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Add Account"),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Icon(
+                                  Icons.add,
+                                  size: 70,
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+
+                      return InkWell(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        onTap: () {
+                          setState(() {
+                            currentWallets = accounts[index].wallets;
+                            accountSelectedIndex = index;
+                          });
+                        },
+                        child: AccountCard(
+                            accounts[index].name,
+                            accounts[index].address,
+                            accounts[index].balance,
+                            accountSelectedIndex == index ? true : false),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Flexible(
                 child: new ListView.separated(
                   padding: EdgeInsets.all(25),
                   separatorBuilder: (BuildContext context, int index) {
                     return SizedBox(
-                      width: 15,
+                      height: 15,
                     );
                   },
-                  physics: BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: accounts.length + 1,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemCount: currentWallets.length + 1,
                   itemBuilder: (BuildContext ctxt, int index) {
-                    if (index == accounts.length) {
-                      return InkWell(
-                        onTap: () {
-                          handleAddWalletButton();
-                        },
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        child: Ink(
-                          padding: EdgeInsets.all(15),
-                          width: 200,
-                          height: 150,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15))),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Add Account"),
-                              SizedBox(
-                                height: 10,
+                    if (index == currentWallets.length) {
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: InkWell(
+                            onTap: () {
+                              handleAddTokenButton();
+                            },
+                            borderRadius: BorderRadius.circular(25),
+                            child: Ink(
+                              width: 100,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                color: Colors.blueAccent,
                               ),
-                              Icon(
-                                Icons.add,
-                                size: 70,
-                              )
-                            ],
+                              child: Center(
+                                child: Text(
+                                  "Add Token",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       );
                     }
-
-                    return InkWell(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      onTap: () {
-                        setState(() {
-                          currentWallets = accounts[index].wallets;
-                          accountSelectedIndex = index;
-                        });
-                      },
-                      child: AccountCard(
-                          accounts[index].name,
-                          accounts[index].address,
-                          accounts[index].balance,
-                          accountSelectedIndex == index ? true : false),
-                    );
+                    return new WalletCard(currentWallets[index]);
                   },
                 ),
               ),
-            ),
-            Flexible(
-              child: new ListView.separated(
-                padding: EdgeInsets.all(25),
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    height: 15,
-                  );
-                },
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                itemCount: currentWallets.length + 1,
-                itemBuilder: (BuildContext ctxt, int index) {
-                  if (index == currentWallets.length) {
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: InkWell(
-                          onTap: () {
-                            handleAddTokenButton();
-                          },
-                          borderRadius: BorderRadius.circular(25),
-                          child: Ink(
-                            width: 100,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Colors.blueAccent,
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Add Token",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                  return new WalletCard(currentWallets[index]);
-                },
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
         AnimatedPositioned(
           left: 0,

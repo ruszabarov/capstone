@@ -50,3 +50,48 @@ var accounts = [
   mainAccount,
   secondAccount,
 ];
+
+List transactions = [
+  {
+    'type': 'incoming',
+    'adress': '0x13alkjasf897121',
+    'amount': 50,
+    'date': '01/10/2021 3:00 PM'
+  },
+  {
+    'type': 'outgoing',
+    'adress': '0xajsdlkhah692asdax',
+    'amount': 30,
+    'date': '01/10/2021 4:00 PM'
+  },
+  {
+    'type': 'outgoing',
+    'adress': '0xajsdlkhah692asdax',
+    'amount': 30,
+    'date': '01/10/2021 4:00 PM'
+  },
+  {
+    'type': 'outgoing',
+    'adress': '0xajsdlkhah692asdax',
+    'amount': 30,
+    'date': '01/10/2021 4:00 PM'
+  },
+  {
+    'type': 'outgoing',
+    'adress': '0xajsdlkhah692asdax',
+    'amount': 30,
+    'date': '01/10/2021 4:00 PM'
+  },
+  {
+    'type': 'outgoing',
+    'adress': '0xajsdlkhah692asdax',
+    'amount': 30,
+    'date': '01/10/2021 4:00 PM'
+  },
+  {
+    'type': 'outgoing',
+    'adress': '0xajsdlkhah692asdax',
+    'amount': 30,
+    'date': '01/10/2021 4:00 PM'
+  },
+];
