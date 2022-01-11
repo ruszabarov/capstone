@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/market/api.dart';
-import 'package:wallet/screens/market/coin_details.dart';
+import 'package:wallet/screens/market/market_details.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:wallet/wallet_icons.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class MarketCard extends StatefulWidget {
   final String marketName;
@@ -14,18 +15,16 @@ class MarketCard extends StatefulWidget {
   State<MarketCard> createState() => _MarketCardState();
 }
 
-class _MarketCardState extends State<MarketCard> {
+class _MarketCardState extends State<MarketCard>
+    with AutomaticKeepAliveClientMixin {
   double price = 0.0;
   bool priceGoingUp = true;
-  Timer? timer;
+  late String imageURL = '';
 
   @override
   initState() {
-    updateValues();
     super.initState();
-    timer = Timer.periodic(Duration(seconds: 15), (Timer t) {
-      updateValues();
-    });
+    updateValues();
   }
 
   updateValues() async {
@@ -34,6 +33,7 @@ class _MarketCardState extends State<MarketCard> {
     setState(() {
       price = data['current_price'];
       priceGoingUp = data['price_change_percent'] > 0 ? true : false;
+      imageURL = data['icon'];
     });
   }
 
@@ -44,7 +44,7 @@ class _MarketCardState extends State<MarketCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => CoinDetailsPage(widget.marketName)),
+              builder: (context) => MarketDetailsPage(widget.marketName)),
         );
       },
       borderRadius: BorderRadius.circular(15),
@@ -59,17 +59,14 @@ class _MarketCardState extends State<MarketCard> {
                 Row(
                   children: [
                     ClipOval(
-                      child: Material(
-                        color: Colors.black87,
-                        child: SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Icon(
-                            Wallet.ethereum,
-                            color: Colors.white,
-                            size: 25.0,
-                          ),
-                        ),
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: imageURL == ''
+                            ? CircularProgressIndicator()
+                            : CachedNetworkImage(
+                                imageUrl: '$imageURL',
+                              ),
                       ),
                     ),
                     SizedBox(width: 15),
@@ -115,7 +112,9 @@ class _MarketCardState extends State<MarketCard> {
 
   @override
   void dispose() {
-    timer?.cancel();
     super.dispose();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

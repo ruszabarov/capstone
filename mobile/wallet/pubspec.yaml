@@ -30,6 +30,12 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   syncfusion_flutter_charts: ^19.3.57
   http: ^0.13.4
+  animated_text_kit: ^4.2.1
+  firebase_core: ^1.10.6
+  cloud_firestore: ^3.1.5
+  firebase_auth: ^3.3.4
+  cached_network_image: ^3.2.0
+  flutter_cache_manager: ^3.3.0
 
 dev_dependencies:
   flutter_test:
@@ -67,8 +73,8 @@ flutter:
           style: italic
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/images/
-     - assets/build/contracts/
+    - assets/images/
+    - assets/build/contracts/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

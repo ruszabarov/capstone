@@ -46,18 +46,20 @@ analysis_benchmark.json
 
 # Flutter/Dart/Pub related
 **/doc/api/
-.dart_tool/
-.flutter-plugins
-.flutter-plugins-dependencies
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
 **/generated_plugin_registrant.dart
-.packages
-.pub-cache/
-.pub/
-build/
-flutter_*.png
-linked_*.ds
-unlinked.ds
-unlinked_spec.ds
+**/.packages
+**/.pub-cache/
+**/.pub/
+**/build/
+**/flutter_*.png
+**/linked_*.ds
+**/unlinked.ds
+**/unlinked_spec.ds
+**/lib/private.dart
+
 
 # Android related
 **/android/**/gradle-wrapper.jar
@@ -69,6 +71,8 @@ unlinked_spec.ds
 **/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
 *.jks
+**/android/app/google-services.json
+**/ios/Runner/GoogleService-Info.plist
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
@@ -117,9 +121,13 @@ app.*.symbols
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
 <<<<<<< HEAD
+<<<<<<< HEAD
 mobile/wallet/lib/private.dart
 =======
 
 build
 node_modules
 >>>>>>> backend
+=======
+
+>>>>>>> mobile

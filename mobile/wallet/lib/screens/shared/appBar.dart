@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget appBar({Widget? left, required String title}) {
+Widget appBar({Widget? left, required String title, IconButton? right}) {
   return AppBar(
     title: Text(
       title,
