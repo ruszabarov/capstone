@@ -10,7 +10,13 @@ class MarketPage extends StatefulWidget {
 }
 
 class _MarketPageState extends State<MarketPage> {
-  var marketList = ['ethereum', 'tether', 'shiba-inu'];
+  var marketList = [
+    'ethereum',
+    'tether',
+    'usd-coin',
+    'matic-network',
+    'shiba-inu',
+  ];
 
   @override
   Widget build(BuildContext context) {
