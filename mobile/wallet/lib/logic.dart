@@ -22,7 +22,7 @@ Web3Client ethClient = new Web3Client(
 Future<String> getEthBalance(EthereumAddress from) async {
   EtherAmount balance = await ethClient.getBalance(from);
   BigInt newBalance = balance.getInWei;
-  double newerBalance = newBalance.toDouble();
+  double newerBalance = newBalance.toDouble() / 1000000000000000000;
 
   return newerBalance.toStringAsFixed(4);
 }
