@@ -237,9 +237,22 @@ class _SendCardState extends State<SendCard> {
                   ),
                 ),
                 onPressed: () {
-                  FirebaseFirestore.instance
-                      .collection('test')
-                      .add({'timestamp': Timestamp.fromDate(DateTime.now())});
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: Text('Transaction successful'),
+                      content: Text(
+                          'Please wait for the next block on the blockchain.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context, 'OK');
+                          },
+                          child: Text("OK"),
+                        )
+                      ],
+                    ),
+                  );
                 },
                 child: Text("GENERATE OTP"),
               ),

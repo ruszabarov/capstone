@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:wallet/screens/home/receive.dart';
 import 'package:wallet/screens/home/send.dart';
 import 'package:wallet/screens/home/test_data.dart';
+import 'package:wallet/screens/home/transaction_card.dart';
 import 'package:wallet/screens/shared/shared.dart';
 
 class WalletDetailsPage extends StatefulWidget {
@@ -29,6 +31,10 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
       isSendVisible = false;
       isReceiveVisible = !isReceiveVisible;
     });
+  }
+
+  void handleReceiptButton() {
+    Navigator.pop(context, 'Cancel');
   }
 
   @override
@@ -158,7 +164,26 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                       itemCount: transactions.length,
                       itemBuilder: (BuildContext ctxt, int index) {
                         return InkWell(
-                          child: Container(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Dialog(
+                                    insetPadding: EdgeInsets.all(20),
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.all(25),
+                                          child: SendTransactionCard(
+                                              handleReceiptButton),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                });
+                          },
+                          child: Ink(
                             padding: EdgeInsets.all(15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
