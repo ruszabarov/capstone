@@ -34,18 +34,18 @@ Future<String> getEthBalance(EthereumAddress from) async {
 
 Future<DeployedContract> loadContract(String from) async {
   String abi = await rootBundle.loadString("assets/build/contracts/abi-erc20.json");
-  final EthereumAddress contractAddress = EthereumAddress.fromHex(from);
+  final EthereumAddress contractAddress = EthereumAddress.fromHex(loadTokenContract());
   final contract = DeployedContract(ContractAbi.fromJson(abi, "Dai Stable Coin"), contractAddress);
 
   return contract;
 }
 
-Future<String> loadTokenContract() async {
+String loadTokenContract() async {
   String abi = await rootBundle.loadString("assets/build/contracts/token-list-rinkeby.json");
   var json = jsonDecode(abi);
   var contract = json[0][1].toString();
 
-  return contract;
+  return contract[0];
 }
 
 // Future<String> getTokenContractAddress();
