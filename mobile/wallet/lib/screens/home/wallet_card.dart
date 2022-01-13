@@ -21,10 +21,9 @@ class _WalletCardState extends State<WalletCard> {
   }
 
   updateValues() async {
-    dynamic data = await getEthBalance(myAddress1);
+    dynamic data = await getDAITokenBalance();
     setState(() {
       price = data.toString();
-      widget.cryptoWallet.balance = data;
     });
   }
 

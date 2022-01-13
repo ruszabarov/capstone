@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -19,6 +21,8 @@ Web3Client ethClient = new Web3Client(
     "https://rinkeby.infura.io/v3/38ba5f4475644e4ba48d25313c80347b",
     httpClient);
 
+
+
 Future<String> getEthBalance(EthereumAddress from) async {
   EtherAmount balance = await ethClient.getBalance(from);
   BigInt newBalance = balance.getInWei;
@@ -26,6 +30,24 @@ Future<String> getEthBalance(EthereumAddress from) async {
 
   return newerBalance.toStringAsFixed(4);
 }
+
+Future<DeployedContract> loadContract() async {
+  String abi = await rootBundle.loadString("assets/build/contracts/abi-erc20.json");
+  final EthereumAddress contractAddress = EthereumAddress.fromHex("0x6a9865ade2b6207daac49f8bcba9705deb0b0e6d");
+  final contract = DeployedContract(ContractAbi.fromJson(abi, "Dai Stable Coin"), contractAddress);
+
+  return contract;
+}
+
+Future<String> getDAIBalance() async {
+  final contract = await loadContract();
+  final balance = await ethClient.call( 
+     contract: contract, function: contract.function("balanceOf"), params: [myAddress1]);
+     
+  return balance.toString();
+}
+
+
 
 void sendEth(String targetAddress, int value) async {
   var credentials = EthPrivateKey.fromHex(privateKey);
@@ -40,16 +62,6 @@ void sendEth(String targetAddress, int value) async {
     ),
     chainId: 4,
   );
-}
-
-Future<DeployedContract> loadContract() async {
-  String abi = await rootBundle.loadString("assets/build/contracts/abi.json");
-  String contractAddress = "0x776af82a00E115A0Ce2e47ae5A1d77ce1bB19A19";
-
-  final contract = DeployedContract(ContractAbi.fromJson(abi, "Ethereum"),
-      EthereumAddress.fromHex(contractAddress));
-
-  return contract;
 }
 
 Future<List<dynamic>> query(String functionName, List<dynamic> args) async {

@@ -17,10 +17,15 @@ Future<String> getEtherBalance() async {
   return testBalance;
 }
 
+Future<String> getDAITokenBalance() async {
+  String testBalance = await getDAIBalance();
+  return testBalance;
+}
+
 CryptoWallet ethereum = new CryptoWallet(
-    "ethereum", getEtherBalance(), "adkaldajkdaksda", Wallet.ethereum, 'ETH');
+    "ethereum", getDAITokenBalance(), "adkaldajkdaksda", Wallet.ethereum, 'ETH');
 CryptoWallet bitcoin = new CryptoWallet(
-    "bitcoin", "200", "adjlkasdkjasddaasda", Wallet.bitcoin, 'BTC');
+    "bitcoin", getDAITokenBalance(), "adjlkasdkjasddaasda", Wallet.bitcoin, 'BTC');
 CryptoWallet test = new CryptoWallet(
     "test", "1", "asdjlkajsdklas", Icons.attach_money_rounded, 'TST');
 
