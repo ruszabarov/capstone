@@ -51,47 +51,39 @@ var accounts = [
   secondAccount,
 ];
 
-List transactions = [
-  {
-    'type': 'incoming',
-    'adress': '0x13alkjasf897121',
-    'amount': 50,
-    'date': '01/10/2021 3:00 PM'
-  },
-  {
-    'type': 'outgoing',
-    'adress': '0xajsdlkhah692asdax',
-    'amount': 30,
-    'date': '01/10/2021 4:00 PM'
-  },
-  {
-    'type': 'outgoing',
-    'adress': '0xajsdlkhah692asdax',
-    'amount': 30,
-    'date': '01/10/2021 4:00 PM'
-  },
-  {
-    'type': 'outgoing',
-    'adress': '0xajsdlkhah692asdax',
-    'amount': 30,
-    'date': '01/10/2021 4:00 PM'
-  },
-  {
-    'type': 'outgoing',
-    'adress': '0xajsdlkhah692asdax',
-    'amount': 30,
-    'date': '01/10/2021 4:00 PM'
-  },
-  {
-    'type': 'outgoing',
-    'adress': '0xajsdlkhah692asdax',
-    'amount': 30,
-    'date': '01/10/2021 4:00 PM'
-  },
-  {
-    'type': 'outgoing',
-    'adress': '0xajsdlkhah692asdax',
-    'amount': 30,
-    'date': '01/10/2021 4:00 PM'
-  },
-];
+class Transaction {
+  final String type;
+  final String fromAddress;
+  final String toAddress;
+  final int nonce;
+  final double amount;
+  final int gasLimit;
+  final int gasUsed;
+  final double baseFee;
+  final double priorityFee;
+  final double totalGasFee;
+  final double maxFeePerGas;
+  final double total;
+
+  Transaction(
+      this.type,
+      this.fromAddress,
+      this.toAddress,
+      this.nonce,
+      this.amount,
+      this.gasLimit,
+      this.gasUsed,
+      this.baseFee,
+      this.priorityFee,
+      this.maxFeePerGas,
+      this.totalGasFee,
+      this.total);
+}
+
+Transaction one = Transaction('incoming', '0x1541ljkfas523', '0xaalfkj3398u1',
+    0, 0.02, 2100, 2100, 0.00000015, 1.5, 0.00000031, 0.0000000002, 0.0200315);
+
+Transaction two = Transaction('outgoing', '0xaalfkj3398u1', '0x1541ljkfas523',
+    0, 0.02, 2100, 2100, 0.00000015, 1.5, 0.00000031, 0.0000000002, 0.0200315);
+
+List transactions = [one, two];
