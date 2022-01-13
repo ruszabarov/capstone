@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -24,27 +27,36 @@ Web3Client ethClient = new Web3Client(
 
 
 Future<String> getEthBalance(EthereumAddress from) async {
-  EtherAmount balance = await ethClient.getBalance(from);
-  BigInt newBalance = balance.getInWei;
-  double newerBalance = newBalance.toDouble() / 1000000000000000000;
-
-  return newerBalance.toStringAsFixed(4);
+  const decimals = 18;
+  dynamic balance = await ethClient.getBalance(from).then((value) => value.getInWei);
+  return (balance.toDouble() / pow(10, decimals)).toStringAsFixed(4);
 }
 
-Future<DeployedContract> loadContract() async {
+Future<DeployedContract> loadContract(String from) async {
   String abi = await rootBundle.loadString("assets/build/contracts/abi-erc20.json");
-  final EthereumAddress contractAddress = EthereumAddress.fromHex("0x6a9865ade2b6207daac49f8bcba9705deb0b0e6d");
+  final EthereumAddress contractAddress = EthereumAddress.fromHex(from);
   final contract = DeployedContract(ContractAbi.fromJson(abi, "Dai Stable Coin"), contractAddress);
 
   return contract;
 }
 
-Future<String> getDAIBalance() async {
-  final contract = await loadContract();
+Future<String> loadTokenContract() async {
+  String abi = await rootBundle.loadString("assets/build/contracts/token-list-rinkeby.json");
+  var json = jsonDecode(abi);
+  var contract = json[0][1].toString();
+
+  return contract;
+}
+
+// Future<String> getTokenContractAddress();
+
+Future<String> getTokenBalance(EthereumAddress from) async {
+  final decimals = 18;
+  final contract = await loadContract(from);
   final balance = await ethClient.call( 
-     contract: contract, function: contract.function("balanceOf"), params: [myAddress1]);
-     
-  return balance.toString();
+     contract: contract, function: contract.function("balanceOf"), params: [from]).then((value) => EtherAmount.fromUnitAndValue(EtherUnit.wei, value[0]).getInWei);
+  
+  return (balance.toDouble() / pow(10, decimals)).toStringAsFixed(3);
 }
 
 
@@ -63,7 +75,7 @@ void sendEth(String targetAddress, int value) async {
     chainId: 4,
   );
 }
-
+/*
 Future<List<dynamic>> query(String functionName, List<dynamic> args) async {
   final contract = await loadContract();
   final ethFunction = contract.function(functionName);
@@ -73,7 +85,7 @@ Future<List<dynamic>> query(String functionName, List<dynamic> args) async {
   return result;
 }
 
-/*
+
   Future<dynamic> getBalance(String targetAddress) async {
     // EthereumAddress address = EthereumAddress.fromHex(targetAddress);
     List<dynamic> result = await query("getBalance", []);
@@ -85,7 +97,7 @@ Future<List<dynamic>> query(String functionName, List<dynamic> args) async {
     newBalance = newBalance / 1000000000000000000;
     return newBalance.toString();
   }
-*/
+
 Future<String> withdrawCoin() async {
   var bigAmount = BigInt.from(myAmount);
   var response = await submit("withdrawBalance", [bigAmount]);
@@ -112,4 +124,6 @@ Future<String> submit(String funtionName, List<dynamic> args) async {
       chainId: 4);
 
   return result;
+  
 }
+*/

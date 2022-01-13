@@ -21,7 +21,7 @@ class _WalletCardState extends State<WalletCard> {
   }
 
   updateValues() async {
-    dynamic data = await getDAITokenBalance();
+    dynamic data = await getTokenBalance(myAddress1);
     setState(() {
       price = data.toString();
     });
