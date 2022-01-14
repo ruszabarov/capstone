@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:wallet/screens/home/test_data.dart';
+import 'package:decimal/decimal.dart';
 
 class SendTransactionCard extends StatelessWidget {
-  Function exitFunction;
-  SendTransactionCard(this.exitFunction);
+  final Function exitFunction;
+  final Transaction transaction;
+  SendTransactionCard(this.exitFunction, this.transaction);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,13 @@ class SendTransactionCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Send"),
+                Text(
+                  transaction.type == "outgoing" ? "Send" : "Receive",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 IconButton(
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
@@ -49,9 +58,9 @@ class SendTransactionCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("0xafl232alkjalk5223"),
+                Text(transaction.fromAddress),
                 Icon(Icons.arrow_right),
-                Text("0xlgji23auyten,8721"),
+                Text(transaction.toAddress),
               ],
             ),
             SizedBox(
@@ -68,7 +77,7 @@ class SendTransactionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Nonce"),
-                Text("0"),
+                Text(transaction.nonce.toString()),
               ],
             ),
             Divider(
@@ -80,7 +89,7 @@ class SendTransactionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Amount"),
-                Text("-0.02 ETH"),
+                Text("${transaction.amount} ETH"),
               ],
             ),
             spacer(),
@@ -88,7 +97,7 @@ class SendTransactionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Gas Limit (Units)"),
-                Text("21000"),
+                Text(transaction.gasLimit.toString()),
               ],
             ),
             spacer(),
@@ -96,7 +105,7 @@ class SendTransactionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Gas Used (Units)"),
-                Text("21000"),
+                Text(transaction.gasUsed.toString()),
               ],
             ),
             spacer(),
@@ -104,7 +113,9 @@ class SendTransactionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Base Fee (GWEI)"),
-                Text("0.000000015"),
+                Text(
+                  Decimal.parse(transaction.baseFee.toString()).toString(),
+                ),
               ],
             ),
             spacer(),
@@ -112,7 +123,7 @@ class SendTransactionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Priority Fee (GWEI)"),
-                Text("1.5"),
+                Text(transaction.priorityFee.toString()),
               ],
             ),
             spacer(),
@@ -120,7 +131,9 @@ class SendTransactionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Total Gas Fee"),
-                Text("0.000031 ETH"),
+                Text(
+                  Decimal.parse(transaction.totalGasFee.toString()).toString(),
+                ),
               ],
             ),
             spacer(),
@@ -128,7 +141,8 @@ class SendTransactionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Max Fee Per Gas"),
-                Text("0.000000002"),
+                Text(Decimal.parse(transaction.maxFeePerGas.toString())
+                    .toString()),
               ],
             ),
             Divider(
@@ -141,7 +155,7 @@ class SendTransactionCard extends StatelessWidget {
               children: [
                 Text("Total"),
                 Text(
-                  "0.0200315 ETH",
+                  "${transaction.total} ETH",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],

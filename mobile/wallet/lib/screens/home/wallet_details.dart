@@ -152,12 +152,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                     height: 20,
                   ),
                   Flexible(
-                    child: new ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) {
-                        return SizedBox(
-                          width: 15,
-                        );
-                      },
+                    child: new ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.vertical,
@@ -176,7 +171,9 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                                         Padding(
                                           padding: const EdgeInsets.all(25),
                                           child: SendTransactionCard(
-                                              handleReceiptButton),
+                                            handleReceiptButton,
+                                            transactions[index],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -190,7 +187,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                               children: [
                                 Row(
                                   children: [
-                                    transactions[index]['type'] == 'outgoing'
+                                    transactions[index].type == 'outgoing'
                                         ? Icon(
                                             Icons.arrow_upward,
                                             color: Colors.red,
@@ -203,7 +200,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                                       width: 5,
                                     ),
                                     Text(
-                                      "${transactions[index]['amount'].toString()} ETH",
+                                      "${transactions[index].total.toString()} ETH",
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold),
@@ -211,7 +208,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                                   ],
                                 ),
                                 Text(
-                                  transactions[index]['date'],
+                                  transactions[index].date,
                                 ),
                               ],
                             ),
@@ -225,7 +222,13 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                         );
                       },
                     ),
-                  )
+                  ),
+                  //TODO: Fix bug
+                  Expanded(
+                    child: Container(
+                      height: 100,
+                    ),
+                  ),
                 ],
               ),
             ),
