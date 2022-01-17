@@ -3,7 +3,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:wallet/screens/home/receive.dart';
 import 'package:wallet/screens/home/send.dart';
 import 'package:wallet/screens/home/test_data.dart';
-import 'package:wallet/screens/home/transaction_card.dart';
+import 'package:wallet/screens/home/receipt_card.dart';
+import 'package:wallet/screens/home/transaction_list.dart';
 import 'package:wallet/screens/shared/shared.dart';
 
 class WalletDetailsPage extends StatefulWidget {
@@ -152,91 +153,27 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                     height: 20,
                   ),
                   Flexible(
-                    child: new ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemCount: transactions.length,
-                      itemBuilder: (BuildContext ctxt, int index) {
-                        return InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Dialog(
-                                    insetPadding: EdgeInsets.all(20),
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.all(25),
-                                          child: SendTransactionCard(
-                                            handleReceiptButton,
-                                            transactions[index],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                });
-                          },
-                          child: Ink(
-                            padding: EdgeInsets.all(15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    transactions[index].type == 'outgoing'
-                                        ? Icon(
-                                            Icons.arrow_upward,
-                                            color: Colors.red,
-                                          )
-                                        : Icon(
-                                            Icons.arrow_downward,
-                                            color: Colors.green,
-                                          ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      "${transactions[index].total.toString()} ETH",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  transactions[index].date,
-                                ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border(
-                                bottom: BorderSide(width: 1),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  //TODO: Fix bug
-                  Expanded(
-                    child: Container(
-                      height: 100,
-                    ),
+                    child: TransactionList(transactions, handleReceiptButton),
                   ),
                 ],
               ),
             ),
           ),
+          Column(
+            children: [
+              Expanded(
+                child: Container(),
+              ),
+            ],
+          ),
           AnimatedPositioned(
             left: 0,
             right: 0,
             bottom: isSendVisible ? 0 : -400,
+            // top: isSendVisible
+            //     ? (MediaQuery.of(context).size.height) -
+            //         (MediaQuery.of(context).size.height - 400)
+            //     : (MediaQuery.of(context).size.height + 400),
             height: 400,
             duration: Duration(milliseconds: 100),
             child: SendCard(
