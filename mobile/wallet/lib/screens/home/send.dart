@@ -10,9 +10,7 @@ class SendCard extends StatefulWidget {
   final Function handleSendButton;
 
   const SendCard(
-      {Key? key,
-      required this.cryptoWallet,
-      required Function this.handleSendButton})
+      {Key? key, required this.cryptoWallet, required this.handleSendButton})
       : super(key: key);
 
   @override
@@ -30,6 +28,12 @@ class _SendCardState extends State<SendCard> {
 
   @override
   void initState() {
+    setUpFocusNodes();
+    _addressTextController = TextEditingController(text: "");
+    super.initState();
+  }
+
+  void setUpFocusNodes() {
     addressFocusNode = FocusNode();
     amountFocusNode = FocusNode();
 
@@ -44,9 +48,13 @@ class _SendCardState extends State<SendCard> {
         isAmountFocused = amountFocusNode.hasFocus;
       });
     });
+  }
 
-    super.initState();
-    _addressTextController = TextEditingController(text: "");
+  @override
+  void dispose() {
+    addressFocusNode.dispose();
+    amountFocusNode.dispose();
+    super.dispose();
   }
 
   Future<void> startBarcodeScanStream() async {
@@ -109,6 +117,8 @@ class _SendCardState extends State<SendCard> {
                       icon: Icon(Icons.close),
                       color: Colors.white,
                       onPressed: () {
+                        addressFocusNode.unfocus();
+                        amountFocusNode.unfocus();
                         widget.handleSendButton();
                       },
                       padding: EdgeInsets.zero,

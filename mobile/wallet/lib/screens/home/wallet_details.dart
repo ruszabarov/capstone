@@ -35,7 +35,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
   }
 
   void handleReceiptButton() {
-    Navigator.pop(context, 'Cancel');
+    Navigator.pop(context);
   }
 
   @override
@@ -170,10 +170,6 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
             left: 0,
             right: 0,
             bottom: isSendVisible ? 0 : -400,
-            // top: isSendVisible
-            //     ? (MediaQuery.of(context).size.height) -
-            //         (MediaQuery.of(context).size.height - 400)
-            //     : (MediaQuery.of(context).size.height + 400),
             height: 400,
             duration: Duration(milliseconds: 100),
             child: SendCard(
