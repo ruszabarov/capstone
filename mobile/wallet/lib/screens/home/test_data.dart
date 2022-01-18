@@ -18,7 +18,7 @@ Future<String> getEtherBalance() async {
 }
 
 Future<String> getMyTokenBalance() async {
-  String testBalance = await getTokenBalance(myAddress1);
+  String testBalance = await getTokenBalance(myAddress1, "ChainLink Token");
   return testBalance;
 }
 
