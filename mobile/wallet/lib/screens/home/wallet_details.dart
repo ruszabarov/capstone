@@ -174,7 +174,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
             duration: Duration(milliseconds: 100),
             child: SendCard(
               cryptoWallet: widget.cryptoWallet,
-              handleSendButton: handleSendButton,
+              handleCloseButton: handleSendButton,
             ),
           ),
           AnimatedPositioned(

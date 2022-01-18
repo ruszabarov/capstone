@@ -38,6 +38,12 @@ class TransactionList extends StatelessWidget {
                   );
                 });
           },
+          borderRadius: BorderRadius.vertical(
+            top: index == 0 ? Radius.circular(10) : Radius.circular(0),
+            bottom: index == transactions.length - 1
+                ? Radius.circular(10)
+                : Radius.circular(0),
+          ),
           child: Ink(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             child: Row(
@@ -69,10 +75,14 @@ class TransactionList extends StatelessWidget {
                 ),
               ],
             ),
+            //TODO: add border on the bottom
             decoration: BoxDecoration(
               color: Colors.white,
-              border: Border(
-                bottom: BorderSide(width: 1),
+              borderRadius: BorderRadius.vertical(
+                top: index == 0 ? Radius.circular(10) : Radius.circular(0),
+                bottom: index == transactions.length - 1
+                    ? Radius.circular(10)
+                    : Radius.circular(0),
               ),
             ),
           ),
