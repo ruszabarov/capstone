@@ -44,47 +44,57 @@ class TransactionList extends StatelessWidget {
                 ? Radius.circular(10)
                 : Radius.circular(0),
           ),
-          child: Ink(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
+          child: Column(
+            children: [
+              Ink(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    transactions[index].type == 'outgoing'
-                        ? Icon(
-                            Icons.arrow_upward,
-                            color: Colors.red,
-                          )
-                        : Icon(
-                            Icons.arrow_downward,
-                            color: Colors.green,
-                          ),
-                    SizedBox(
-                      width: 5,
+                    Row(
+                      children: [
+                        transactions[index].type == 'outgoing'
+                            ? Icon(
+                                Icons.arrow_upward,
+                                color: Colors.red,
+                              )
+                            : Icon(
+                                Icons.arrow_downward,
+                                color: Colors.green,
+                              ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          "${transactions[index].total.toString()} ETH",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
                     Text(
-                      "${transactions[index].total.toString()} ETH",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      transactions[index].date,
                     ),
                   ],
                 ),
-                Text(
-                  transactions[index].date,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  // border: Border.all(width: 0),
+                  borderRadius: BorderRadius.vertical(
+                    top: index == 0 ? Radius.circular(10) : Radius.circular(0),
+                    bottom: index == transactions.length - 1
+                        ? Radius.circular(10)
+                        : Radius.circular(0),
+                  ),
                 ),
-              ],
-            ),
-            //TODO: add border on the bottom
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(
-                top: index == 0 ? Radius.circular(10) : Radius.circular(0),
-                bottom: index == transactions.length - 1
-                    ? Radius.circular(10)
-                    : Radius.circular(0),
               ),
-            ),
+              Ink(
+                color: index != transactions.length - 1
+                    ? Colors.grey[850]
+                    : Colors.transparent,
+                height: 1,
+              )
+            ],
           ),
         );
       },
