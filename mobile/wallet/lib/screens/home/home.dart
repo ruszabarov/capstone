@@ -143,7 +143,13 @@ class _HomeState extends State<Home> {
                           padding: const EdgeInsets.only(top: 10),
                           child: InkWell(
                             onTap: () {
-                              handleAddTokenButton();
+                              // handleAddTokenButton();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddTokenPage(),
+                                ),
+                              );
                             },
                             borderRadius: BorderRadius.circular(25),
                             child: Ink(
@@ -179,14 +185,14 @@ class _HomeState extends State<Home> {
           duration: Duration(milliseconds: 100),
           child: AddWalletCard(handleAddWalletButton),
         ),
-        AnimatedPositioned(
-          left: 0,
-          right: 0,
-          bottom: isAddTokenVisible ? 0 : -450,
-          height: 450,
-          duration: Duration(milliseconds: 100),
-          child: AddTokenCard(handleAddTokenButton),
-        ),
+        // AnimatedPositioned(
+        //   left: 0,
+        //   right: 0,
+        //   bottom: isAddTokenVisible ? 0 : -450,
+        //   height: 450,
+        //   duration: Duration(milliseconds: 100),
+        //   child: AddTokenCard(handleAddTokenButton),
+        // ),
       ],
     );
   }

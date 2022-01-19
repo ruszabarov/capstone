@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:wallet/screens/shared/shared.dart';
 
-class AddTokenCard extends StatefulWidget {
-  final Function handleFunction;
-  const AddTokenCard(this.handleFunction);
+class AddTokenPage extends StatefulWidget {
+  const AddTokenPage();
 
   @override
-  State<AddTokenCard> createState() => _AddTokenCardState();
+  State<AddTokenPage> createState() => _AddTokenPageState();
 }
 
-class _AddTokenCardState extends State<AddTokenCard> {
+class _AddTokenPageState extends State<AddTokenPage> {
   bool isNameFocused = false;
   bool isAddressFocused = false;
   bool isDecimalsFocused = false;
@@ -46,46 +46,21 @@ class _AddTokenCardState extends State<AddTokenCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(15),
-          topLeft: Radius.circular(15),
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50.0),
+        child: appBar(
+          title: 'Add Token',
         ),
       ),
-      child: Padding(
+      body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Add token",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                IconButton(
-                  icon: Icon(Icons.close),
-                  color: Colors.white,
-                  onPressed: () {
-                    widget.handleFunction();
-                  },
-                  padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(),
-                )
-              ],
-            ),
-            Divider(
-              thickness: 3,
-              height: 30,
-              color: Colors.white,
-            ),
             Text(
               "Token name",
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: TextStyle(color: Colors.black, fontSize: 16),
             ),
             SizedBox(
               height: 10,
@@ -93,12 +68,12 @@ class _AddTokenCardState extends State<AddTokenCard> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                color: Colors.blue.shade900.withOpacity(0.2),
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(
                   color: isNameFocused
                       ? Colors.blueAccent
-                      : Colors.blue.shade900.withOpacity(0.2),
+                      : Colors.black.withOpacity(0.5),
                   width: 2,
                 ),
               ),
@@ -106,12 +81,13 @@ class _AddTokenCardState extends State<AddTokenCard> {
                 focusNode: nameFocusNode,
                 cursorColor: Colors.blueAccent,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: "Ethereum",
-                  hintStyle: TextStyle(color: Colors.white, fontSize: 16),
+                  hintStyle: TextStyle(
+                      color: Colors.black.withOpacity(0.5), fontSize: 16),
                   fillColor: Colors.blue,
                 ),
               ),
@@ -121,7 +97,7 @@ class _AddTokenCardState extends State<AddTokenCard> {
             ),
             Text(
               "Token address",
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: TextStyle(color: Colors.black, fontSize: 16),
             ),
             SizedBox(
               height: 10,
@@ -129,12 +105,12 @@ class _AddTokenCardState extends State<AddTokenCard> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                color: Colors.blue.shade900.withOpacity(0.2),
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(
                   color: isAddressFocused
                       ? Colors.blueAccent
-                      : Colors.blue.shade900.withOpacity(0.2),
+                      : Colors.black.withOpacity(0.5),
                   width: 2,
                 ),
               ),
@@ -142,12 +118,13 @@ class _AddTokenCardState extends State<AddTokenCard> {
                 focusNode: addressFocusNode,
                 cursorColor: Colors.blueAccent,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: "0xC02aaA39b223FE8D0A...",
-                  hintStyle: TextStyle(color: Colors.white, fontSize: 16),
+                  hintStyle: TextStyle(
+                      color: Colors.black.withOpacity(0.5), fontSize: 16),
                   fillColor: Colors.blue,
                 ),
               ),
@@ -157,7 +134,7 @@ class _AddTokenCardState extends State<AddTokenCard> {
             ),
             Text(
               "Number of decimals",
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: TextStyle(color: Colors.black, fontSize: 16),
             ),
             SizedBox(
               height: 10,
@@ -165,12 +142,12 @@ class _AddTokenCardState extends State<AddTokenCard> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                color: Colors.blue.shade900.withOpacity(0.2),
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(
                   color: isDecimalsFocused
                       ? Colors.blueAccent
-                      : Colors.blue.shade900.withOpacity(0.2),
+                      : Colors.black.withOpacity(0.5),
                   width: 2,
                 ),
               ),
@@ -178,12 +155,13 @@ class _AddTokenCardState extends State<AddTokenCard> {
                 focusNode: decimalsFocusNode,
                 cursorColor: Colors.blueAccent,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: "10",
-                  hintStyle: TextStyle(color: Colors.white, fontSize: 16),
+                  hintStyle: TextStyle(
+                      color: Colors.black.withOpacity(0.5), fontSize: 16),
                   fillColor: Colors.blue,
                 ),
               ),

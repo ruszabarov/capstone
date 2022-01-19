@@ -121,22 +121,25 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
           ),
           MarketChart(_trackballBehavior, currentCoinPrice, minPrice, maxPrice,
               data, decimalPlaces, lastPrice),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TimeRangeButton(
-                  days: '1', label: "1D", getCoinData: _getCoinData),
-              TimeRangeButton(
-                  days: '7', label: "1W", getCoinData: _getCoinData),
-              TimeRangeButton(
-                  days: '30', label: "1M", getCoinData: _getCoinData),
-              TimeRangeButton(
-                  days: '90', label: "3M", getCoinData: _getCoinData),
-              TimeRangeButton(
-                  days: '365', label: "1Y", getCoinData: _getCoinData),
-              TimeRangeButton(
-                  days: 'max', label: "All", getCoinData: _getCoinData),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TimeRangeButton(
+                    days: '1', label: "1D", getCoinData: _getCoinData),
+                TimeRangeButton(
+                    days: '7', label: "1W", getCoinData: _getCoinData),
+                TimeRangeButton(
+                    days: '30', label: "1M", getCoinData: _getCoinData),
+                TimeRangeButton(
+                    days: '90', label: "3M", getCoinData: _getCoinData),
+                TimeRangeButton(
+                    days: '365', label: "1Y", getCoinData: _getCoinData),
+                TimeRangeButton(
+                    days: 'max', label: "All", getCoinData: _getCoinData),
+              ],
+            ),
           )
         ],
       ),
@@ -163,11 +166,22 @@ class TimeRangeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
+    return InkWell(
+      onTap: () {
         getCoinData(days);
       },
-      child: Text(label),
+      borderRadius: BorderRadius.circular(5),
+      child: Ink(
+        height: 30,
+        width: 40,
+        child: Align(
+          alignment: Alignment.center,
+          child: Text(
+            label,
+            style: TextStyle(color: Colors.blue[600]),
+          ),
+        ),
+      ),
     );
   }
 }

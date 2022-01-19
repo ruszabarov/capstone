@@ -97,7 +97,7 @@ Transaction one = Transaction(
     0.00000031,
     0.0000000002,
     0.0200315,
-    '14 December 2022, 2PM');
+    '14 December 2022');
 
 Transaction two = Transaction(
     'outgoing',
@@ -112,6 +112,6 @@ Transaction two = Transaction(
     0.00000031,
     0.0000000002,
     0.0200315,
-    '14 December 2022, 3PM');
+    '14 December 2022');
 
 List<Transaction> transactions = [one, two, one, one, one];

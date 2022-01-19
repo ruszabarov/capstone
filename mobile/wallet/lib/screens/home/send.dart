@@ -195,9 +195,10 @@ class _SendCardState extends State<SendCard> {
                 ),
                 onPressed: () {
                   widget.handleCloseButton();
+                  FocusManager.instance.primaryFocus?.unfocus();
                   showOverLay(context);
                 },
-                child: Text("GENERATE OTP"),
+                child: Text("SEND"),
               ),
             )
           ],
