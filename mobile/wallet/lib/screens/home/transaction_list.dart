@@ -72,8 +72,16 @@ class TransactionList extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Text(
-                      transactions[index].date,
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      //TODO: align text to the right
+                      child: Text(
+                        transactions[index].date,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                      ),
                     ),
                   ],
                 ),
