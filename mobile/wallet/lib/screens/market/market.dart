@@ -13,10 +13,11 @@ class MarketPage extends StatefulWidget {
 class _MarketPageState extends State<MarketPage> {
   List<StaticTokenInformation> tokenList = [
     StaticTokenInformation(
-        "ethereum", 'assets/images/coin_logos/ethereum.webp'),
-    StaticTokenInformation("tether", 'assets/images/coin_logos/tether.webp'),
+        "ethereum", 'assets/images/coin_logos/ethereum.webp', 0, false),
     StaticTokenInformation(
-        "usd-coin", 'assets/images/coin_logos/usd-coin.webp'),
+        "tether", 'assets/images/coin_logos/tether.webp', 0, false),
+    StaticTokenInformation(
+        "usd-coin", 'assets/images/coin_logos/usd-coin.webp', 0, false),
   ];
 
   List displayedList = [];
@@ -26,7 +27,21 @@ class _MarketPageState extends State<MarketPage> {
   @override
   void initState() {
     super.initState();
+    initializeTokens();
     displayedList = tokenList;
+  }
+
+  void initializeTokens() async {
+    for (int i = 0; i < tokenList.length; i++) {
+      Map<String, dynamic> data = await getCoinData(tokenList[i].name);
+      double price = data['current_price'];
+      bool isPriceGoingUp = data['price_change_percent'] > 0 ? true : false;
+
+      tokenList[i].currentPrice = price;
+      tokenList[i].isPriceGoingUp = isPriceGoingUp;
+    }
+
+    setState(() {});
   }
 
   @override
@@ -112,6 +127,9 @@ class _MarketPageState extends State<MarketPage> {
 class StaticTokenInformation {
   final String name;
   final String imagePath;
+  double currentPrice;
+  bool isPriceGoingUp;
 
-  StaticTokenInformation(this.name, this.imagePath);
+  StaticTokenInformation(
+      this.name, this.imagePath, this.currentPrice, this.isPriceGoingUp);
 }

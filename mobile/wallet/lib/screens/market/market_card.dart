@@ -23,16 +23,6 @@ class _MarketCardState extends State<MarketCard> {
   @override
   initState() {
     super.initState();
-    updateValues();
-  }
-
-  updateValues() async {
-    Map<String, dynamic> data = await getCoinData(widget.token.name);
-
-    setState(() {
-      price = data['current_price'];
-      priceGoingUp = data['price_change_percent'] > 0 ? true : false;
-    });
   }
 
   @override
@@ -82,9 +72,10 @@ class _MarketCardState extends State<MarketCard> {
                             ),
                             children: [
                               TextSpan(
-                                text: "\$${price.toString()}",
+                                text:
+                                    "\$${widget.token.currentPrice.toString()}",
                                 style: TextStyle(
-                                    color: priceGoingUp
+                                    color: widget.token.isPriceGoingUp
                                         ? Colors.green
                                         : Colors.red),
                               )
