@@ -114,6 +114,10 @@ dart_style
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/dart_style-2.2.0/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/dart_style-2.2.0/lib/
+decimal
+2.14
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/decimal-2.1.0/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/decimal-2.1.0/lib/
 fake_async
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/
@@ -310,6 +314,10 @@ quiver
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.0.1+1/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.0.1+1/lib/
+rational
+2.14
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/rational-2.0.0/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/rational-2.0.0/lib/
 rxdart
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/rxdart-0.27.3/

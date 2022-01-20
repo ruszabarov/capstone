@@ -7,12 +7,10 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class SendCard extends StatefulWidget {
   final CryptoWallet cryptoWallet;
-  final Function handleSendButton;
+  final Function handleCloseButton;
 
   const SendCard(
-      {Key? key,
-      required this.cryptoWallet,
-      required Function this.handleSendButton})
+      {Key? key, required this.cryptoWallet, required this.handleCloseButton})
       : super(key: key);
 
   @override
@@ -30,52 +28,9 @@ class _SendCardState extends State<SendCard> {
 
   @override
   void initState() {
-    addressFocusNode = FocusNode();
-    amountFocusNode = FocusNode();
-
-    addressFocusNode.addListener(() {
-      setState(() {
-        isAddressFocused = addressFocusNode.hasFocus;
-      });
-    });
-
-    amountFocusNode.addListener(() {
-      setState(() {
-        isAmountFocused = amountFocusNode.hasFocus;
-      });
-    });
-
-    super.initState();
+    setUpFocusNodes();
     _addressTextController = TextEditingController(text: "");
-  }
-
-  Future<void> startBarcodeScanStream() async {
-    FlutterBarcodeScanner.getBarcodeStreamReceiver(
-            '#ff6666', 'Cancel', true, ScanMode.BARCODE)!
-        .listen((barcode) => print(barcode));
-  }
-
-  Future<void> scanQR() async {
-    String barcodeScanRes;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.QR);
-      setState(() {
-        _addressTextController.text = barcodeScanRes;
-      });
-    } on PlatformException {
-      barcodeScanRes = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _scanBarcode = barcodeScanRes;
-    });
+    super.initState();
   }
 
   @override
@@ -109,7 +64,9 @@ class _SendCardState extends State<SendCard> {
                       icon: Icon(Icons.close),
                       color: Colors.white,
                       onPressed: () {
-                        widget.handleSendButton();
+                        addressFocusNode.unfocus();
+                        amountFocusNode.unfocus();
+                        widget.handleCloseButton();
                       },
                       padding: EdgeInsets.zero,
                       constraints: BoxConstraints(),
@@ -237,11 +194,11 @@ class _SendCardState extends State<SendCard> {
                   ),
                 ),
                 onPressed: () {
-                  FirebaseFirestore.instance
-                      .collection('test')
-                      .add({'timestamp': Timestamp.fromDate(DateTime.now())});
+                  widget.handleCloseButton();
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  showOverLay(context);
                 },
-                child: Text("GENERATE OTP"),
+                child: Text("SEND"),
               ),
             )
           ],
@@ -249,4 +206,171 @@ class _SendCardState extends State<SendCard> {
       ),
     );
   }
+
+  void setUpFocusNodes() {
+    addressFocusNode = FocusNode();
+    amountFocusNode = FocusNode();
+
+    addressFocusNode.addListener(() {
+      setState(() {
+        isAddressFocused = addressFocusNode.hasFocus;
+      });
+    });
+
+    amountFocusNode.addListener(() {
+      setState(() {
+        isAmountFocused = amountFocusNode.hasFocus;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    addressFocusNode.dispose();
+    amountFocusNode.dispose();
+    super.dispose();
+  }
+
+  Future<void> startBarcodeScanStream() async {
+    FlutterBarcodeScanner.getBarcodeStreamReceiver(
+            '#ff6666', 'Cancel', true, ScanMode.BARCODE)!
+        .listen((barcode) => print(barcode));
+  }
+
+  Future<void> scanQR() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.QR);
+      setState(() {
+        _addressTextController.text = barcodeScanRes;
+      });
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
+  }
+
+  void showOverLay(BuildContext context) async {
+    OverlayState overlayState = Overlay.of(context)!;
+    OverlayEntry submittedEntry;
+    OverlayEntry validatedEntry;
+
+    submittedEntry = OverlayEntry(builder: (context) {
+      return Positioned(
+        left: MediaQuery.of(context).size.width * 0.05,
+        bottom: MediaQuery.of(context).size.height * 0.02,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: Container(
+            padding: EdgeInsets.all(15),
+            width: MediaQuery.of(context).size.width * 0.90,
+            color: Colors.grey[850],
+            child: Material(
+                color: Colors.transparent,
+                child: Row(
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Transaction submitted",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Waiting for validation",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    )
+                  ],
+                )),
+          ),
+        ),
+      );
+    });
+
+    validatedEntry = OverlayEntry(builder: (context) {
+      return Positioned(
+        left: MediaQuery.of(context).size.width * 0.05,
+        bottom: MediaQuery.of(context).size.height * 0.02,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: Container(
+            padding: EdgeInsets.all(15),
+            width: MediaQuery.of(context).size.width * 0.90,
+            color: Colors.grey[850],
+            child: Material(
+                color: Colors.transparent,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.check,
+                      color: Colors.green,
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Transaction complete!",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                      ],
+                    )
+                  ],
+                )),
+          ),
+        ),
+      );
+    });
+
+    // Inserting the OverlayEntry into the Overlay
+    overlayState.insert(submittedEntry);
+    await Future.delayed(Duration(seconds: 3));
+    submittedEntry.remove();
+
+    overlayState.insert(validatedEntry);
+    await Future.delayed(Duration(seconds: 1));
+    validatedEntry.remove();
+  }
 }
+
+/*
+showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: Text('Transaction successful'),
+                      content: Text(
+                          'Please wait for the next block on the blockchain.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context, 'OK');
+                          },
+                          child: Text("OK"),
+                        )
+                      ],
+                    ),
+                  );
+*/

@@ -36,6 +36,7 @@ dependencies:
   firebase_auth: ^3.3.4
   cached_network_image: ^3.2.0
   flutter_cache_manager: ^3.3.0
+  decimal: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +76,7 @@ flutter:
   assets:
     - assets/images/
     - assets/build/contracts/
+    - assets/images/coin_logos/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

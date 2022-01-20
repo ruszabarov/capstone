@@ -1,40 +1,28 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/market/api.dart';
+import 'package:wallet/screens/market/market.dart';
 import 'package:wallet/screens/market/market_details.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:wallet/wallet_icons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class MarketCard extends StatefulWidget {
-  final String marketName;
+  final StaticTokenInformation token;
 
-  MarketCard(this.marketName);
+  MarketCard(this.token);
 
   @override
   State<MarketCard> createState() => _MarketCardState();
 }
 
-class _MarketCardState extends State<MarketCard>
-    with AutomaticKeepAliveClientMixin {
+class _MarketCardState extends State<MarketCard> {
   double price = 0.0;
   bool priceGoingUp = true;
-  late String imageURL = '';
 
   @override
   initState() {
     super.initState();
-    updateValues();
-  }
-
-  updateValues() async {
-    Map<String, dynamic> data = await getCoinData(widget.marketName);
-
-    setState(() {
-      price = data['current_price'];
-      priceGoingUp = data['price_change_percent'] > 0 ? true : false;
-      imageURL = data['icon'];
-    });
   }
 
   @override
@@ -44,7 +32,7 @@ class _MarketCardState extends State<MarketCard>
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => MarketDetailsPage(widget.marketName)),
+              builder: (context) => MarketDetailsPage(widget.token.name)),
         );
       },
       borderRadius: BorderRadius.circular(15),
@@ -62,11 +50,7 @@ class _MarketCardState extends State<MarketCard>
                       child: SizedBox(
                         width: 50,
                         height: 50,
-                        child: imageURL == ''
-                            ? CircularProgressIndicator()
-                            : CachedNetworkImage(
-                                imageUrl: '$imageURL',
-                              ),
+                        child: Image.asset(widget.token.imagePath),
                       ),
                     ),
                     SizedBox(width: 15),
@@ -74,7 +58,7 @@ class _MarketCardState extends State<MarketCard>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.marketName,
+                          widget.token.name,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
@@ -88,9 +72,10 @@ class _MarketCardState extends State<MarketCard>
                             ),
                             children: [
                               TextSpan(
-                                text: "\$${price.toString()}",
+                                text:
+                                    "\$${widget.token.currentPrice.toString()}",
                                 style: TextStyle(
-                                    color: priceGoingUp
+                                    color: widget.token.isPriceGoingUp
                                         ? Colors.green
                                         : Colors.red),
                               )
@@ -114,7 +99,4 @@ class _MarketCardState extends State<MarketCard>
   void dispose() {
     super.dispose();
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

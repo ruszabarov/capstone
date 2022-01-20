@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:wallet/screens/home/receive.dart';
 import 'package:wallet/screens/home/send.dart';
 import 'package:wallet/screens/home/test_data.dart';
+import 'package:wallet/screens/home/receipt_card.dart';
+import 'package:wallet/screens/home/transaction_list.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:wallet/logic.dart';
 
@@ -32,6 +35,10 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
     });
   }
 
+  void handleReceiptButton() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,84 +53,119 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
       ),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 25,
-                ),
-                card(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(
-                            widget.cryptoWallet.icon,
-                            color: Colors.black,
-                            size: 35.0,
-                          ),
-                          SizedBox(width: 20),
-                          Expanded(
-                            child: Text(
-                              widget.cryptoWallet.name,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
+          SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(25, 0, 25, 25),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    height: 25,
+                  ),
+                  card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(
+                              widget.cryptoWallet.icon,
+                              color: Colors.black,
+                              size: 35.0,
                             ),
+                            SizedBox(width: 20),
+                            Expanded(
+                              child: Text(
+                                widget.cryptoWallet.name,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                            ),
+                            // Text('$cryptoShort')
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          widget.cryptoWallet.balance +
+                              " " +
+                              widget.cryptoWallet.shortName,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30,
+                              color: Colors.black87),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            handleSendButton();
+                          },
+                          borderRadius: BorderRadius.circular(15),
+                          child: _actionButton(
+                            text: 'Send',
+                            color: Colors.blueAccent,
                           ),
-                          // Text('$cryptoShort')
-                        ],
+                        ),
                       ),
-                      SizedBox(height: 20),
-                      Text(
-                        widget.cryptoWallet.balance +
-                            " " +
-                            widget.cryptoWallet.shortName,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                            color: Colors.black87),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            handleReceiveButton();
+                          },
+                          borderRadius: BorderRadius.circular(15),
+                          child: _actionButton(
+                            text: 'Receive',
+                            color: Colors.pink,
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          handleSendButton();
-                        },
-                        borderRadius: BorderRadius.circular(15),
-                        child: _actionButton(
-                          text: 'Send',
-                          color: Colors.blueAccent,
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(Icons.history),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Transaction History",
+                        style: TextStyle(
+                          fontSize: 18,
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          handleReceiveButton();
-                        },
-                        borderRadius: BorderRadius.circular(15),
-                        child: _actionButton(
-                          text: 'Receive',
-                          color: Colors.pink,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Flexible(
+                    child: TransactionList(transactions, handleReceiptButton),
+                  ),
+                ],
+              ),
             ),
+          ),
+          Column(
+            children: [
+              Expanded(
+                child: Container(),
+              ),
+            ],
           ),
           AnimatedPositioned(
             left: 0,
@@ -133,7 +175,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
             duration: Duration(milliseconds: 100),
             child: SendCard(
               cryptoWallet: widget.cryptoWallet,
-              handleSendButton: handleSendButton,
+              handleCloseButton: handleSendButton,
             ),
           ),
           AnimatedPositioned(
