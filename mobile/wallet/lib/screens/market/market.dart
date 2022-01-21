@@ -18,6 +18,16 @@ class _MarketPageState extends State<MarketPage> {
         "tether", 'assets/images/coin_logos/tether.webp', 0, false),
     StaticTokenInformation(
         "usd-coin", 'assets/images/coin_logos/usd-coin.webp', 0, false),
+    StaticTokenInformation(
+        'binancecoin', 'assets/images/coin_logos/binance-coin.webp', 0, false),
+    StaticTokenInformation(
+        'matic-network', 'assets/images/coin_logos/matic-token.webp', 0, false),
+    StaticTokenInformation(
+        'shiba-inu', 'assets/images/coin_logos/shiba.webp', 0, false),
+    StaticTokenInformation('wrapped-bitcoin',
+        'assets/images/coin_logos/wrapped-bitcoin.webp', 0, false),
+    StaticTokenInformation(
+        'chainlink', 'assets/images/coin_logos/chainlink.webp', 0, false)
   ];
 
   List displayedList = [];
@@ -51,7 +61,7 @@ class _MarketPageState extends State<MarketPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(25, 15, 25, 0),
+            padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
@@ -87,7 +97,7 @@ class _MarketPageState extends State<MarketPage> {
           ),
           Flexible(
             child: ListView.separated(
-              padding: EdgeInsets.all(25),
+              padding: EdgeInsets.all(20),
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(
                   height: 15,
@@ -98,8 +108,8 @@ class _MarketPageState extends State<MarketPage> {
               scrollDirection: Axis.vertical,
               itemCount: displayedList.length,
               itemBuilder: (BuildContext ctxt, int index) {
-                print('alt');
-                return new MarketCard(displayedList[index]);
+                return new MarketCard(
+                    displayedList[index], index, displayedList.length - 1);
               },
             ),
           ),
