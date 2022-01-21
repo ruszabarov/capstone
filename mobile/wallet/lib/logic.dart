@@ -7,7 +7,7 @@ import 'package:http/http.dart';
 import 'package:wallet/private.dart';
 
 
-final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
+final myAddress = "0x6C936056d204C7445f1696693AdcB2d799b71895";
 EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
 
 Client httpClient = new Client();
