@@ -11,7 +11,7 @@ Future<Map<String, dynamic>> getCoinData(String id) async {
     var price = json['market_data']['current_price']['usd'].toString();
     var priceChange =
         json['market_data']['price_change_percentage_24h'].toString();
-    var icon = json['image']['large'];
+    var icon = json['image']['small'];
     var result = {
       'current_price': double.parse(price),
       'price_change_percent': double.parse(priceChange),
