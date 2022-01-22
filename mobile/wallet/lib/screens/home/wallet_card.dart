@@ -21,10 +21,9 @@ class _WalletCardState extends State<WalletCard> {
   }
 
   updateValues() async {
-    dynamic data = await getBalance(myAddress);
+    dynamic data = await getTokenBalance(myAddress1, "ChainLink Token");
     setState(() {
-      price = data;
-      widget.cryptoWallet.balance = data;
+      price = data.toString();
     });
   }
 

@@ -125,7 +125,6 @@ app.*.symbols
 mobile/wallet/lib/private.dart
 =======
 
-build
 node_modules
 >>>>>>> backend
 =======

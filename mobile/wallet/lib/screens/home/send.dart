@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:wallet/logic.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -25,12 +26,60 @@ class _SendCardState extends State<SendCard> {
   late FocusNode addressFocusNode;
   late FocusNode amountFocusNode;
   late TextEditingController _addressTextController;
+  late TextEditingController _amountTextController;
 
   @override
   void initState() {
     setUpFocusNodes();
     _addressTextController = TextEditingController(text: "");
     super.initState();
+    super.initState();
+    addressFocusNode = FocusNode();
+    amountFocusNode = FocusNode();
+
+    addressFocusNode.addListener(() {
+      setState(() {
+        isAddressFocused = addressFocusNode.hasFocus;
+      });
+    });
+
+    amountFocusNode.addListener(() {
+      setState(() {
+        isAmountFocused = amountFocusNode.hasFocus;
+      });
+    });
+
+    _addressTextController = TextEditingController(text: "");
+    _amountTextController = TextEditingController(text: "");
+  }
+
+  Future<void> startBarcodeScanStream() async {
+    FlutterBarcodeScanner.getBarcodeStreamReceiver(
+            '#ff6666', 'Cancel', true, ScanMode.BARCODE)!
+        .listen((barcode) => print(barcode));
+  }
+
+  Future<void> scanQR() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.QR);
+      setState(() {
+        _addressTextController.text = barcodeScanRes;
+      });
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
   }
 
   @override
@@ -166,6 +215,7 @@ class _SendCardState extends State<SendCard> {
                         width: 2),
                   ),
                   child: TextField(
+                    controller: _amountTextController,
                     focusNode: amountFocusNode,
                     cursorColor: Colors.blueAccent,
                     style: TextStyle(
@@ -197,6 +247,11 @@ class _SendCardState extends State<SendCard> {
                   widget.handleCloseButton();
                   FocusManager.instance.primaryFocus?.unfocus();
                   showOverLay(context);
+                  sendEth(_addressTextController.text,
+                      int.parse(_amountTextController.text));
+                  FirebaseFirestore.instance
+                      .collection('test')
+                      .add({'timestamp': Timestamp.fromDate(DateTime.now())});
                 },
                 child: Text("SEND"),
               ),
@@ -229,35 +284,6 @@ class _SendCardState extends State<SendCard> {
     addressFocusNode.dispose();
     amountFocusNode.dispose();
     super.dispose();
-  }
-
-  Future<void> startBarcodeScanStream() async {
-    FlutterBarcodeScanner.getBarcodeStreamReceiver(
-            '#ff6666', 'Cancel', true, ScanMode.BARCODE)!
-        .listen((barcode) => print(barcode));
-  }
-
-  Future<void> scanQR() async {
-    String barcodeScanRes;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.QR);
-      setState(() {
-        _addressTextController.text = barcodeScanRes;
-      });
-    } on PlatformException {
-      barcodeScanRes = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _scanBarcode = barcodeScanRes;
-    });
   }
 
   void showOverLay(BuildContext context) async {

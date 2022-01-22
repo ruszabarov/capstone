@@ -10,7 +10,8 @@ class MarketPage extends StatefulWidget {
   _MarketPageState createState() => _MarketPageState();
 }
 
-class _MarketPageState extends State<MarketPage> {
+class _MarketPageState extends State<MarketPage>
+    with AutomaticKeepAliveClientMixin {
   List<StaticTokenInformation> tokenList = [
     StaticTokenInformation(
         "ethereum", 'assets/images/coin_logos/ethereum.webp', 0, false),
@@ -47,11 +48,11 @@ class _MarketPageState extends State<MarketPage> {
       double price = data['current_price'];
       bool isPriceGoingUp = data['price_change_percent'] > 0 ? true : false;
 
-      tokenList[i].currentPrice = price;
-      tokenList[i].isPriceGoingUp = isPriceGoingUp;
+      setState(() {
+        tokenList[i].currentPrice = price;
+        tokenList[i].isPriceGoingUp = isPriceGoingUp;
+      });
     }
-
-    setState(() {});
   }
 
   @override
@@ -132,6 +133,10 @@ class _MarketPageState extends State<MarketPage> {
       displayedList = searchResult;
     });
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class StaticTokenInformation {

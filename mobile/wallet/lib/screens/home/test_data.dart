@@ -6,7 +6,7 @@ import 'package:wallet/wallet_icons.dart';
 
 class CryptoWallet {
   final String name;
-  String balance;
+  dynamic balance;
   final String adress;
   final IconData icon;
   final String shortName;
@@ -14,10 +14,20 @@ class CryptoWallet {
   CryptoWallet(this.name, this.balance, this.adress, this.icon, this.shortName);
 }
 
+Future<String> getEtherBalance() async {
+  String testBalance = await getEthBalance(myAddress1);
+  return testBalance;
+}
+
+Future<String> getMyTokenBalance() async {
+  String testBalance = await getTokenBalance(myAddress1, "ChainLink Token");
+  return testBalance;
+}
+
 CryptoWallet ethereum = new CryptoWallet(
-    "ethereum", "201", "adkaldajkdaksda", Wallet.ethereum, 'ETH');
+    "ethereum", getMyTokenBalance(), "adkaldajkdaksda", Wallet.ethereum, 'ETH');
 CryptoWallet bitcoin = new CryptoWallet(
-    "bitcoin", "200", "adjlkasdkjasddaasda", Wallet.bitcoin, 'BTC');
+    "bitcoin", getEtherBalance(), "adjlkasdkjasddaasda", Wallet.bitcoin, 'BTC');
 CryptoWallet test = new CryptoWallet(
     "test", "1", "asdjlkajsdklas", Icons.attach_money_rounded, 'TST');
 

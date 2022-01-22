@@ -43,12 +43,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    testFunc();
-  }
-
-  void testFunc() async {
-    userData = await fetchUser(widget.user.uid);
-    print(userData!['accounts']);
   }
 
   @override
