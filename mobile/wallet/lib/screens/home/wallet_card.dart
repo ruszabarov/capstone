@@ -3,6 +3,7 @@ import 'package:wallet/logic.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/home/wallet_details.dart';
 import 'package:wallet/screens/shared/shared.dart';
+import 'package:web3dart/web3dart.dart';
 
 class WalletCard extends StatefulWidget {
   final CryptoWallet cryptoWallet;
@@ -13,15 +14,18 @@ class WalletCard extends StatefulWidget {
 }
 
 class _WalletCardState extends State<WalletCard> {
-  String price = "2";
+  String price = "0";
   @override
   void initState() {
-    updateValues();
     super.initState();
+    updateValues();
   }
 
   updateValues() async {
-    dynamic data = await getTokenBalance(myAddress1, "ChainLink Token");
+    //TODO: get data form Home page
+    //TODO: implement state management system
+    dynamic data = await getTokenBalance(
+        EthereumAddress.fromHex(mainAccount.address), "ChainLink Token");
     setState(() {
       price = data.toString();
     });

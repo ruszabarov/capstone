@@ -39,7 +39,11 @@ class _AccountCardState extends State<AccountCard> {
               SizedBox(
                 height: 10,
               ),
-              Text(widget.address),
+              Text(
+                widget.address,
+                //TODO: show fist few and last few characters of the address
+                overflow: TextOverflow.ellipsis,
+              ),
             ],
           ),
           Text(

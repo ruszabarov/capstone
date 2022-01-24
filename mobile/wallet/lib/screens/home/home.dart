@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wallet/logic.dart';
 import 'package:wallet/screens/home/account_card.dart';
 import 'package:wallet/screens/home/add_token.dart';
 import 'package:wallet/screens/home/add_wallet.dart';
 import 'package:wallet/screens/home/firestore.dart';
 import 'package:wallet/screens/shared/card.dart';
+import 'package:web3dart/web3dart.dart';
 import 'test_data.dart';
 import 'wallet_card.dart';
 
@@ -24,7 +26,6 @@ class _HomeState extends State<Home> {
   bool isAddTokenVisible = false;
   List<CryptoWallet> currentWallets = mainAccount.wallets;
   int accountSelectedIndex = 0;
-  Map<String, dynamic>? userData = {};
 
   void handleAddWalletButton() {
     setState(() {
@@ -43,6 +44,14 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    updateValues();
+  }
+
+  void updateValues() async {
+    for (int i = 0; i < mainAccount.wallets.length; i++) {
+      mainAccount.wallets[i].balance = await getTokenBalance(
+          EthereumAddress.fromHex(mainAccount.address), "ChainLink Token");
+    }
   }
 
   @override
