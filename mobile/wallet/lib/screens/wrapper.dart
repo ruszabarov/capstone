@@ -8,9 +8,7 @@ import 'package:wallet/wallet_icons.dart';
 import 'package:wallet/screens/home/home.dart';
 
 class Wrapper extends StatefulWidget {
-  final User user;
-
-  const Wrapper(this.user);
+  const Wrapper();
 
   @override
   State createState() {
@@ -33,9 +31,9 @@ class _WrapperState extends State<Wrapper> {
   @override
   void initState() {
     _pageController = PageController();
-    home = Home(widget.user);
+    home = Home();
     market = MarketPage();
-    account = Account(widget.user);
+    account = Account();
     super.initState();
   }
 

@@ -12,9 +12,7 @@ import 'test_data.dart';
 import 'wallet_card.dart';
 
 class Home extends StatefulWidget {
-  final User user;
-
-  const Home(this.user);
+  const Home();
 
   @override
   State<Home> createState() => _HomeState();

@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:wallet/screens/authentication/auth.dart';
 import 'package:wallet/screens/authentication/login.dart';
+import 'package:provider/src/provider.dart';
 
 class Account extends StatelessWidget {
   final String title = "Account";
-  final User user;
 
-  const Account(this.user);
+  const Account();
 
   @override
   Widget build(BuildContext context) {
+    final firebaseUser = context.watch<User?>();
+
     return Column(
       children: [
-        Text(user.email!),
+        Text(
+          // Provider.of<User?>(context).toString(),
+          firebaseUser.toString(),
+        ),
         ElevatedButton(
           onPressed: () async {
             await FirebaseAuth.instance.signOut();
