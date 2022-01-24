@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:wallet/private.dart';
 
-final myAddress = "0x6C936056d204C7445f1696693AdcB2d799b71895";
+final myAddress = "0x039749DdBf1CCbFe20548fA9fF4521eecC4a0a02";
 EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
 
 Client httpClient = new Client();
@@ -14,19 +14,6 @@ Web3Client ethClient = new Web3Client(
     "https://rinkeby.infura.io/v3/f58b56df688c4bafba806114fb329aaa",
     httpClient);
 
-dynamic createWallet(String pass) {
-  Wallet wallet =
-      new Wallet.createNew(createPrivateKey(), pass, Random.secure());
-  return wallet.toJson();
-}
-
-dynamic createPrivateKey() {
-  return EthPrivateKey.createRandom(Random.secure());
-}
-
-String getAddressFromPK(EthPrivateKey add) {
-  return add.address.toString();
-}
 
 Future<String> getEthBalance(EthereumAddress from) async {
   const decimals = 18;
