@@ -70,6 +70,7 @@ class ReceiveCard extends StatelessWidget {
               height: 50,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
@@ -78,6 +79,7 @@ class ReceiveCard extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
+                        overflow: TextOverflow.clip,
                       ),
                     ),
                   ),
