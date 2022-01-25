@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_login/flutter_login.dart';
 import 'package:wallet/screens/authentication/auth.dart';
 import 'package:wallet/screens/authentication/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:wallet/screens/home/home.dart';
 import 'package:wallet/screens/wrapper.dart';
 
 void main() async {
@@ -54,6 +52,16 @@ class Authenticate extends StatelessWidget {
     if (firebaseUser != null) {
       return Wrapper();
     }
+
+    //! Returns LoginPage because StreamProvider is set to null initially
+    //! Right after that returns Wrapper
+    //! Possible user Navigtor?
+
+    // Navigator.of(context).pushReplacement(
+    //   MaterialPageRoute(
+    //     builder: (context) => LoginPage(),
+    //   ),
+    // );
 
     return LoginPage();
   }

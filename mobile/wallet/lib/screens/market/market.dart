@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/market/api.dart';
 import 'market_card.dart';
-import 'package:http/http.dart' as http;
 
 class MarketPage extends StatefulWidget {
   const MarketPage({Key? key}) : super(key: key);

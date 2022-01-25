@@ -6,10 +6,6 @@ import 'package:wallet/screens/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'auth.dart';
 
-const users = const {
-  '1@1.com': '1234',
-};
-
 class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -45,9 +41,9 @@ class _LoginPageState extends State<LoginPage> {
   Future<String?> _recoverPassword(String name) {
     debugPrint('Name: $name');
     return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(name)) {
-        return 'User not exists';
-      }
+      // if (!users.containsKey(name)) {
+      //   return 'User not exists';
+      // }
       return null;
     });
   }
@@ -58,13 +54,6 @@ class _LoginPageState extends State<LoginPage> {
       title: 'Z WALLET',
       onLogin: _authUser,
       onSignup: _signupUser,
-      onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => Wrapper(),
-          ),
-        );
-      },
       onRecoverPassword: _recoverPassword,
       theme: LoginTheme(
         primaryColor: Colors.blueAccent,
@@ -73,5 +62,10 @@ class _LoginPageState extends State<LoginPage> {
         errorColor: Colors.red,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wallet/logic.dart';
 import 'package:wallet/screens/home/test_data.dart';
-import 'package:wallet/screens/shared/shared.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class SendCard extends StatefulWidget {
@@ -381,22 +380,3 @@ class _SendCardState extends State<SendCard> {
     validatedEntry.remove();
   }
 }
-
-/*
-showDialog(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: Text('Transaction successful'),
-                      content: Text(
-                          'Please wait for the next block on the blockchain.'),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context, 'OK');
-                          },
-                          child: Text("OK"),
-                        )
-                      ],
-                    ),
-                  );
-*/
