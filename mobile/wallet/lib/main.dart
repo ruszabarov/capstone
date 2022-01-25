@@ -5,41 +5,43 @@ import 'package:wallet/screens/authentication/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet/screens/wrapper.dart';
+import 'dart:io';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(
-    MyApp(),
-  );
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
+    MultiProvider(
       providers: [
         Provider<AuthenticationProvider>(
           create: (_) => AuthenticationProvider(FirebaseAuth.instance),
         ),
         StreamProvider(
           create: (context) => context.read<AuthenticationProvider>().authState,
+          //! Maybe add builder here? and return a child...
           initialData: null,
-        )
-      ],
-      child: MaterialApp(
-        title: "Crypto Wallet",
-        theme: ThemeData(
-          fontFamily: 'Ubuntu',
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
-              .copyWith(primary: Colors.blueAccent),
-          pageTransitionsTheme: PageTransitionsTheme(builders: {
-            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-          }),
         ),
-        home: Authenticate(),
-        debugShowCheckedModeBanner: false,
+      ],
+      child: MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Crypto Wallet",
+      theme: ThemeData(
+        fontFamily: 'Ubuntu',
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+            .copyWith(primary: Colors.blueAccent),
+        pageTransitionsTheme: PageTransitionsTheme(builders: {
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+        }),
       ),
+      home: Authenticate(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -47,22 +49,32 @@ class MyApp extends StatelessWidget {
 class Authenticate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final firebaseUser = context.watch<User?>();
+    //TODO: figure out if we need the StreamBuilder. Maybe there is a way to do the same with SteamProvider?
+    return StreamBuilder<User?>(
+      stream: context.read<AuthenticationProvider>().authState,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          return snapshot.data != null ? Wrapper() : LoginPage();
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
 
-    if (firebaseUser != null) {
-      return Wrapper();
-    }
+    // final firebaseUser = context.watch<User?>();
 
-    //! Returns LoginPage because StreamProvider is set to null initially
-    //! Right after that returns Wrapper
-    //! Possible user Navigtor?
+    // if (firebaseUser != null) {
+    //   return Wrapper();
+    // }
 
-    // Navigator.of(context).pushReplacement(
-    //   MaterialPageRoute(
-    //     builder: (context) => LoginPage(),
-    //   ),
-    // );
+    // // Navigator.of(context).pushReplacement(
+    // //   MaterialPageRoute(
+    // //     builder: (context) => LoginPage(),
+    // //   ),
+    // // );
 
-    return LoginPage();
+    // return LoginPage();
   }
 }

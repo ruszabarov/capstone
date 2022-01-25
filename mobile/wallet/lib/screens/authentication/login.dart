@@ -39,7 +39,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<String?> _recoverPassword(String name) {
-    debugPrint('Name: $name');
     return Future.delayed(loginTime).then((_) {
       // if (!users.containsKey(name)) {
       //   return 'User not exists';
