@@ -53,16 +53,13 @@ class Authenticate extends StatelessWidget {
       stream: context.read<AuthenticationProvider>().authState,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
-          return AnimatedSwitcher(
-            duration: Duration(seconds: 2),
-            child: snapshot.hasData
-                ? LoadDataPage(
-                    key: ValueKey("asd"),
-                  )
-                : LoginPage(
-                    key: ValueKey("asdasd"),
-                  ),
-          );
+          return snapshot.hasData
+              ? LoadDataPage(
+                  key: ValueKey("asd"),
+                )
+              : LoginPage(
+                  key: ValueKey("asdasd"),
+                );
         } else {
           return Center(
             child: CircularProgressIndicator(),
