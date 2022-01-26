@@ -76,7 +76,7 @@ void sendERC20(String targetAddress, String tokenName, int value) async {
 }
 
 void multisendETH(List<String> targetAddresses, List<int> values) async {
-  var multisendAddress = "0x649917Fb21e2aF4F4087CCcB58D349a2999E3Cc5";
+  var multisendAddress = "0x4E23B5327664C945d74bD17606724efdf960E154";
   var credentials = EthPrivateKey.fromHex(privateKey);
   String abi = await rootBundle.loadString("assets/build/contracts/multisend-abi.json");
   final contract =  DeployedContract(ContractAbi.fromJson(abi, "Multisend"), EthereumAddress.fromHex(multisendAddress));
