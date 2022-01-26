@@ -18,17 +18,6 @@ class _WalletCardState extends State<WalletCard> {
   @override
   void initState() {
     super.initState();
-    updateValues();
-  }
-
-  updateValues() async {
-    //TODO: get data form Home page
-    //TODO: implement state management system
-    dynamic data = await getTokenBalance(
-        EthereumAddress.fromHex(mainAccount.address), "ChainLink Token");
-    setState(() {
-      price = data.toString();
-    });
   }
 
   @override
@@ -79,7 +68,7 @@ class _WalletCardState extends State<WalletCard> {
                         height: 5,
                       ),
                       Text(
-                        price.toString(),
+                        widget.cryptoWallet.balance.toString(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black45,

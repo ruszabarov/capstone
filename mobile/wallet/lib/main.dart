@@ -4,6 +4,7 @@ import 'package:wallet/screens/authentication/auth.dart';
 import 'package:wallet/screens/authentication/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet/screens/load_data.dart';
 import 'package:wallet/screens/wrapper.dart';
 import 'dart:io';
 
@@ -18,7 +19,6 @@ void main() async {
         ),
         StreamProvider(
           create: (context) => context.read<AuthenticationProvider>().authState,
-          //! Maybe add builder here? and return a child...
           initialData: null,
         ),
       ],
@@ -49,12 +49,20 @@ class MyApp extends StatelessWidget {
 class Authenticate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //TODO: figure out if we need the StreamBuilder. Maybe there is a way to do the same with SteamProvider?
     return StreamBuilder<User?>(
       stream: context.read<AuthenticationProvider>().authState,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
-          return snapshot.data != null ? Wrapper() : LoginPage();
+          return AnimatedSwitcher(
+            duration: Duration(seconds: 2),
+            child: snapshot.hasData
+                ? LoadDataPage(
+                    key: ValueKey("asd"),
+                  )
+                : LoginPage(
+                    key: ValueKey("asdasd"),
+                  ),
+          );
         } else {
           return Center(
             child: CircularProgressIndicator(),
@@ -68,13 +76,12 @@ class Authenticate extends StatelessWidget {
     // if (firebaseUser != null) {
     //   return Wrapper();
     // }
+    // return LoginPage();
 
     // // Navigator.of(context).pushReplacement(
     // //   MaterialPageRoute(
     // //     builder: (context) => LoginPage(),
     // //   ),
     // // );
-
-    // return LoginPage();
   }
 }

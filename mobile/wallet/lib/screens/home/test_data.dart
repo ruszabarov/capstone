@@ -43,8 +43,8 @@ class Account {
 
 Account mainAccount = Account("Main Account",
     "0x127Ff1D9560F7992911389BA181f695b38EE9399", 2250.12, cryptoWallets);
-Account secondAccount =
-    Account("Second Account", "0x2378429832295292", 1023.68, accountTwo);
+Account secondAccount = Account("Second Account",
+    "0x127Ff1D9560F7992911389BA181f695b38EE9399", 1023.68, accountTwo);
 
 var accounts = [
   mainAccount,

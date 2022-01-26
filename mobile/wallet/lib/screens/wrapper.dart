@@ -8,7 +8,7 @@ import 'package:wallet/wallet_icons.dart';
 import 'package:wallet/screens/home/home.dart';
 
 class Wrapper extends StatefulWidget {
-  const Wrapper();
+  const Wrapper({Key? key}) : super(key: key);
 
   @override
   State createState() {
