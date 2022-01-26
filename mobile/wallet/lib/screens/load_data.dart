@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wallet/logic.dart';
 import 'package:wallet/screens/wrapper.dart';
 import 'package:web3dart/web3dart.dart';
@@ -13,14 +14,14 @@ class LoadDataPage extends StatefulWidget {
 
 class _LoadDataPageState extends State<LoadDataPage> {
   Future<String> loadData() async {
-    for (int i = 0; i < accounts.length; i++) {
-      for (int j = 0; j < accounts[i].wallets.length; j++) {
-        accounts[i].wallets[j].balance = await getTokenBalance(
-            EthereumAddress.fromHex(accounts[i].address), "ChainLink Token");
-      }
-    }
+    // for (int i = 0; i < testList.length; i++) {
+    //   for (int j = 0; j < testList[i].wallets.length; j++) {
+    //     testList[i].wallets[j].balance = await getTokenBalance(
+    //         EthereumAddress.fromHex(testList[i].address), "ChainLink Token");
+    //   }
+    // }
 
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
 
     return "Data Loaded";
   }
@@ -39,7 +40,10 @@ class _LoadDataPageState extends State<LoadDataPage> {
             );
           },
           child: snapshot.hasData
-              ? Wrapper()
+              ? ChangeNotifierProvider<AccountList>(
+                  create: (context) => AccountList(),
+                  child: Wrapper(),
+                )
               : Scaffold(
                   body: Center(
                     child: Column(
@@ -56,38 +60,6 @@ class _LoadDataPageState extends State<LoadDataPage> {
                   ),
                 ),
         );
-        // Widget body = Container();
-        // if (snapshot.hasData) {
-        //   return Wrapper();
-        // } else if (snapshot.hasError) {
-        //   body = Column(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     children: [
-        //       Text("Error occured"),
-        //     ],
-        //   );
-        // } else {
-        //   body = Column(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     children: [
-        //       Text("Loading data"),
-        //       SizedBox(
-        //         height: 20,
-        //       ),
-        //       CircularProgressIndicator(),
-        //     ],
-        //   );
-        // }
-        // return Scaffold(
-        //   appBar: AppBar(
-        //     title: Text("hello"),
-        //   ),
-        //   body: Center(
-        //     child: body,
-        //   ),
-        // );
       },
     );
   }

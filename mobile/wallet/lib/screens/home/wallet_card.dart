@@ -14,7 +14,6 @@ class WalletCard extends StatefulWidget {
 }
 
 class _WalletCardState extends State<WalletCard> {
-  String price = "0";
   @override
   void initState() {
     super.initState();
