@@ -75,6 +75,23 @@ void sendERC20(String targetAddress, String tokenName, int value) async {
       chainId: 4);
 }
 
+void multisendETH(List<String> targetAddresses, List<int> values) async {
+  var multisendAddress = "0x649917Fb21e2aF4F4087CCcB58D349a2999E3Cc5";
+  var credentials = EthPrivateKey.fromHex(privateKey);
+  String abi = await rootBundle.loadString("assets/build/contracts/multisend-abi.json");
+  final contract =  DeployedContract(ContractAbi.fromJson(abi, "Multisend"), EthereumAddress.fromHex(multisendAddress));
+  List<dynamic> args = [targetAddresses, values];
+
+  await ethClient.sendTransaction(
+      credentials,
+      Transaction.callContract(
+          contract: contract,
+          function: contract.function("withdrawls"),
+          parameters: args,
+          maxGas: 100000000),
+      chainId: 4);
+}
+
 void sendEth(String targetAddress, int value) async {
   var credentials = EthPrivateKey.fromHex(privateKey);
 
