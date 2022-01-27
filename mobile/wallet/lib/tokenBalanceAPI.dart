@@ -1,12 +1,12 @@
 import 'dart:convert';
-
+import 'private.dart';
 import 'package:etherscan_api/etherscan_api.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/services.dart';
 
-final eth = EtherscanAPI(apiKey: 'ZCY26NRJI1EZ1U7BSKYTKIIYWAGH86ADFT', chain: EthChain.rinkeby);
+final eth = EtherscanAPI(apiKey: apiKey, chain: EthChain.rinkeby);
 final myAddress = "0x039749DdBf1CCbFe20548fA9fF4521eecC4a0a02";
 
 
