@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:wallet/tokenBalanceAPI.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -8,6 +9,7 @@ import 'package:wallet/private.dart';
 
 final myAddress = "0x039749DdBf1CCbFe20548fA9fF4521eecC4a0a02";
 EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
+
 
 Client httpClient = new Client();
 Web3Client ethClient = new Web3Client(
@@ -34,6 +36,7 @@ Future<DeployedContract> loadContract(String from) async {
 }
 
 Future<String> loadTokenContract(String tokenName) async {
+  getTokenList();
   final String abi = await rootBundle
       .loadString("assets/build/contracts/token-list-rinkeby.json");
   final json = await jsonDecode(

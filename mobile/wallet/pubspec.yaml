@@ -40,6 +40,7 @@ dependencies:
   shared_preferences: ^2.0.12
   bip39: ^1.0.6
   ed25519_hd_key: ^2.2.0
+  etherscan_api: ^1.0.0-beta
 
 dev_dependencies:
   flutter_test:
