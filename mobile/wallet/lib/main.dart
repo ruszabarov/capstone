@@ -55,30 +55,7 @@ class Authenticate extends StatelessWidget {
       stream: context.read<AuthenticationProvider>().authState,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
-          Token ethereum = new Token("ethereum", "asdadasds", 'ETH', 20);
-          Token bitcoin = new Token("bitcoin", "asdasdad", "BTC", 30);
-
-          var cryptoWallets = [
-            ethereum,
-            bitcoin,
-          ];
-          Account testAccount = Account(
-            "asd",
-            "0x127Ff1D9560F7992911389BA181f695b38EE9399",
-            2250.12,
-            TokenList(cryptoWallets),
-          );
-
-          return snapshot.hasData
-              ? MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider<AccountList>(
-                      create: (context) => AccountList([testAccount]),
-                    ),
-                  ],
-                  child: LoadDataPage(),
-                )
-              : LoginPage();
+          return snapshot.hasData ? LoadDataPage() : LoginPage();
         } else {
           return Center(
             child: CircularProgressIndicator(),
@@ -87,13 +64,6 @@ class Authenticate extends StatelessWidget {
       },
     );
 
-    // final firebaseUser = context.watch<User?>();
-
-    // if (firebaseUser != null) {
-    //   return Wrapper();
-    // }
-    // return LoginPage();
-
     // // Navigator.of(context).pushReplacement(
     // //   MaterialPageRoute(
     // //     builder: (context) => LoginPage(),
@@ -101,3 +71,14 @@ class Authenticate extends StatelessWidget {
     // // );
   }
 }
+
+/*
+MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider<AccountList>(
+                      create: (context) => AccountList([testAccount]),
+                    ),
+                  ],
+                  child: LoadDataPage(),
+                )
+                */

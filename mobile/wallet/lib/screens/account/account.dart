@@ -6,10 +6,10 @@ import 'package:wallet/screens/authentication/auth.dart';
 import 'package:provider/src/provider.dart';
 import 'package:wallet/screens/home/test_data.dart';
 
-class Account extends StatelessWidget {
+class AccountPage extends StatelessWidget {
   final String title = "Account";
 
-  const Account();
+  const AccountPage();
 
   @override
   Widget build(BuildContext context) {

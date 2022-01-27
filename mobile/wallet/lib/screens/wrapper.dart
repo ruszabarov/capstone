@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wallet/providers/Account.dart';
 import 'package:wallet/screens/account/account.dart';
 import 'package:wallet/screens/home/add_wallet.dart';
 import 'package:wallet/screens/market/market.dart';
@@ -8,7 +10,9 @@ import 'package:wallet/wallet_icons.dart';
 import 'package:wallet/screens/home/home.dart';
 
 class Wrapper extends StatefulWidget {
-  const Wrapper({Key? key}) : super(key: key);
+  final List<Account> initData;
+
+  Wrapper(this.initData);
 
   @override
   State createState() {
@@ -33,7 +37,7 @@ class _WrapperState extends State<Wrapper> {
     _pageController = PageController();
     home = Home();
     market = MarketPage();
-    account = Account();
+    account = AccountPage();
     super.initState();
   }
 
@@ -62,7 +66,14 @@ class _WrapperState extends State<Wrapper> {
           });
         },
         children: <Widget>[
-          home,
+          MultiProvider(
+            providers: [
+              ChangeNotifierProvider<AccountList>(
+                create: (context) => AccountList(widget.initData),
+              ),
+            ],
+            child: home,
+          ),
           market,
           account,
         ],
