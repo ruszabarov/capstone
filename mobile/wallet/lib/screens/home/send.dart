@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wallet/logic.dart';
-import 'package:wallet/screens/home/test_data.dart';
+import 'package:wallet/providers/Token.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class SendCard extends StatefulWidget {
-  final CryptoWallet cryptoWallet;
+  final Token cryptoWallet;
   final Function handleCloseButton;
 
   const SendCard(

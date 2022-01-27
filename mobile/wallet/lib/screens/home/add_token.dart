@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wallet/providers/Account.dart';
 import 'package:wallet/screens/shared/shared.dart';
+import 'package:provider/provider.dart';
 
 class AddTokenPage extends StatefulWidget {
   const AddTokenPage();

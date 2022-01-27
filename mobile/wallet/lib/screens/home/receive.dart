@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:wallet/screens/home/test_data.dart';
-import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:wallet/providers/Token.dart';
 
 class ReceiveCard extends StatelessWidget {
-  final CryptoWallet cryptoWallet;
+  final Token cryptoWallet;
   final Function handleReceiveButton;
 
   const ReceiveCard(

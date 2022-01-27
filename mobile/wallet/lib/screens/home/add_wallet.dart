@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wallet/providers/Account.dart';
 
 class AddWalletCard extends StatelessWidget {
   final Function handleFunction;
@@ -76,21 +78,27 @@ class AddWalletCard extends StatelessWidget {
             SizedBox(
               height: 60,
             ),
-            Container(
-              width: double.maxFinite,
-              height: 50,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.blueAccent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5),
+            Consumer<AccountList>(
+              builder: (context, value, child) {
+                return Container(
+                  width: double.maxFinite,
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blueAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                      ),
                     ),
+                    onPressed: () {
+                      value.updateTokenBalance(0, 3000);
+                    },
+                    child: Text("CREATE WALLET"),
                   ),
-                ),
-                onPressed: () {},
-                child: Text("CREATE WALLET"),
-              ),
+                );
+              },
             )
           ],
         ),

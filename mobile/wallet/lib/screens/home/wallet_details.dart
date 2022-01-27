@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/home/receive.dart';
 import 'package:wallet/screens/home/send.dart';
 import 'package:wallet/screens/home/test_data.dart';
-import 'package:wallet/screens/home/receipt_card.dart';
 import 'package:wallet/screens/home/transaction_list.dart';
 import 'package:wallet/screens/shared/shared.dart';
-import 'package:wallet/logic.dart';
 
 class WalletDetailsPage extends StatefulWidget {
-  final CryptoWallet cryptoWallet;
+  final Token cryptoWallet;
 
   WalletDetailsPage(this.cryptoWallet);
 
@@ -72,7 +70,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Icon(
-                              widget.cryptoWallet.icon,
+                              Icons.ac_unit_outlined,
                               color: Colors.black,
                               size: 35.0,
                             ),

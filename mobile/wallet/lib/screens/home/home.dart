@@ -1,15 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wallet/logic.dart';
+import 'package:wallet/providers/Account.dart';
 import 'package:wallet/screens/home/account_card.dart';
 import 'package:wallet/screens/home/add_token.dart';
 import 'package:wallet/screens/home/add_wallet.dart';
-import 'package:wallet/screens/home/firestore.dart';
-import 'package:wallet/screens/shared/card.dart';
-import 'package:web3dart/web3dart.dart';
-import 'test_data.dart';
 import 'wallet_card.dart';
 
 class Home extends StatefulWidget {
@@ -130,11 +125,13 @@ class _HomeState extends State<Home> {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    itemCount:
-                        value.accounts[accountSelectedIndex].wallets.length + 1,
+                    itemCount: value.accounts[accountSelectedIndex].tokens
+                            .tokenList.length +
+                        1,
                     itemBuilder: (BuildContext ctxt, int index) {
                       if (index ==
-                          value.accounts[accountSelectedIndex].wallets.length) {
+                          value.accounts[accountSelectedIndex].tokens.tokenList
+                              .length) {
                         return Center(
                           child: Padding(
                             padding: const EdgeInsets.only(top: 10),
@@ -167,8 +164,8 @@ class _HomeState extends State<Home> {
                           ),
                         );
                       }
-                      return new WalletCard(
-                          value.accounts[accountSelectedIndex].wallets[index]);
+                      return new WalletCard(value.accounts[accountSelectedIndex]
+                          .tokens.tokenList[index]);
                     },
                   ),
                 ),

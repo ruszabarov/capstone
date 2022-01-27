@@ -14,13 +14,6 @@ class LoadDataPage extends StatefulWidget {
 
 class _LoadDataPageState extends State<LoadDataPage> {
   Future<String> loadData() async {
-    // for (int i = 0; i < testList.length; i++) {
-    //   for (int j = 0; j < testList[i].wallets.length; j++) {
-    //     testList[i].wallets[j].balance = await getTokenBalance(
-    //         EthereumAddress.fromHex(testList[i].address), "ChainLink Token");
-    //   }
-    // }
-
     await Future.delayed(Duration(seconds: 1));
 
     return "Data Loaded";
@@ -40,10 +33,7 @@ class _LoadDataPageState extends State<LoadDataPage> {
             );
           },
           child: snapshot.hasData
-              ? ChangeNotifierProvider<AccountList>(
-                  create: (context) => AccountList(),
-                  child: Wrapper(),
-                )
+              ? Wrapper()
               : Scaffold(
                   body: Center(
                     child: Column(

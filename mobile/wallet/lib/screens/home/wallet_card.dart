@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/logic.dart';
-import 'package:wallet/screens/home/test_data.dart';
+import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/home/wallet_details.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:web3dart/web3dart.dart';
 
 class WalletCard extends StatefulWidget {
-  final CryptoWallet cryptoWallet;
+  final Token cryptoWallet;
   WalletCard(this.cryptoWallet);
 
   @override
@@ -45,7 +45,7 @@ class _WalletCardState extends State<WalletCard> {
                       width: 50,
                       height: 50,
                       child: Icon(
-                        widget.cryptoWallet.icon,
+                        Icons.ac_unit_outlined,
                         color: Colors.white,
                         size: 25.0,
                       ),
