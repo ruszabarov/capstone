@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
+import 'package:wallet/providers/Market.dart';
 import 'package:wallet/screens/market/api.dart';
 import 'market_card.dart';
 
@@ -11,25 +13,6 @@ class MarketPage extends StatefulWidget {
 
 class _MarketPageState extends State<MarketPage>
     with AutomaticKeepAliveClientMixin {
-  List<StaticTokenInformation> tokenList = [
-    StaticTokenInformation(
-        "ethereum", 'assets/images/coin_logos/ethereum.webp', 0, false),
-    StaticTokenInformation(
-        "tether", 'assets/images/coin_logos/tether.webp', 0, false),
-    StaticTokenInformation(
-        "usd-coin", 'assets/images/coin_logos/usd-coin.webp', 0, false),
-    StaticTokenInformation(
-        'binancecoin', 'assets/images/coin_logos/binance-coin.webp', 0, false),
-    StaticTokenInformation(
-        'matic-network', 'assets/images/coin_logos/matic-token.webp', 0, false),
-    StaticTokenInformation(
-        'shiba-inu', 'assets/images/coin_logos/shiba.webp', 0, false),
-    StaticTokenInformation('wrapped-bitcoin',
-        'assets/images/coin_logos/wrapped-bitcoin.webp', 0, false),
-    StaticTokenInformation(
-        'chainlink', 'assets/images/coin_logos/chainlink.webp', 0, false)
-  ];
-
   List displayedList = [];
 
   final TextEditingController _controller = new TextEditingController();
@@ -37,21 +20,8 @@ class _MarketPageState extends State<MarketPage>
   @override
   void initState() {
     super.initState();
-    initializeTokens();
-    displayedList = tokenList;
-  }
-
-  void initializeTokens() async {
-    for (int i = 0; i < tokenList.length; i++) {
-      Map<String, dynamic> data = await getCoinData(tokenList[i].name);
-      double price = data['current_price'];
-      bool isPriceGoingUp = data['price_change_percent'] > 0 ? true : false;
-
-      setState(() {
-        tokenList[i].currentPrice = price;
-        tokenList[i].isPriceGoingUp = isPriceGoingUp;
-      });
-    }
+    MarketList marketList = context.read<MarketList>();
+    displayedList = marketList.markets;
   }
 
   @override
@@ -108,8 +78,7 @@ class _MarketPageState extends State<MarketPage>
               scrollDirection: Axis.vertical,
               itemCount: displayedList.length,
               itemBuilder: (BuildContext ctxt, int index) {
-                return new MarketCard(
-                    displayedList[index], index, displayedList.length - 1);
+                return new MarketCard(index, displayedList.length - 1);
               },
             ),
           ),
@@ -119,10 +88,11 @@ class _MarketPageState extends State<MarketPage>
   }
 
   void searchOperation(String searchText) {
-    List searchResult = [];
+    List<Market> searchResult = [];
+    MarketList marketList = context.read<MarketList>();
 
-    for (int i = 0; i < tokenList.length; i++) {
-      StaticTokenInformation data = tokenList[i];
+    for (int i = 0; i < marketList.markets.length; i++) {
+      Market data = marketList.markets[i];
       if (data.name.toLowerCase().contains(searchText.toLowerCase())) {
         searchResult.add(data);
       }
@@ -131,19 +101,11 @@ class _MarketPageState extends State<MarketPage>
     setState(() {
       displayedList = searchResult;
     });
+
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
-}
-
-class StaticTokenInformation {
-  final String name;
-  final String imagePath;
-  double currentPrice;
-  bool isPriceGoingUp;
-
-  StaticTokenInformation(
-      this.name, this.imagePath, this.currentPrice, this.isPriceGoingUp);
 }

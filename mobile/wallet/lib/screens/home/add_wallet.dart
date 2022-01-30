@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet/logic.dart';
 import 'package:wallet/providers/Account.dart';
+import 'package:web3dart/web3dart.dart';
 
 class AddWalletCard extends StatelessWidget {
   final Function handleFunction;
@@ -92,9 +94,7 @@ class AddWalletCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    onPressed: () {
-                      value.updateTokenBalance(0, 3000);
-                    },
+                    onPressed: () async {},
                     child: Text("CREATE WALLET"),
                   ),
                 );

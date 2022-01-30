@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:wallet/logic.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/providers/Token.dart';
+import 'package:wallet/providers/Market.dart';
+import 'package:wallet/screens/market/api.dart';
 import 'package:wallet/screens/wrapper.dart';
-import 'package:web3dart/web3dart.dart';
 
 class LoadDataPage extends StatefulWidget {
   LoadDataPage({Key? key}) : super(key: key);
@@ -12,28 +13,22 @@ class LoadDataPage extends StatefulWidget {
   State<LoadDataPage> createState() => _LoadDataPageState();
 }
 
-Token ethereum = new Token("ethereum", "asdadasds", 'ETH', 0);
-Token bitcoin = new Token("bitcoin", "asdasdad", "BTC", 0);
-
-var cryptoWallets = [
-  ethereum,
-  bitcoin,
-];
-Account testAccount = Account(
-  "asd",
-  "0x127Ff1D9560F7992911389BA181f695b38EE9399",
-  2250.12,
-  TokenList(cryptoWallets),
-);
-
 class _LoadDataPageState extends State<LoadDataPage> {
-  List<Account> initData = [testAccount];
+  //! initAccountData is in Token.dart with dummy data
+  //! initMarketData is in Market.dart with dummy data
 
   void loadData() async {
-    for (int i = 0; i < initData[0].tokens.tokenList.length; i++) {
-      initData[0].tokens.tokenList[i].balance = double.parse(
-          await getTokenBalance(
-              EthereumAddress.fromHex(initData[0].address), "ChainLink Token"));
+    // load Account data
+    for (int i = 0; i < initAccountData[0].tokens.tokenList.length; i++) {
+      initAccountData[0].tokens.tokenList[i].balance = double.parse(
+          await getTokenBalance(initAccountData[0].address, "ChainLink Token"));
+    }
+
+    // load Market data
+    for (int i = 0; i < initMarketData.length; i++) {
+      Map<String, dynamic> data = await getCoinData(initMarketData[i].name);
+      initMarketData[i].currentPrice = data['current_price'];
+      initMarketData[i].priceChangePercent = data['price_change_percent'];
     }
 
     await Future.delayed(Duration(seconds: 1));
@@ -41,7 +36,7 @@ class _LoadDataPageState extends State<LoadDataPage> {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) {
-          return Wrapper(initData);
+          return Wrapper(initAccountData, initMarketData);
         },
       ),
     );

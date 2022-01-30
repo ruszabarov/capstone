@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:wallet/private.dart';
 
-final myAddress = "0x6C936056d204C7445f1696693AdcB2d799b71895";
+final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
 
 Client httpClient = new Client();
@@ -60,14 +60,19 @@ Future<String> loadTokenContract(String tokenName) async {
   return "Null";
 }
 
-Future<String> getTokenBalance(EthereumAddress from, String tokenName) async {
+Future<String> getTokenBalance(String from, String tokenName) async {
+  Client httpClient = new Client();
+  Web3Client ethClient = new Web3Client(
+      "https://rinkeby.infura.io/v3/f58b56df688c4bafba806114fb329aaa",
+      httpClient);
+
   final decimals = 18;
   final contract = await loadContract(tokenName);
   final balance = await ethClient.call(
       contract: contract,
       function: contract.function("balanceOf"),
       params: [
-        from
+        EthereumAddress.fromHex(from)
       ]).then((value) =>
       EtherAmount.fromUnitAndValue(EtherUnit.wei, value[0]).getInWei);
   return (balance.toDouble() / pow(10, decimals)).toStringAsFixed(3);

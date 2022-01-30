@@ -26,9 +26,6 @@ class AccountPage extends StatelessWidget {
           },
           child: Text("Sign out"),
         ),
-        Consumer<AccountList>(builder: (context, accounts, child) {
-          return Text(accounts.accounts[0].balance.toString());
-        }),
       ],
     );
   }
