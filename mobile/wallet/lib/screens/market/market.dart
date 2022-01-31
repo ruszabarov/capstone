@@ -11,8 +11,7 @@ class MarketPage extends StatefulWidget {
   _MarketPageState createState() => _MarketPageState();
 }
 
-class _MarketPageState extends State<MarketPage>
-    with AutomaticKeepAliveClientMixin {
+class _MarketPageState extends State<MarketPage> {
   List displayedList = [];
 
   final TextEditingController _controller = new TextEditingController();
@@ -104,8 +103,4 @@ class _MarketPageState extends State<MarketPage>
 
     FocusManager.instance.primaryFocus?.unfocus();
   }
-
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
 }
