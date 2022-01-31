@@ -9,9 +9,17 @@ class MarketChart extends StatelessWidget {
   final List<LinearPrice> data;
   final int decimalPlaces;
   final double lastPrice;
+  final ValueNotifier currentDate;
 
-  MarketChart(this.trackballBehavior, this.currentCoinPrice, this.minPrice,
-      this.maxPrice, this.data, this.decimalPlaces, this.lastPrice);
+  MarketChart(
+      this.trackballBehavior,
+      this.currentCoinPrice,
+      this.minPrice,
+      this.maxPrice,
+      this.data,
+      this.decimalPlaces,
+      this.lastPrice,
+      this.currentDate);
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +29,12 @@ class MarketChart extends StatelessWidget {
         onTrackballPositionChanging: (TrackballArgs args) {
           currentCoinPrice.value = args.chartPointInfo.chartDataPoint!.yValue
               .toStringAsFixed(decimalPlaces);
+          currentDate.value = DateTime.fromMillisecondsSinceEpoch(
+              args.chartPointInfo.chartDataPoint!.xValue);
         },
         onChartTouchInteractionUp: (ChartTouchInteractionArgs args) {
           currentCoinPrice.value = lastPrice.toString();
+          currentDate.value = DateTime.now();
         },
         primaryXAxis: DateTimeAxis(
           isVisible: false,

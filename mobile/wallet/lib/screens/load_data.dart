@@ -25,10 +25,17 @@ class _LoadDataPageState extends State<LoadDataPage> {
     }
 
     // load Market data
+    String request = "";
     for (int i = 0; i < initMarketData.length; i++) {
-      Map<String, dynamic> data = await getCoinData(initMarketData[i].name);
-      initMarketData[i].currentPrice = data['current_price'];
-      initMarketData[i].priceChangePercent = data['price_change_percent'];
+      request += "${initMarketData[i].name},";
+    }
+
+    Map<String, dynamic> response = await getSimpleTokenData(request);
+
+    for (int i = 0; i < initMarketData.length; i++) {
+      initMarketData[i].currentPrice = response[initMarketData[i].name]['usd'];
+      initMarketData[i].priceChangePercent =
+          response[initMarketData[i].name]['usd_24h_change'];
     }
 
     await Future.delayed(Duration(seconds: 1));

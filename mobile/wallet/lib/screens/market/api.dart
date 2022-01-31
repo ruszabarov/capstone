@@ -5,33 +5,48 @@ import 'dart:convert';
 
 Future<Map<String, dynamic>> getCoinData(String id) async {
   try {
-    var url = Uri.parse("https://api.coingecko.com/api/v3/coins/${id}");
-    var response = await http.get(url);
-    var json = jsonDecode(response.body);
-    var price = json['market_data']['current_price']['usd'].toString();
-    var priceChange =
-        json['market_data']['price_change_percentage_24h'].toString();
-    var icon = json['image']['small'];
-    var result = {
-      'current_price': double.parse(price),
-      'price_change_percent': double.parse(priceChange),
+    Uri uri = Uri.parse("https://api.coingecko.com/api/v3/coins/${id}");
+    dynamic response = await http.get(uri);
+    dynamic json = jsonDecode(response.body);
+    num price = json['market_data']['current_price']['usd'];
+    num priceChange = json['market_data']['price_change_percentage_24h'];
+    String icon = json['image']['small'];
+    Map<String, dynamic> result = {
+      'current_price': price,
+      'price_change_percent': priceChange,
       'icon': icon,
     };
     return result;
   } catch (e) {
-    var result = {
-      'current_price': 0.0,
-      'price_change_percent': 0.0,
-      'icon': ''
-    };
-    return result;
+    throw (e.toString());
   }
 }
 
-Future<List> getMarketData(String id, String days) async {
+Future<Map<String, dynamic>> getSimpleTokenData(String ids) async {
   try {
+    Uri uri = Uri.parse(
+        "https://api.coingecko.com/api/v3/simple/price?ids=$ids&vs_currencies=usd&include_24hr_change=true");
+    dynamic response = await http.get(uri);
+    dynamic json = jsonDecode(response.body);
+    return json;
+  } catch (e) {
+    throw (e.toString());
+  }
+}
+
+Future<List> getMarketData(String id, int days) async {
+  String interval = "";
+  try {
+    if (days == 1) {
+      interval = "5min";
+    } else if (days <= 30) {
+      interval = "hourly";
+    } else {
+      interval = "daily";
+    }
+
     var url = Uri.parse(
-        "https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${days}");
+        "https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${days}&interval=${interval}");
     var response = await http.get(url);
     var json = jsonDecode(response.body);
     var prices = json['prices'];

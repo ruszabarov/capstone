@@ -38,6 +38,7 @@ dependencies:
   flutter_cache_manager: ^3.3.0
   decimal: ^2.1.0
   provider: ^6.0.2
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

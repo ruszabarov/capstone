@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 
 class Market {
   final String name;
-  double currentPrice = 0;
-  double priceChangePercent = 0;
+  num currentPrice = 0;
+  num priceChangePercent = 0;
   final String iconURL;
 
   Market(this.name, this.iconURL);

@@ -3,6 +3,7 @@ import 'package:wallet/screens/market/api.dart';
 import 'package:wallet/screens/market/market_chart.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:intl/intl.dart';
 
 class MarketDetailsPage extends StatefulWidget {
   final String coinName;
@@ -22,20 +23,23 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
   double percentChangeInRange = 0;
   late TrackballBehavior _trackballBehavior;
   late ValueNotifier<String> currentCoinPrice;
+  late ValueNotifier<DateTime> currentDate;
   late double lastPrice = 0;
+  bool displayHours = true;
 
   @override
   void initState() {
     super.initState();
     currentCoinPrice = ValueNotifier<String>("0");
-    _getCoinData('1');
+    currentDate = ValueNotifier<DateTime>(DateTime.now());
+    _getCoinData(1);
     _trackballBehavior = TrackballBehavior(
       enable: true,
       tooltipSettings: InteractiveTooltip(enable: false),
     );
   }
 
-  _getCoinData(String days) async {
+  _getCoinData(int days) async {
     data = [];
 
     List prices = await getMarketData(widget.coinName, days);
@@ -106,6 +110,21 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
+                SizedBox(
+                  width: 15,
+                ),
+                ValueListenableBuilder(
+                  valueListenable: currentDate,
+                  builder: (context, DateTime value, child) => displayHours
+                      ? Text(
+                          DateFormat('MMM d, yyyy').add_jm().format(value),
+                          style: TextStyle(fontSize: 20),
+                        )
+                      : Text(
+                          DateFormat('MMM d, yyyy').format(value),
+                          style: TextStyle(fontSize: 20),
+                        ),
+                ),
               ],
             ),
           ),
@@ -120,24 +139,24 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
             ),
           ),
           MarketChart(_trackballBehavior, currentCoinPrice, minPrice, maxPrice,
-              data, decimalPlaces, lastPrice),
+              data, decimalPlaces, lastPrice, currentDate),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TimeRangeButton(
-                    days: '1', label: "1D", getCoinData: _getCoinData),
+                    days: 1, label: "1D", getCoinData: _getCoinData),
                 TimeRangeButton(
-                    days: '7', label: "1W", getCoinData: _getCoinData),
+                    days: 7, label: "1W", getCoinData: _getCoinData),
                 TimeRangeButton(
-                    days: '30', label: "1M", getCoinData: _getCoinData),
+                    days: 30, label: "1M", getCoinData: _getCoinData),
                 TimeRangeButton(
-                    days: '90', label: "3M", getCoinData: _getCoinData),
+                    days: 90, label: "3M", getCoinData: _getCoinData),
                 TimeRangeButton(
-                    days: '365', label: "1Y", getCoinData: _getCoinData),
-                TimeRangeButton(
-                    days: 'max', label: "All", getCoinData: _getCoinData),
+                    days: 365, label: "1Y", getCoinData: _getCoinData),
+                // TimeRangeButton(
+                //     days: 'max', label: "All", getCoinData: _getCoinData),
               ],
             ),
           )
@@ -154,7 +173,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
 }
 
 class TimeRangeButton extends StatelessWidget {
-  final String days;
+  final int days;
   final String label;
   final Function getCoinData;
   const TimeRangeButton(
