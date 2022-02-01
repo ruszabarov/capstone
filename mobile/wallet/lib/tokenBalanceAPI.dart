@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 final eth = EtherscanAPI(apiKey: apiKey, chain: EthChain.rinkeby);
 final myAddress = "0x039749DdBf1CCbFe20548fA9fF4521eecC4a0a02";
 
-
+/*
 void getTokenList() async{
   final String abi = await rootBundle.loadString("assets/build/contracts/token-list-rinkeby.json");
   final json = await jsonDecode(
@@ -21,4 +21,5 @@ void getTokenList() async{
   for(int i = 0; i < json.length(); i++) {
     print(await eth.tokenBalance(address: myAddress, contractAddress: getAddresses(i)));
   }
-}
+  
+} */

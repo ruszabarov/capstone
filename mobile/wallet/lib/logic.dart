@@ -25,8 +25,7 @@ Future<String> getEthBalance(EthereumAddress from) async {
 }
 
 Future<DeployedContract> loadContract(String from) async {
-  String abi =
-      await rootBundle.loadString("assets/build/contracts/abi-erc20.json");
+  String abi = await rootBundle.loadString("assets/build/contracts/abi-erc20.json");
   final EthereumAddress contractAddress =
       await EthereumAddress.fromHex(await loadTokenContract(from));
   final contract =
@@ -36,7 +35,7 @@ Future<DeployedContract> loadContract(String from) async {
 }
 
 Future<String> loadTokenContract(String tokenName) async {
-  getTokenList();
+  // getTokenList();
   final String abi = await rootBundle
       .loadString("assets/build/contracts/token-list-rinkeby.json");
   final json = await jsonDecode(
@@ -98,7 +97,7 @@ void multisendETH(List<String> targetAddresses, List<int> values) async {
 void sendEth(String targetAddress, int value) async {
   var credentials = EthPrivateKey.fromHex(privateKey);
 
-  await ethClient.sendTransaction(
+  var txHash = await ethClient.sendTransaction(
     credentials,
     Transaction(
       to: EthereumAddress.fromHex(targetAddress),
@@ -108,4 +107,9 @@ void sendEth(String targetAddress, int value) async {
     ),
     chainId: 4,
   );
+  
+  
+  await Future.delayed(Duration(seconds: 30));
+  var receipt = await ethClient.getTransactionReceipt(txHash);
+  print("receipt: " + receipt.toString());
 }
