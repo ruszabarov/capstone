@@ -44,7 +44,7 @@ class _HomeState extends State<Home> {
     return Stack(
       children: [
         SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          // physics: BouncingScrollPhysics(),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
