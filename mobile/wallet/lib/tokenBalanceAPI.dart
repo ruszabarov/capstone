@@ -6,20 +6,24 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/services.dart';
 
-final eth = EtherscanAPI(apiKey: apiKey, chain: EthChain.rinkeby);
-final myAddress = "0x039749DdBf1CCbFe20548fA9fF4521eecC4a0a02";
+final etherscan = EtherscanAPI(apiKey: apiKey, chain: EthChain.rinkeby);
+final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 
-/*
+
 void getTokenList() async{
   final String abi = await rootBundle.loadString("assets/build/contracts/token-list-rinkeby.json");
   final json = await jsonDecode(
     abi,
   );
-  String getAddresses(i) {
+  String getAddresses(int i) {
     return json[i]["address"] as String;
   }
-  for(int i = 0; i < json.length(); i++) {
-    print(await eth.tokenBalance(address: myAddress, contractAddress: getAddresses(i)));
+  for(int i = 0; i < json.length; i++) {
+    final balance = await etherscan.tokenBalance(address: myAddress, contractAddress: getAddresses(i)).str;
+    final json = jsonDecode(balance);
+
+    await Future.delayed(Duration(seconds: 5));
+    print(json[0]);
   }
   
-} */
+}

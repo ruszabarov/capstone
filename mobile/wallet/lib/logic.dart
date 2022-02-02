@@ -34,7 +34,7 @@ Future<DeployedContract> loadContract(String from) async {
 }
 
 Future<String> loadTokenContract(String tokenName) async {
-  // getTokenList();
+  getTokenList();
   final String abi = await rootBundle
       .loadString("assets/build/contracts/token-list-rinkeby.json");
   final json = await jsonDecode(
