@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:wallet/tokenBalanceAPI.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -13,20 +14,6 @@ Client httpClient = new Client();
 Web3Client ethClient = new Web3Client(
     "https://rinkeby.infura.io/v3/f58b56df688c4bafba806114fb329aaa",
     httpClient);
-
-dynamic createWallet(String pass) {
-  Wallet wallet =
-      new Wallet.createNew(createPrivateKey(), pass, Random.secure());
-  return wallet.toJson();
-}
-
-dynamic createPrivateKey() {
-  return EthPrivateKey.createRandom(Random.secure());
-}
-
-String getAddressFromPK(EthPrivateKey add) {
-  return add.address.toString();
-}
 
 Future<String> getEthBalance(EthereumAddress from) async {
   const decimals = 18;
@@ -47,6 +34,7 @@ Future<DeployedContract> loadContract(String from) async {
 }
 
 Future<String> loadTokenContract(String tokenName) async {
+  // getTokenList();
   final String abi = await rootBundle
       .loadString("assets/build/contracts/token-list-rinkeby.json");
   final json = await jsonDecode(
@@ -93,10 +81,29 @@ void sendERC20(String targetAddress, String tokenName, int value) async {
       chainId: 4);
 }
 
+void multisendETH(List<String> targetAddresses, List<int> values) async {
+  var multisendAddress = "0x4E23B5327664C945d74bD17606724efdf960E154";
+  var credentials = EthPrivateKey.fromHex(privateKey);
+  String abi =
+      await rootBundle.loadString("assets/build/contracts/multisend-abi.json");
+  final contract = DeployedContract(ContractAbi.fromJson(abi, "Multisend"),
+      EthereumAddress.fromHex(multisendAddress));
+  List<dynamic> args = [targetAddresses, values];
+
+  await ethClient.sendTransaction(
+      credentials,
+      Transaction.callContract(
+          contract: contract,
+          function: contract.function("withdrawls"),
+          parameters: args,
+          maxGas: 100000000),
+      chainId: 4);
+}
+
 void sendEth(String targetAddress, int value) async {
   var credentials = EthPrivateKey.fromHex(privateKey);
 
-  await ethClient.sendTransaction(
+  var txHash = await ethClient.sendTransaction(
     credentials,
     Transaction(
       to: EthereumAddress.fromHex(targetAddress),
@@ -106,4 +113,8 @@ void sendEth(String targetAddress, int value) async {
     ),
     chainId: 4,
   );
+
+  await Future.delayed(Duration(seconds: 30));
+  var receipt = await ethClient.getTransactionReceipt(txHash);
+  print("receipt: " + receipt.toString());
 }
