@@ -5,10 +5,8 @@ class AccountCard extends StatefulWidget {
   final String name;
   final String address;
   final double balance;
-  final bool accountSelected;
 
-  const AccountCard(
-      this.name, this.address, this.balance, this.accountSelected);
+  const AccountCard(this.name, this.address, this.balance);
 
   @override
   State<AccountCard> createState() => _AccountCardState();
@@ -18,11 +16,11 @@ class _AccountCardState extends State<AccountCard> {
   @override
   Widget build(BuildContext context) {
     return Ink(
-      width: 200,
+      // width: MediaQuery.of(context).size.width * 0.7,
       height: 150,
-      padding: EdgeInsets.all(15),
+      padding: EdgeInsets.all(25),
       decoration: BoxDecoration(
-        color: widget.accountSelected ? Colors.grey[350] : Colors.white,
+        color: /*widget.accountSelected ? Colors.grey[350] : */ Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       child: Column(
@@ -34,7 +32,7 @@ class _AccountCardState extends State<AccountCard> {
             children: [
               Text(
                 widget.name,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               SizedBox(
                 height: 10,

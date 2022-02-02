@@ -50,69 +50,37 @@ class _HomeState extends State<Home> {
             children: [
               Material(
                 child: Ink(
-                  color: Colors.grey[200],
+                  color: Colors.grey[300],
                   height: 210,
                   child: Consumer<AccountList>(
-                    builder: (context, value, child) => ListView.separated(
-                      padding: EdgeInsets.all(25),
-                      separatorBuilder: (BuildContext context, int index) {
-                        return SizedBox(
-                          width: 15,
-                        );
-                      },
-                      physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: value.accounts.length + 1,
-                      itemBuilder: (BuildContext ctxt, int index) {
-                        if (index == value.accounts.length) {
-                          return InkWell(
-                            onTap: () {
-                              handleAddWalletButton();
-                            },
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            child: Ink(
-                              padding: EdgeInsets.all(15),
-                              width: 200,
-                              height: 150,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15))),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Add Account"),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Icon(
-                                    Icons.add,
-                                    size: 70,
-                                  )
-                                ],
-                              ),
+                    builder: (context, value, child) => PageView.builder(
+                      itemCount: value.accounts.length,
+                      controller: PageController(viewportFraction: 0.75),
+                      onPageChanged: (int index) =>
+                          setState(() => accountSelectedIndex = index),
+                      itemBuilder: (_, i) {
+                        return Transform.scale(
+                          scale: i == accountSelectedIndex ? 1 : 0.9,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 15),
+                            child: AccountCard(
+                              value.accounts[i].name,
+                              value.accounts[i].address,
+                              value.accounts[i].balance,
                             ),
-                          );
-                        }
-
-                        return InkWell(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          onTap: () {
-                            setState(() {
-                              accountSelectedIndex = index;
-                            });
-                          },
-                          child: AccountCard(
-                              value.accounts[index].name,
-                              value.accounts[index].address,
-                              value.accounts[index].balance,
-                              accountSelectedIndex == index ? true : false),
+                          ),
                         );
                       },
                     ),
                   ),
                 ),
               ),
+              // Divider(
+              //   thickness: 5,
+              //   color: Colors.grey,
+              //   height: 5,
+              // ),
               Flexible(
                 child: Consumer<AccountList>(
                   builder: (context, value, child) => ListView.separated(
@@ -185,3 +153,60 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+
+                    // ListView.separated(
+                    //   padding: EdgeInsets.all(25),
+                    //   separatorBuilder: (BuildContext context, int index) {
+                    //     return SizedBox(
+                    //       width: 15,
+                    //     );
+                    //   },
+                    //   physics: BouncingScrollPhysics(),
+                    //   scrollDirection: Axis.horizontal,
+                    //   itemCount: value.accounts.length + 4,
+                    //   itemBuilder: (BuildContext ctxt, int index) {
+                        // if (index == value.accounts.length) {
+                        //   return InkWell(
+                        //     onTap: () {
+                        //       handleAddWalletButton();
+                        //     },
+                        //     borderRadius: BorderRadius.all(Radius.circular(15)),
+                        //     child: Ink(
+                        //       padding: EdgeInsets.all(15),
+                        //       width: MediaQuery.of(context).size.width * 0.7,
+                        //       height: 150,
+                        //       decoration: BoxDecoration(
+                        //           color: Colors.white,
+                        //           borderRadius:
+                        //               BorderRadius.all(Radius.circular(15))),
+                        //       child: Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         children: [
+                        //           Text("Add Account"),
+                        //           SizedBox(
+                        //             height: 10,
+                        //           ),
+                        //           Icon(
+                        //             Icons.add,
+                        //             size: 70,
+                        //           )
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   );
+                        // }
+                        // return InkWell(
+                        //   borderRadius: BorderRadius.all(Radius.circular(15)),
+                        //   onTap: () {
+                        //     setState(() {
+                        //       accountSelectedIndex = index;
+                        //     });
+                        //   },
+                        //   child: AccountCard(
+                        //       value.accounts[0].name,
+                        //       value.accounts[0].address,
+                        //       value.accounts[0].balance,
+                        //       accountSelectedIndex == index ? true : false),
+                        // );
+              //         },
