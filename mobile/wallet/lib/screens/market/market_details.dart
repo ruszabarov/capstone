@@ -72,7 +72,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
                     builder: (context, DateTime value, child) {
                       if (displayMinutes) {
                         return Text(
-                          DateFormat('MMM d, yyyy').add_jm().format(value),
+                          DateFormat().add_jm().format(value),
                           style: TextStyle(fontSize: 20),
                         );
                       } else if (displayHours) {

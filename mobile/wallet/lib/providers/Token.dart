@@ -5,9 +5,10 @@ class Token {
   final String name;
   final String adress;
   final String shortName;
+  final String iconURL;
   double balance;
 
-  Token(this.name, this.adress, this.shortName, this.balance);
+  Token(this.name, this.adress, this.shortName, this.balance, this.iconURL);
 }
 
 class TokenList extends ChangeNotifier {
@@ -18,8 +19,10 @@ class TokenList extends ChangeNotifier {
   TokenList(this._tokenList) {}
 }
 
-Token ethereum = new Token("ethereum", "asdadasds", 'ETH', 0);
-Token bitcoin = new Token("bitcoin", "asdasdad", "BTC", 0);
+Token ethereum = new Token("ethereum", "asdadasds", 'ETH', 0,
+    'assets/images/coin_logos/ethereum.webp');
+Token bitcoin = new Token(
+    "bitcoin", "asdasdad", "BTC", 0, 'assets/images/coin_logos/bitcoin.webp');
 
 var cryptoWallets = [
   ethereum,

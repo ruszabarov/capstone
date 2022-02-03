@@ -39,17 +39,10 @@ class _WalletCardState extends State<WalletCard> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 ClipOval(
-                  child: Material(
-                    color: Colors.black87,
-                    child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Icon(
-                        Icons.ac_unit_outlined,
-                        color: Colors.white,
-                        size: 25.0,
-                      ),
-                    ),
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: Image.asset(widget.cryptoWallet.iconURL),
                   ),
                 ),
                 SizedBox(width: 20),

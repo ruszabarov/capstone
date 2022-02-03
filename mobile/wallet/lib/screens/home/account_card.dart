@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/shared/card.dart';
+import 'dart:math';
 
 class AccountCard extends StatefulWidget {
   final String name;
   final String address;
   final double balance;
+  final List<Color> colorPair;
 
-  const AccountCard(this.name, this.address, this.balance);
+  const AccountCard(this.name, this.address, this.balance, this.colorPair);
 
   @override
   State<AccountCard> createState() => _AccountCardState();
@@ -20,7 +22,14 @@ class _AccountCardState extends State<AccountCard> {
       height: 150,
       padding: EdgeInsets.all(25),
       decoration: BoxDecoration(
-        color: /*widget.accountSelected ? Colors.grey[350] : */ Colors.white,
+        gradient: LinearGradient(
+          begin: Alignment.centerRight,
+          end: Alignment.centerLeft,
+          colors: [
+            widget.colorPair[0],
+            widget.colorPair[1],
+          ],
+        ),
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       child: Column(
