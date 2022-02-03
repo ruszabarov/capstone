@@ -8,41 +8,50 @@ class AccountCardPainter extends CustomPainter {
     final textPainter = TextPainter(
       text: TextSpan(
         text: "testAccount",
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+        ),
       ),
       textDirection: TextDirection.ltr,
     );
 
     final textAddressPainter = TextPainter(
       text: TextSpan(
-          text: "0x14l1k4jlkvjasf987asdahddk2e2987yakjfasfa",
-          style: TextStyle(
-            overflow: TextOverflow.ellipsis,
-          )),
+        text: "0x14l1k4jlkvjasf987asdahddk2e2987yakjfasfa",
+        style: TextStyle(
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
       textDirection: TextDirection.ltr,
     );
 
     final textBalancePainter = TextPainter(
       text: TextSpan(
         text: "2205.10",
-        style: TextStyle(fontSize: 20),
+        style: TextStyle(
+          fontSize: 20,
+        ),
       ),
       textDirection: TextDirection.ltr,
     );
 
-    _drawBackgroundRect(canvas, Colors.brown,
-        Rect.fromLTRB(0, 0, size.width * 0.9, size.height));
+    _drawBackgroundRect(canvas, Colors.brown[500]!,
+        Rect.fromLTRB(5, 0, size.width * 0.93, size.height - 5));
+
+    _drawBackgroundRect(canvas, Colors.brown[300]!,
+        Rect.fromLTRB(0, 10, size.width * 0.9, size.height));
 
     _drawLock(
       canvas,
-      Colors.brown[900]!,
-      Rect.fromLTRB(size.width * 0.72, size.height * 0.35, size.width * 0.92,
+      Colors.brown[400]!,
+      Rect.fromLTRB(size.width * 0.72, size.height * 0.35, size.width * 0.94,
           size.height * 0.65),
     );
 
     _drawCustomCircle(
       canvas,
-      Colors.orange,
+      Colors.orange[300]!,
       Rect.fromLTRB(0, 0, size.width, size.height),
     );
 
