@@ -163,7 +163,8 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
       }
     }
 
-    currentCoinPrice = ValueNotifier<String>(lastPrice.toStringAsFixed(1));
+    currentCoinPrice =
+        ValueNotifier<String>(lastPrice.toStringAsFixed(decimalPlaces));
 
     _calculatePriceChange(prices);
 

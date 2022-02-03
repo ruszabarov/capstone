@@ -10,20 +10,23 @@ class Market {
 }
 
 class MarketList extends ChangeNotifier {
-  List<Market> _markets;
+  Map<String, Market> _markets;
 
-  List<Market> get markets => _markets;
+  Map<String, Market> get markets => _markets;
 
   MarketList(this._markets);
 }
 
-List<Market> initMarketData = [
-  Market("ethereum", 'assets/images/coin_logos/ethereum.webp'),
-  Market("tether", 'assets/images/coin_logos/tether.webp'),
-  Market("usd-coin", 'assets/images/coin_logos/usd-coin.webp'),
-  Market('binancecoin', 'assets/images/coin_logos/binance-coin.webp'),
-  Market('matic-network', 'assets/images/coin_logos/matic-token.webp'),
-  Market('shiba-inu', 'assets/images/coin_logos/shiba.webp'),
-  Market('wrapped-bitcoin', 'assets/images/coin_logos/wrapped-bitcoin.webp'),
-  Market('chainlink', 'assets/images/coin_logos/chainlink.webp')
-];
+Map<String, Market> initMarketData = {
+  "ethereum": Market("ethereum", 'assets/images/coin_logos/ethereum.webp'),
+  "tether": Market("tether", 'assets/images/coin_logos/tether.webp'),
+  "usd-coin": Market("usd-coin", 'assets/images/coin_logos/usd-coin.webp'),
+  "binancecoin":
+      Market('binancecoin', 'assets/images/coin_logos/binance-coin.webp'),
+  "matic-network":
+      Market('matic-network', 'assets/images/coin_logos/matic-token.webp'),
+  "shiba-inu": Market('shiba-inu', 'assets/images/coin_logos/shiba.webp'),
+  "wrapped-bitcoin": Market(
+      'wrapped-bitcoin', 'assets/images/coin_logos/wrapped-bitcoin.webp'),
+  "chainlink": Market('chainlink', 'assets/images/coin_logos/chainlink.webp'),
+};

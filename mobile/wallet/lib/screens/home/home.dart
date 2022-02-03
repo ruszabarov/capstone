@@ -86,68 +86,83 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-              // Divider(
-              //   thickness: 5,
-              //   color: Colors.grey,
-              //   height: 5,
-              // ),
               Flexible(
                 child: Consumer<AccountList>(
-                  builder: (context, value, child) => ListView.separated(
+                  builder: (context, value, child) => GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 20,
+                        mainAxisSpacing: 20),
                     padding: EdgeInsets.all(25),
-                    separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(
-                        height: 15,
-                      );
-                    },
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    itemCount: value.accounts[accountSelectedIndex].tokens
-                            .tokenList.length +
-                        1,
+                    itemCount: value
+                        .accounts[accountSelectedIndex].tokens.tokenList.length,
                     itemBuilder: (BuildContext ctxt, int index) {
-                      if (index ==
-                          value.accounts[accountSelectedIndex].tokens.tokenList
-                              .length) {
-                        return Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: InkWell(
-                              onTap: () {
-                                // handleAddTokenButton();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AddTokenPage(),
-                                  ),
-                                );
-                              },
-                              borderRadius: BorderRadius.circular(25),
-                              child: Ink(
-                                width: 100,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: Colors.blueAccent,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Add Token",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }
                       return new WalletCard(value.accounts[accountSelectedIndex]
                           .tokens.tokenList[index]);
                     },
                   ),
                 ),
               ),
+              // Flexible(
+              //   child: Consumer<AccountList>(
+              //     builder: (context, value, child) => ListView.separated(
+              //       padding: EdgeInsets.all(25),
+              //       separatorBuilder: (BuildContext context, int index) {
+              //         return SizedBox(
+              //           height: 15,
+              //         );
+              //       },
+              //       physics: NeverScrollableScrollPhysics(),
+              //       shrinkWrap: true,
+              //       scrollDirection: Axis.vertical,
+              //       itemCount: value.accounts[accountSelectedIndex].tokens
+              //               .tokenList.length +
+              //           1,
+              //       itemBuilder: (BuildContext ctxt, int index) {
+              //         if (index ==
+              //             value.accounts[accountSelectedIndex].tokens.tokenList
+              //                 .length) {
+              //           return Center(
+              //             child: Padding(
+              //               padding: const EdgeInsets.only(top: 10),
+              //               child: InkWell(
+              //                 onTap: () {
+              //                   // handleAddTokenButton();
+              //                   Navigator.push(
+              //                     context,
+              //                     MaterialPageRoute(
+              //                       builder: (context) => AddTokenPage(),
+              //                     ),
+              //                   );
+              //                 },
+              //                 borderRadius: BorderRadius.circular(25),
+              //                 child: Ink(
+              //                   width: 100,
+              //                   height: 40,
+              //                   decoration: BoxDecoration(
+              //                     borderRadius: BorderRadius.circular(25),
+              //                     color: Colors.blueAccent,
+              //                   ),
+              //                   child: Center(
+              //                     child: Text(
+              //                       "Add Token",
+              //                       style: TextStyle(color: Colors.white),
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ),
+              //             ),
+              //           );
+              //         }
+              //         return new WalletCard(value.accounts[accountSelectedIndex]
+              //             .tokens.tokenList[index]);
+              //       },
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

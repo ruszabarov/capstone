@@ -12,7 +12,7 @@ class MarketPage extends StatefulWidget {
 }
 
 class _MarketPageState extends State<MarketPage> {
-  List displayedList = [];
+  List<String> displayedList = [];
 
   final TextEditingController _controller = new TextEditingController();
 
@@ -20,7 +20,7 @@ class _MarketPageState extends State<MarketPage> {
   void initState() {
     super.initState();
     MarketList marketList = context.read<MarketList>();
-    displayedList = marketList.markets;
+    displayedList = marketList.markets.keys.toList();
   }
 
   @override
@@ -77,7 +77,8 @@ class _MarketPageState extends State<MarketPage> {
               scrollDirection: Axis.vertical,
               itemCount: displayedList.length,
               itemBuilder: (BuildContext ctxt, int index) {
-                return new MarketCard(index, displayedList.length - 1);
+                return new MarketCard(
+                    index, displayedList.length - 1, displayedList[index]);
               },
             ),
           ),
@@ -87,15 +88,14 @@ class _MarketPageState extends State<MarketPage> {
   }
 
   void searchOperation(String searchText) {
-    List<Market> searchResult = [];
+    List<String> searchResult = [];
     MarketList marketList = context.read<MarketList>();
 
-    for (int i = 0; i < marketList.markets.length; i++) {
-      Market data = marketList.markets[i];
-      if (data.name.toLowerCase().contains(searchText.toLowerCase())) {
-        searchResult.add(data);
+    marketList.markets.keys.forEach((key) {
+      if (key.toLowerCase().contains(searchText.toLowerCase())) {
+        searchResult.add(key);
       }
-    }
+    });
 
     setState(() {
       displayedList = searchResult;

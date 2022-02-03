@@ -12,7 +12,7 @@ import 'package:wallet/screens/home/home.dart';
 
 class Wrapper extends StatefulWidget {
   final List<Account> initAccountData;
-  final List<Market> initMarketData;
+  final Map<String, Market> initMarketData;
 
   Wrapper(this.initAccountData, this.initMarketData);
 
@@ -59,30 +59,33 @@ class _WrapperState extends State<Wrapper> {
           title: "$_currentTitle",
         ),
       ),
-      body: PageView(
-        physics: NeverScrollableScrollPhysics(),
-        controller: _pageController,
-        onPageChanged: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        children: <Widget>[
-          MultiProvider(
-            providers: [
-              ChangeNotifierProvider<AccountList>(
-                create: (context) => AccountList(widget.initAccountData),
-              ),
-            ],
-            child: home,
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<MarketList>(
+            create: (context) => MarketList(widget.initMarketData),
           ),
-          MultiProvider(providers: [
-            ChangeNotifierProvider<MarketList>(
-              create: (context) => MarketList(widget.initMarketData),
-            ),
-          ], child: market),
-          account,
         ],
+        child: PageView(
+          physics: NeverScrollableScrollPhysics(),
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          children: <Widget>[
+            MultiProvider(
+              providers: [
+                ChangeNotifierProvider<AccountList>(
+                  create: (context) => AccountList(widget.initAccountData),
+                ),
+              ],
+              child: home,
+            ),
+            market,
+            account,
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,

@@ -7,8 +7,9 @@ import 'package:wallet/screens/shared/shared.dart';
 class MarketCard extends StatefulWidget {
   final int myIndex;
   final int lastIndex;
+  final String name;
 
-  MarketCard(this.myIndex, this.lastIndex);
+  MarketCard(this.myIndex, this.lastIndex, this.name);
 
   @override
   State<MarketCard> createState() => _MarketCardState();
@@ -29,8 +30,8 @@ class _MarketCardState extends State<MarketCard> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    MarketDetailsPage(value.markets[widget.myIndex].name)),
+              builder: (context) => MarketDetailsPage(widget.name),
+            ),
           );
         },
         borderRadius: BorderRadius.vertical(
@@ -53,8 +54,8 @@ class _MarketCardState extends State<MarketCard> {
                         child: SizedBox(
                           width: 50,
                           height: 50,
-                          child: Image.asset(
-                              value.markets[widget.myIndex].iconURL),
+                          child:
+                              Image.asset(value.markets[widget.name]!.iconURL),
                         ),
                       ),
                       SizedBox(width: 15),
@@ -62,16 +63,16 @@ class _MarketCardState extends State<MarketCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            value.markets[widget.myIndex].name,
+                            value.markets[widget.name]!.name,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 18),
                           ),
                           SizedBox(height: 10),
                           Text(
-                            "\$${value.markets[widget.myIndex].currentPrice.toString()}",
+                            "\$${value.markets[widget.name]!.currentPrice.toString()}",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: value.markets[widget.myIndex]
+                                color: value.markets[widget.name]!
                                             .priceChangePercent >
                                         0
                                     ? Colors.green

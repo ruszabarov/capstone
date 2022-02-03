@@ -21,19 +21,22 @@ class TokenList extends ChangeNotifier {
 
 Token ethereum = new Token("ethereum", "asdadasds", 'ETH', 0,
     'assets/images/coin_logos/ethereum.webp');
-Token bitcoin = new Token(
-    "bitcoin", "asdasdad", "BTC", 0, 'assets/images/coin_logos/bitcoin.webp');
+Token tether = new Token("tether", "aoiahfanbfsf", "USDT", 0,
+    'assets/images/coin_logos/tether.webp');
+Token polygon = new Token("matic-network", "asjkldhaiouhyvav", "MATIC", 0,
+    'assets/images/coin_logos/matic-token.webp');
+Token chainlink = new Token("chainlink", "asjkldhaiouhyvav", "LINK", 0,
+    'assets/images/coin_logos/chainlink.webp');
 
 var cryptoWallets = [
   ethereum,
-  bitcoin,
 ];
 
 var accountTwoWallets = [
-  bitcoin,
   ethereum,
-  bitcoin,
-  ethereum,
+  tether,
+  polygon,
+  chainlink,
 ];
 
 Account testAccount = Account(

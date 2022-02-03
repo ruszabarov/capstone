@@ -24,19 +24,20 @@ class _LoadDataPageState extends State<LoadDataPage> {
           await getTokenBalance(initAccountData[0].address, "ChainLink Token"));
     }
 
+    print(initMarketData);
+
     // load Market data
     String request = "";
-    for (int i = 0; i < initMarketData.length; i++) {
-      request += "${initMarketData[i].name},";
-    }
+    initMarketData.keys.forEach((key) {
+      request += "$key,";
+    });
 
     Map<String, dynamic> response = await getSimpleTokenData(request);
 
-    for (int i = 0; i < initMarketData.length; i++) {
-      initMarketData[i].currentPrice = response[initMarketData[i].name]['usd'];
-      initMarketData[i].priceChangePercent =
-          response[initMarketData[i].name]['usd_24h_change'];
-    }
+    initMarketData.values.forEach((value) {
+      value.currentPrice = response[value.name]['usd'];
+      value.priceChangePercent = response[value.name]['usd_24h_change'];
+    });
 
     await Future.delayed(Duration(seconds: 1));
 

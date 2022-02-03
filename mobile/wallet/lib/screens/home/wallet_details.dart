@@ -69,10 +69,12 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.ac_unit_outlined,
-                              color: Colors.black,
-                              size: 35.0,
+                            ClipOval(
+                              child: SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Image.asset(widget.cryptoWallet.iconURL),
+                              ),
                             ),
                             SizedBox(width: 20),
                             Expanded(
@@ -107,7 +109,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                           borderRadius: BorderRadius.circular(15),
                           child: _actionButton(
                             text: 'Send',
-                            color: Colors.blueAccent,
+                            color: Colors.red.shade400,
                           ),
                         ),
                       ),
@@ -122,7 +124,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                           borderRadius: BorderRadius.circular(15),
                           child: _actionButton(
                             text: 'Receive',
-                            color: Colors.pink,
+                            color: Colors.green.shade400,
                           ),
                         ),
                       ),
