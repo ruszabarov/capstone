@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
             children: [
               Material(
                 child: Ink(
-                  color: Colors.grey[300],
+                  color: Colors.grey[200],
                   height: 210,
                   child: Consumer<AccountList>(
                     builder: (context, value, child) => PageView.builder(
