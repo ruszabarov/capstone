@@ -16,6 +16,7 @@ class AccountPage extends StatelessWidget {
     final firebaseUser = context.watch<User?>();
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           firebaseUser.toString(),
@@ -26,6 +27,12 @@ class AccountPage extends StatelessWidget {
           },
           child: Text("Sign out"),
         ),
+        // Container(
+        //   child: CustomPaint(
+        //     size: Size.fromHeight(175),
+        //     painter: AccountCardPainter(),
+        //   ),
+        // ),
       ],
     );
   }

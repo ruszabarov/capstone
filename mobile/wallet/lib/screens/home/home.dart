@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet/providers/Account.dart';
+import 'package:wallet/screens/account/account.dart';
 import 'package:wallet/screens/home/account_card.dart';
 import 'package:wallet/screens/home/add_token.dart';
 import 'package:wallet/screens/home/add_wallet.dart';
@@ -64,7 +65,14 @@ class _HomeState extends State<Home> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 15),
-                            child: AccountCard(
+                            child:
+                                // Container(
+                                //   child: CustomPaint(
+                                //     size: Size.fromHeight(175),
+                                //     painter: AccountCardPainter(),
+                                //   ),
+                                // ),
+                                AccountCard(
                               value.accounts[i].name,
                               value.accounts[i].address,
                               value.accounts[i].balance,
