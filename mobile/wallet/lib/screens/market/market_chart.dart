@@ -46,8 +46,8 @@ class MarketChart extends StatelessWidget {
         ),
         zoomPanBehavior: ZoomPanBehavior(
             enablePinching: true, enablePanning: true, zoomMode: ZoomMode.x),
-        series: <LineSeries<LinearPrice, DateTime>>[
-          LineSeries<LinearPrice, DateTime>(
+        series: <SplineSeries<LinearPrice, DateTime>>[
+          SplineSeries<LinearPrice, DateTime>(
             // Bind data source
             dataSource:
                 data.isNotEmpty ? data : [LinearPrice(DateTime.now(), 0)],
