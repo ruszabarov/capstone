@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'Token.dart';
 
 class Account {
-  final String name;
+  String name;
   final String address;
   final double balance;
   final TokenList tokens;
@@ -21,6 +21,11 @@ class AccountList extends ChangeNotifier {
   void addAccount(Account account) {
     _accounts.add(account);
     notifyListeners();
+  }
+
+  void editName(String name) {
+    //TODO: change the right account name instead of the first one
+    _accounts[0].name = name;
   }
 
   void updateTokenBalance(int index, double newBalance) {
