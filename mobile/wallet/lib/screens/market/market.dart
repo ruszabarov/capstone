@@ -14,6 +14,7 @@ class MarketPage extends StatefulWidget {
 class _MarketPageState extends State<MarketPage> {
   List<String> displayedList = [];
   bool isSearchActive = false;
+  late ScrollController _scrollController;
 
   final TextEditingController _controller = new TextEditingController();
 
@@ -22,12 +23,14 @@ class _MarketPageState extends State<MarketPage> {
     super.initState();
     MarketList marketList = context.read<MarketList>();
     displayedList = marketList.markets.keys.toList();
+    _scrollController = ScrollController();
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,18 +41,69 @@ class _MarketPageState extends State<MarketPage> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: Text(
-                    "Markets",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
+                AnimatedSwitcher(
+                  duration: Duration(milliseconds: 300),
+                  switchInCurve: Curves.easeInCubic,
+                  switchOutCurve: Curves.easeOutCubic,
+                  transitionBuilder: (child, animation) {
+                    return SlideTransition(
+                      position:
+                          Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0))
+                              .animate(animation),
+                      child: child,
+                    );
+                  },
+                  child: isSearchActive == false
+                      ? Container(
+                          key: Key("asd"),
+                          width: 300,
+                          height: 40,
+                          child: Text(
+                            "Markets",
+                            style: TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      : Container(
+                          key: Key("dsa"),
+                          width: 300,
+                          height: 40,
+                          child: TextField(
+                            controller: _controller,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.zero,
+                              border: InputBorder.none,
+                              hintText: "Search Markets",
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                              fillColor: Colors.blue,
+                            ),
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            autofocus: true,
+                            onChanged: (text) {
+                              searchOperation(text);
+                            },
+                          ),
+                        ),
                 ),
                 isSearchActive == false
                     ? GestureDetector(
                         onTap: () {
-                          print("hello");
                           setState(() {
                             isSearchActive = !isSearchActive;
+                            //!This is a bug
+                            _scrollController.animateTo(1,
+                                duration: Duration(milliseconds: 1),
+                                curve: Curves.easeOutCubic);
+                            _scrollController.animateTo(0,
+                                duration: Duration(milliseconds: 1),
+                                curve: Curves.easeOutCubic);
                           });
                         },
                         child: Icon(
@@ -61,6 +115,13 @@ class _MarketPageState extends State<MarketPage> {
                         onTap: () {
                           setState(() {
                             isSearchActive = !isSearchActive;
+                            //!This is a bug
+                            _scrollController.animateTo(1,
+                                duration: Duration(milliseconds: 1),
+                                curve: Curves.easeOutCubic);
+                            _scrollController.animateTo(0,
+                                duration: Duration(milliseconds: 1),
+                                curve: Curves.easeOutCubic);
                           });
                         },
                         child: Icon(
@@ -71,45 +132,6 @@ class _MarketPageState extends State<MarketPage> {
               ],
             ),
           ),
-          //TODO: maybe create Key for the Ink widget
-          Ink(
-            height: isSearchActive == true ? 100 : 0,
-          ),
-          // Padding(
-          //   padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-          //   child: Container(
-          //     decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(15),
-          //       color: Colors.white,
-          //     ),
-          //     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-          //     child: Row(
-          //       mainAxisSize: MainAxisSize.max,
-          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //       children: [
-          //         Expanded(
-          //           child: TextField(
-          //             controller: _controller,
-          //             decoration: InputDecoration(
-          //               border: InputBorder.none,
-          //               hintText: "Enter Coin Name",
-          //               hintStyle: TextStyle(color: Colors.black, fontSize: 16),
-          //               fillColor: Colors.blue,
-          //             ),
-          //           ),
-          //         ),
-          //         GestureDetector(
-          //           onTap: () {
-          //             searchOperation(_controller.text);
-          //           },
-          //           child: Icon(
-          //             Icons.search,
-          //           ),
-          //         )
-          //       ],
-          //     ),
-          //   ),
-          // ),
           Flexible(
             child: ListView.separated(
               padding: EdgeInsets.all(20),
@@ -148,6 +170,6 @@ class _MarketPageState extends State<MarketPage> {
       displayedList = searchResult;
     });
 
-    FocusManager.instance.primaryFocus?.unfocus();
+    // FocusManager.instance.primaryFocus?.unfocus();
   }
 }

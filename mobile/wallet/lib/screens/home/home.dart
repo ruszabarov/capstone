@@ -61,6 +61,7 @@ class _HomeState extends State<Home> {
           // physics: BouncingScrollPhysics(),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(

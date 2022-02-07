@@ -45,10 +45,11 @@ class _AccountPageState extends State<AccountPage> {
           color: Colors.blue,
         ),
         Ink(
-          key: Key("asdadsa"),
-          child: Text("hello"),
-          color: Colors.green,
-        ),
+            key: Key("asdadsa"),
+            child: Text("hello"),
+            decoration: BoxDecoration(
+              color: Colors.green,
+            )),
       ],
     );
   }
