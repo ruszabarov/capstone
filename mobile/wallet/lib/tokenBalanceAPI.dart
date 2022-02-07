@@ -19,11 +19,16 @@ void getTokenList() async{
     return json[i]["address"] as String;
   }
   for(int i = 0; i < json.length; i++) {
-    final balance = await etherscan.tokenBalance(address: myAddress, contractAddress: getAddresses(i)).str;
-    final json = jsonDecode(balance);
+    final balance = await etherscan.tokenBalance(address: myAddress, contractAddress: getAddresses(i));
 
-    await Future.delayed(Duration(seconds: 5));
-    print(json[0]);
+    await Future.delayed(Duration(seconds: 1));
+    print(balance);
   }
+  
+}
+
+void addToken(String name, String symbol, String address, int decimal) async {
+  final String abi = await rootBundle.loadString("assets/build/contracts/token-list-rinkeby.json");
+  int length = abi.length;
   
 }
