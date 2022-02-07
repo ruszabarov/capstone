@@ -22,6 +22,7 @@ class _MarketPageState extends State<MarketPage> {
     super.initState();
     MarketList marketList = context.read<MarketList>();
     displayedList = marketList.markets.keys.toList();
+    setState(() {});
   }
 
   @override
@@ -117,7 +118,8 @@ class _MarketPageState extends State<MarketPage> {
                 );
               },
               shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
+              //Next line doesnt save to git?
+              physics: NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
               itemCount: displayedList.length,
               itemBuilder: (BuildContext ctxt, int index) {
