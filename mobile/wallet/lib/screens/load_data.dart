@@ -39,7 +39,7 @@ class _LoadDataPageState extends State<LoadDataPage> {
       value.priceChangePercent = response[value.name]['usd_24h_change'];
     });
 
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 2));
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
@@ -52,6 +52,7 @@ class _LoadDataPageState extends State<LoadDataPage> {
 
   @override
   void initState() {
+    print("built");
     super.initState();
     loadData();
   }

@@ -128,7 +128,8 @@ class _HomeState extends State<Home> {
           right: 0,
           bottom: isAddWalletVisible ? 0 : -300,
           height: 300,
-          duration: Duration(milliseconds: 100),
+          duration: Duration(milliseconds: 200),
+          curve: Curves.easeOutCubic,
           child: AddWalletCard(handleAddWalletButton),
         ),
         AnimatedPositioned(
@@ -136,7 +137,8 @@ class _HomeState extends State<Home> {
           right: 0,
           bottom: isAccountDetailsVisible ? 0 : -400,
           height: 400,
-          duration: Duration(milliseconds: 100),
+          duration: Duration(milliseconds: 200),
+          curve: Curves.easeOutCubic,
           child: Consumer<AccountList>(builder: (context, value, child) {
             return AccountDetailsCard(value.accounts[accountSelectedIndex],
                 handleAccountDetailsButton);
@@ -147,7 +149,8 @@ class _HomeState extends State<Home> {
           right: 0,
           bottom: isEditAccountVisible ? 0 : -400,
           height: 400,
-          duration: Duration(milliseconds: 100),
+          duration: Duration(milliseconds: 200),
+          curve: Curves.easeOutCubic,
           child: Consumer<AccountList>(builder: (context, value, child) {
             return EditAccountCard(
                 value.accounts[accountSelectedIndex], handleEditAccountButton);

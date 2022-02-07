@@ -170,7 +170,8 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
             right: 0,
             bottom: isSendVisible ? 0 : -400,
             height: 400,
-            duration: Duration(milliseconds: 100),
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeOutCubic,
             child: SendCard(
               cryptoWallet: widget.cryptoWallet,
               handleCloseButton: handleSendButton,
@@ -181,7 +182,8 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
             right: 0,
             bottom: isReceiveVisible ? 0 : -400,
             height: 400,
-            duration: Duration(milliseconds: 100),
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeOutCubic,
             child: ReceiveCard(
               cryptoWallet: widget.cryptoWallet,
               handleReceiveButton: handleReceiveButton,

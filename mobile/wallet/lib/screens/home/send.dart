@@ -32,6 +32,7 @@ class _SendCardState extends State<SendCard> {
     super.initState();
     setUpFocusNodes();
     _addressTextController = TextEditingController(text: "");
+    _amountTextController = TextEditingController(text: "");
   }
 
   Future<void> startBarcodeScanStream() async {

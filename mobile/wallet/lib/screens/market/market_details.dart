@@ -27,6 +27,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
   late double lastPrice = 0;
   bool displayMinutes = true;
   bool displayHours = false;
+  bool chartLoaded = false;
 
   @override
   void initState() {
@@ -100,8 +101,15 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
               ],
             ),
           ),
-          MarketChart(_trackballBehavior, currentCoinPrice, minPrice, maxPrice,
-              data, decimalPlaces, lastPrice, currentDate),
+          chartLoaded == true
+              ? MarketChart(_trackballBehavior, currentCoinPrice, minPrice,
+                  maxPrice, data, decimalPlaces, lastPrice, currentDate)
+              : Container(
+                  height: 300,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
@@ -134,6 +142,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
   }
 
   _getCoinData(int days) async {
+    chartLoaded = false;
     data = [];
 
     if (days == 1) {
@@ -168,6 +177,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
 
     _calculatePriceChange(prices);
 
+    chartLoaded = true;
     setState(() {});
   }
 

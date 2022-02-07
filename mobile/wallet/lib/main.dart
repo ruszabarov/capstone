@@ -54,31 +54,17 @@ class Authenticate extends StatelessWidget {
     return StreamBuilder<User?>(
       stream: context.read<AuthenticationProvider>().authState,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          return snapshot.hasData ? LoadDataPage() : LoginPage();
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+        return LoadDataPage();
+        //TODO: For some reason this is called twice
+
+        // if (snapshot.connectionState == ConnectionState.active) {
+        //   return snapshot.hasData ? LoadDataPage() : LoginPage();
+        // } else {
+        //   return Center(
+        //     child: CircularProgressIndicator(),
+        //   );
+        // }
       },
     );
-
-    // // Navigator.of(context).pushReplacement(
-    // //   MaterialPageRoute(
-    // //     builder: (context) => LoginPage(),
-    // //   ),
-    // // );
   }
 }
-
-/*
-MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider<AccountList>(
-                      create: (context) => AccountList([testAccount]),
-                    ),
-                  ],
-                  child: LoadDataPage(),
-                )
-                */
