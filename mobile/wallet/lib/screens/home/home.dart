@@ -61,7 +61,15 @@ class _HomeState extends State<Home> {
           // physics: BouncingScrollPhysics(),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Padding(
+                padding: const EdgeInsets.all(25),
+                child: Text(
+                  "Wallet",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+              ),
               Material(
                 child: Ink(
                   color: Colors.grey[200],

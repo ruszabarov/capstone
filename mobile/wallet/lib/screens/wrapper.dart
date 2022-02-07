@@ -27,6 +27,7 @@ enum TabItem { home, market, account }
 class _WrapperState extends State<Wrapper> {
   int _selectedIndex = 0;
   String _currentTitle = "Wallets";
+  ValueNotifier<bool> showNavigationBar = ValueNotifier<bool>(true);
   late PageController _pageController;
   late Widget home;
   late Widget market;
@@ -53,38 +54,40 @@ class _WrapperState extends State<Wrapper> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: appBar(
-          title: "$_currentTitle",
-        ),
-      ),
+      // appBar: PreferredSize(
+      //   preferredSize: Size.fromHeight(50),
+      //   child: appBar(
+      //     title: "$_currentTitle",
+      //   ),
+      // ),
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider<MarketList>(
             create: (context) => MarketList(widget.initMarketData),
           ),
         ],
-        child: PageView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          children: <Widget>[
-            MultiProvider(
-              providers: [
-                ChangeNotifierProvider<AccountList>(
-                  create: (context) => AccountList(widget.initAccountData),
-                ),
-              ],
-              child: home,
-            ),
-            market,
-            account,
-          ],
+        child: SafeArea(
+          child: PageView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            children: <Widget>[
+              MultiProvider(
+                providers: [
+                  ChangeNotifierProvider<AccountList>(
+                    create: (context) => AccountList(widget.initAccountData),
+                  ),
+                ],
+                child: home,
+              ),
+              market,
+              account,
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

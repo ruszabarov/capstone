@@ -13,6 +13,7 @@ class MarketPage extends StatefulWidget {
 
 class _MarketPageState extends State<MarketPage> {
   List<String> displayedList = [];
+  bool isSearchActive = false;
 
   final TextEditingController _controller = new TextEditingController();
 
@@ -28,42 +29,85 @@ class _MarketPageState extends State<MarketPage> {
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.white,
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Enter Coin Name",
-                        hintStyle: TextStyle(color: Colors.black, fontSize: 16),
-                        fillColor: Colors.blue,
-                      ),
-                    ),
+            padding: const EdgeInsets.all(25),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    "Markets",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      searchOperation(_controller.text);
-                    },
-                    child: Icon(
-                      Icons.search,
-                    ),
-                  )
-                ],
-              ),
+                ),
+                isSearchActive == false
+                    ? GestureDetector(
+                        onTap: () {
+                          print("hello");
+                          setState(() {
+                            isSearchActive = !isSearchActive;
+                          });
+                        },
+                        child: Icon(
+                          Icons.search,
+                          size: 30,
+                        ),
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isSearchActive = !isSearchActive;
+                          });
+                        },
+                        child: Icon(
+                          Icons.arrow_right,
+                          size: 30,
+                        ),
+                      )
+              ],
             ),
           ),
+          Container(
+            height: isSearchActive == true ? 100 : 0,
+          ),
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(15),
+          //       color: Colors.white,
+          //     ),
+          //     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          //     child: Row(
+          //       mainAxisSize: MainAxisSize.max,
+          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //       children: [
+          //         Expanded(
+          //           child: TextField(
+          //             controller: _controller,
+          //             decoration: InputDecoration(
+          //               border: InputBorder.none,
+          //               hintText: "Enter Coin Name",
+          //               hintStyle: TextStyle(color: Colors.black, fontSize: 16),
+          //               fillColor: Colors.blue,
+          //             ),
+          //           ),
+          //         ),
+          //         GestureDetector(
+          //           onTap: () {
+          //             searchOperation(_controller.text);
+          //           },
+          //           child: Icon(
+          //             Icons.search,
+          //           ),
+          //         )
+          //       ],
+          //     ),
+          //   ),
+          // ),
           Flexible(
             child: ListView.separated(
               padding: EdgeInsets.all(20),
@@ -77,7 +121,7 @@ class _MarketPageState extends State<MarketPage> {
               scrollDirection: Axis.vertical,
               itemCount: displayedList.length,
               itemBuilder: (BuildContext ctxt, int index) {
-                return new MarketCard(
+                return MarketCard(
                     index, displayedList.length - 1, displayedList[index]);
               },
             ),
