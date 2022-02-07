@@ -71,7 +71,8 @@ class _MarketPageState extends State<MarketPage> {
               ],
             ),
           ),
-          Container(
+          //TODO: maybe create Key for the Ink widget
+          Ink(
             height: isSearchActive == true ? 100 : 0,
           ),
           // Padding(

@@ -77,12 +77,12 @@ class _HomeState extends State<Home> {
                   child: Consumer<AccountList>(
                     builder: (context, value, child) => PageView.builder(
                       itemCount: value.accounts.length,
-                      controller: PageController(viewportFraction: 0.75),
+                      controller: PageController(viewportFraction: 0.8),
                       onPageChanged: (int index) =>
                           setState(() => accountSelectedIndex = index),
                       itemBuilder: (_, i) {
                         return Transform.scale(
-                          scale: i == accountSelectedIndex ? 1 : 0.9,
+                          scale: i == accountSelectedIndex ? 1.1 : 0.9,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 15),

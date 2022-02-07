@@ -34,12 +34,7 @@ class _MarketCardState extends State<MarketCard> {
             ),
           );
         },
-        borderRadius: BorderRadius.vertical(
-          top: widget.myIndex == 0 ? Radius.circular(10) : Radius.circular(0),
-          bottom: widget.myIndex == widget.lastIndex
-              ? Radius.circular(10)
-              : Radius.circular(0),
-        ),
+        borderRadius: BorderRadius.circular(15),
         child: card(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

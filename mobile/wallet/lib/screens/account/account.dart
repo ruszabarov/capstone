@@ -6,10 +6,16 @@ import 'package:wallet/screens/authentication/auth.dart';
 import 'package:provider/src/provider.dart';
 import 'package:wallet/screens/home/test_data.dart';
 
-class AccountPage extends StatelessWidget {
-  final String title = "Account";
-
+class AccountPage extends StatefulWidget {
   const AccountPage();
+
+  @override
+  State<AccountPage> createState() => _AccountPageState();
+}
+
+class _AccountPageState extends State<AccountPage> {
+  final String title = "Account";
+  bool testBool = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +29,26 @@ class AccountPage extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () async {
-            context.read<AuthenticationProvider>().signOut();
+            // context.read<AuthenticationProvider>().signOut();
+            setState(() {
+              testBool = !testBool;
+            });
           },
           child: Text("Sign out"),
         ),
-        // Container(
-        //   child: CustomPaint(
-        //     size: Size.fromHeight(175),
-        //     painter: AccountCardPainter(),
-        //   ),
-        // ),
+        Container(
+          color: Colors.red,
+          height: testBool == true ? 100 : 0,
+        ),
+        Container(
+          child: Text("hello"),
+          color: Colors.blue,
+        ),
+        Ink(
+          key: Key("asdadsa"),
+          child: Text("hello"),
+          color: Colors.green,
+        ),
       ],
     );
   }
