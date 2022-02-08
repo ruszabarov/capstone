@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 import 'package:wallet/providers/Market.dart';
@@ -12,7 +13,9 @@ class MarketPage extends StatefulWidget {
 }
 
 class _MarketPageState extends State<MarketPage> {
-  List displayedList = [];
+  List<String> displayedList = [];
+  bool isSearchActive = false;
+  late ScrollController _scrollController;
 
   final TextEditingController _controller = new TextEditingController();
 
@@ -20,48 +23,118 @@ class _MarketPageState extends State<MarketPage> {
   void initState() {
     super.initState();
     MarketList marketList = context.read<MarketList>();
-    displayedList = marketList.markets;
+    _scrollController = ScrollController();
+    setState(() {
+      displayedList = marketList.markets.keys.toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    FocusManager.instance.primaryFocus?.unfocus();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.white,
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Enter Coin Name",
-                        hintStyle: TextStyle(color: Colors.black, fontSize: 16),
-                        fillColor: Colors.blue,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      searchOperation(_controller.text);
-                    },
-                    child: Icon(
-                      Icons.search,
-                    ),
-                  )
-                ],
-              ),
+            padding: const EdgeInsets.all(25),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AnimatedSwitcher(
+                  duration: Duration(milliseconds: 300),
+                  switchInCurve: Curves.easeInCubic,
+                  switchOutCurve: Curves.easeOutCubic,
+                  transitionBuilder: (child, animation) {
+                    return SlideTransition(
+                      position:
+                          Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0))
+                              .animate(animation),
+                      child: child,
+                    );
+                  },
+                  child: isSearchActive == false
+                      ? Container(
+                          key: Key("asd"),
+                          width: 250,
+                          child: Text(
+                            "Markets",
+                            style: TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      : Container(
+                          key: Key("asdads"),
+                          width: 250,
+                          child: TextField(
+                            controller: _controller,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.zero,
+                              border: InputBorder.none,
+                              hintText: "Search Markets",
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                              fillColor: Colors.blue,
+                            ),
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            autofocus: true,
+                            onChanged: (text) {
+                              searchOperation(text);
+                            },
+                          ),
+                        ),
+                ),
+                isSearchActive == false
+                    ? InkWell(
+                        onTap: () {
+                          setState(() {
+                            isSearchActive = !isSearchActive;
+                          });
+                        },
+                        borderRadius: BorderRadius.circular(30),
+                        child: Ink(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.search,
+                              size: 40,
+                            ),
+                          ),
+                        ),
+                      )
+                    : InkWell(
+                        onTap: () {
+                          setState(() {
+                            isSearchActive = !isSearchActive;
+                          });
+                        },
+                        borderRadius: BorderRadius.circular(30),
+                        child: Ink(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.arrow_right,
+                              size: 40,
+                            ),
+                          ),
+                        ),
+                      )
+              ],
             ),
           ),
           Flexible(
@@ -73,11 +146,13 @@ class _MarketPageState extends State<MarketPage> {
                 );
               },
               shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
+              //Next line doesnt save to git?
+              physics: NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
               itemCount: displayedList.length,
               itemBuilder: (BuildContext ctxt, int index) {
-                return new MarketCard(index, displayedList.length - 1);
+                return MarketCard(
+                    index, displayedList.length - 1, displayedList[index]);
               },
             ),
           ),
@@ -87,20 +162,134 @@ class _MarketPageState extends State<MarketPage> {
   }
 
   void searchOperation(String searchText) {
-    List<Market> searchResult = [];
+    List<String> searchResult = [];
     MarketList marketList = context.read<MarketList>();
 
-    for (int i = 0; i < marketList.markets.length; i++) {
-      Market data = marketList.markets[i];
-      if (data.name.toLowerCase().contains(searchText.toLowerCase())) {
-        searchResult.add(data);
+    marketList.markets.keys.forEach((key) {
+      if (key.toLowerCase().contains(searchText.toLowerCase())) {
+        searchResult.add(key);
       }
-    }
+    });
 
     setState(() {
       displayedList = searchResult;
     });
-
-    FocusManager.instance.primaryFocus?.unfocus();
   }
 }
+
+/*
+child: isSearchActive
+                        ? TextField(
+                            controller: _controller,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.zero,
+                              border: InputBorder.none,
+                              hintText: "Search...",
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                              fillColor: Colors.blue,
+                            ),
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            autofocus: true,
+                            onChanged: (text) {
+                              searchOperation(text);
+                            },
+                          )
+                        : Text(
+                            "Markets",
+                            style: TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          ),
+ */
+
+/*
+Padding(
+            padding: EdgeInsets.all(25),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: Duration(milliseconds: 300),
+                    switchInCurve: Curves.easeInCubic,
+                    switchOutCurve: Curves.easeOutCubic,
+                    transitionBuilder: (child, animation) {
+                      return SlideTransition(
+                        position: Tween<Offset>(
+                                begin: Offset(-1, 0), end: Offset(0, 0))
+                            .animate(animation),
+                        child: child,
+                      );
+                    },
+                    child: Text(
+                      "Markets",
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+                AnimatedSwitcher(
+                  duration: Duration(milliseconds: 300),
+                  switchInCurve: Curves.easeInCubic,
+                  switchOutCurve: Curves.easeOutCubic,
+                  transitionBuilder: (child, animation) {
+                    return SlideTransition(
+                      position:
+                          Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0))
+                              .animate(animation),
+                      child: child,
+                    );
+                  },
+                  child: isSearchActive
+                      ? GestureDetector(
+                          key: Key("asd"),
+                          onTap: () {
+                            setState(() {
+                              isSearchActive = !isSearchActive;
+                              //!This is a bug
+                              _scrollController.animateTo(1,
+                                  duration: Duration(milliseconds: 1),
+                                  curve: Curves.easeOutCubic);
+                              _scrollController.animateTo(0,
+                                  duration: Duration(milliseconds: 1),
+                                  curve: Curves.easeOutCubic);
+                            });
+                          },
+                          child: Icon(
+                            Icons.chevron_right_rounded,
+                            size: 45,
+                          ),
+                        )
+                      : GestureDetector(
+                          key: Key("dsa"),
+                          onTap: () {
+                            setState(() {
+                              isSearchActive = !isSearchActive;
+                              //!This is a bug
+                              _scrollController.animateTo(1,
+                                  duration: Duration(milliseconds: 1),
+                                  curve: Curves.easeOutCubic);
+                              _scrollController.animateTo(0,
+                                  duration: Duration(milliseconds: 1),
+                                  curve: Curves.easeOutCubic);
+                            });
+                          },
+                          child: Icon(
+                            Icons.search,
+                            size: 45,
+                          ),
+                        ),
+                ),
+              ],
+            ),
+          ),
+ */

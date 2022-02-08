@@ -28,25 +28,8 @@ class _SendCardState extends State<SendCard> {
 
   @override
   void initState() {
+    super.initState();
     setUpFocusNodes();
-    _addressTextController = TextEditingController(text: "");
-    super.initState();
-    super.initState();
-    addressFocusNode = FocusNode();
-    amountFocusNode = FocusNode();
-
-    addressFocusNode.addListener(() {
-      setState(() {
-        isAddressFocused = addressFocusNode.hasFocus;
-      });
-    });
-
-    amountFocusNode.addListener(() {
-      setState(() {
-        isAmountFocused = amountFocusNode.hasFocus;
-      });
-    });
-
     _addressTextController = TextEditingController(text: "");
     _amountTextController = TextEditingController(text: "");
   }

@@ -33,7 +33,7 @@ class MarketChart extends StatelessWidget {
               args.chartPointInfo.chartDataPoint!.xValue);
         },
         onChartTouchInteractionUp: (ChartTouchInteractionArgs args) {
-          currentCoinPrice.value = lastPrice.toString();
+          currentCoinPrice.value = lastPrice.toStringAsFixed(decimalPlaces);
           currentDate.value = DateTime.now();
         },
         primaryXAxis: DateTimeAxis(
@@ -46,8 +46,8 @@ class MarketChart extends StatelessWidget {
         ),
         zoomPanBehavior: ZoomPanBehavior(
             enablePinching: true, enablePanning: true, zoomMode: ZoomMode.x),
-        series: <FastLineSeries<LinearPrice, DateTime>>[
-          FastLineSeries<LinearPrice, DateTime>(
+        series: <SplineSeries<LinearPrice, DateTime>>[
+          SplineSeries<LinearPrice, DateTime>(
             // Bind data source
             dataSource:
                 data.isNotEmpty ? data : [LinearPrice(DateTime.now(), 0)],

@@ -34,15 +34,19 @@ Future<Map<String, dynamic>> getSimpleTokenData(String ids) async {
   }
 }
 
-Future<List> getMarketData(String id, int days) async {
+Future<List> getMarketData(String id, dynamic days) async {
   String interval = "";
   try {
     if (days == 1) {
       interval = "5min";
-    } else if (days <= 30) {
+    } else if (days <= 30 && days != -1) {
       interval = "hourly";
     } else {
       interval = "daily";
+    }
+
+    if (days == -1) {
+      days = "max";
     }
 
     var url = Uri.parse(

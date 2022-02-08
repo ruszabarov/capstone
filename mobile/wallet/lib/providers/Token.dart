@@ -5,9 +5,10 @@ class Token {
   final String name;
   final String adress;
   final String shortName;
+  final String iconURL;
   double balance;
 
-  Token(this.name, this.adress, this.shortName, this.balance);
+  Token(this.name, this.adress, this.shortName, this.balance, this.iconURL);
 }
 
 class TokenList extends ChangeNotifier {
@@ -18,12 +19,24 @@ class TokenList extends ChangeNotifier {
   TokenList(this._tokenList) {}
 }
 
-Token ethereum = new Token("ethereum", "asdadasds", 'ETH', 0);
-Token bitcoin = new Token("bitcoin", "asdasdad", "BTC", 0);
+Token ethereum = new Token("ethereum", "asdadasds", 'ETH', 0,
+    'assets/images/coin_logos/ethereum.webp');
+Token tether = new Token("tether", "aoiahfanbfsf", "USDT", 0,
+    'assets/images/coin_logos/tether.webp');
+Token polygon = new Token("matic-network", "asjkldhaiouhyvav", "MATIC", 0,
+    'assets/images/coin_logos/matic-token.webp');
+Token chainlink = new Token("chainlink", "asjkldhaiouhyvav", "LINK", 0,
+    'assets/images/coin_logos/chainlink.webp');
 
 var cryptoWallets = [
   ethereum,
-  bitcoin,
+];
+
+var accountTwoWallets = [
+  ethereum,
+  tether,
+  polygon,
+  chainlink,
 ];
 
 Account testAccount = Account(
@@ -33,4 +46,11 @@ Account testAccount = Account(
   TokenList(cryptoWallets),
 );
 
-List<Account> initAccountData = [testAccount];
+Account accountTwo = Account(
+  "testAccount",
+  "0x14l1k4jlkvjasf987asdahddk2e2987yakjfasfa",
+  1050.1,
+  TokenList(accountTwoWallets),
+);
+
+List<Account> initAccountData = [testAccount, accountTwo];

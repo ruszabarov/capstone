@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wallet/logic.dart';
+import 'package:wallet/providers/Market.dart';
 import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/home/wallet_details.dart';
 import 'package:wallet/screens/shared/shared.dart';
@@ -30,56 +32,57 @@ class _WalletCardState extends State<WalletCard> {
         );
       },
       borderRadius: BorderRadius.circular(15),
-      child: card(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                ClipOval(
-                  child: Material(
-                    color: Colors.black87,
-                    child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Icon(
-                        Icons.ac_unit_outlined,
-                        color: Colors.white,
-                        size: 25.0,
-                      ),
+      child: Consumer<MarketList>(
+        builder: (context, value, child) => card(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: ClipOval(
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: Image.asset(widget.cryptoWallet.iconURL),
+                  ),
+                ),
+              ),
+              Spacer(),
+              Text(
+                "${widget.cryptoWallet.balance} ${widget.cryptoWallet.shortName}",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black45,
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "\$${(widget.cryptoWallet.balance * value.markets[widget.cryptoWallet.name]!.currentPrice).toStringAsFixed(1)}",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-                SizedBox(width: 20),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.cryptoWallet.name,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        widget.cryptoWallet.balance.toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black45,
-                        ),
-                      )
-                    ],
+                  Text(
+                    "${(value.markets[widget.cryptoWallet.name]!.priceChangePercent).toStringAsFixed(1)}%",
+                    style: TextStyle(
+                      color: value.markets[widget.cryptoWallet.name]!
+                                  .priceChangePercent >
+                              0
+                          ? Colors.green
+                          : Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Icon(Icons.keyboard_arrow_right),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
