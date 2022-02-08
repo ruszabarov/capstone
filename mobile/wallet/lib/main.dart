@@ -1,31 +1,32 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wallet/providers/Account.dart';
-import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/authentication/auth.dart';
-import 'package:wallet/screens/authentication/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet/screens/load_data.dart';
-import 'package:wallet/screens/wrapper.dart';
-import 'dart:io';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(
-    MultiProvider(
-      providers: [
-        Provider<AuthenticationProvider>(
-          create: (_) => AuthenticationProvider(FirebaseAuth.instance),
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
+    (value) {
+      runApp(
+        MultiProvider(
+          providers: [
+            Provider<AuthenticationProvider>(
+              create: (_) => AuthenticationProvider(FirebaseAuth.instance),
+            ),
+            StreamProvider(
+              create: (context) =>
+                  context.read<AuthenticationProvider>().authState,
+              initialData: null,
+            ),
+          ],
+          child: MyApp(),
         ),
-        StreamProvider(
-          create: (context) => context.read<AuthenticationProvider>().authState,
-          initialData: null,
-        ),
-      ],
-      child: MyApp(),
-    ),
+      );
+    },
   );
 }
 
