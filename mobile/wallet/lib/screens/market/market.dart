@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 import 'package:wallet/providers/Market.dart';
@@ -22,9 +23,17 @@ class _MarketPageState extends State<MarketPage> {
   void initState() {
     super.initState();
     MarketList marketList = context.read<MarketList>();
-    displayedList = marketList.markets.keys.toList();
     _scrollController = ScrollController();
-    setState(() {});
+    setState(() {
+      displayedList = marketList.markets.keys.toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    FocusManager.instance.primaryFocus?.unfocus();
+    super.dispose();
   }
 
   @override
@@ -56,8 +65,7 @@ class _MarketPageState extends State<MarketPage> {
                   child: isSearchActive == false
                       ? Container(
                           key: Key("asd"),
-                          width: 300,
-                          height: 40,
+                          width: 250,
                           child: Text(
                             "Markets",
                             style: TextStyle(
@@ -65,9 +73,8 @@ class _MarketPageState extends State<MarketPage> {
                           ),
                         )
                       : Container(
-                          key: Key("dsa"),
-                          width: 300,
-                          height: 40,
+                          key: Key("asdads"),
+                          width: 250,
                           child: TextField(
                             controller: _controller,
                             decoration: InputDecoration(
@@ -93,40 +100,38 @@ class _MarketPageState extends State<MarketPage> {
                         ),
                 ),
                 isSearchActive == false
-                    ? GestureDetector(
+                    ? InkWell(
                         onTap: () {
                           setState(() {
                             isSearchActive = !isSearchActive;
-                            //!This is a bug
-                            _scrollController.animateTo(1,
-                                duration: Duration(milliseconds: 1),
-                                curve: Curves.easeOutCubic);
-                            _scrollController.animateTo(0,
-                                duration: Duration(milliseconds: 1),
-                                curve: Curves.easeOutCubic);
                           });
                         },
-                        child: Icon(
-                          Icons.search,
-                          size: 30,
+                        borderRadius: BorderRadius.circular(30),
+                        child: Ink(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.search,
+                              size: 40,
+                            ),
+                          ),
                         ),
                       )
-                    : GestureDetector(
+                    : InkWell(
                         onTap: () {
                           setState(() {
                             isSearchActive = !isSearchActive;
-                            //!This is a bug
-                            _scrollController.animateTo(1,
-                                duration: Duration(milliseconds: 1),
-                                curve: Curves.easeOutCubic);
-                            _scrollController.animateTo(0,
-                                duration: Duration(milliseconds: 1),
-                                curve: Curves.easeOutCubic);
                           });
                         },
-                        child: Icon(
-                          Icons.arrow_right,
-                          size: 30,
+                        borderRadius: BorderRadius.circular(30),
+                        child: Ink(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.arrow_right,
+                              size: 40,
+                            ),
+                          ),
                         ),
                       )
               ],
@@ -169,7 +174,122 @@ class _MarketPageState extends State<MarketPage> {
     setState(() {
       displayedList = searchResult;
     });
-
-    // FocusManager.instance.primaryFocus?.unfocus();
   }
 }
+
+/*
+child: isSearchActive
+                        ? TextField(
+                            controller: _controller,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.zero,
+                              border: InputBorder.none,
+                              hintText: "Search...",
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                              fillColor: Colors.blue,
+                            ),
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            autofocus: true,
+                            onChanged: (text) {
+                              searchOperation(text);
+                            },
+                          )
+                        : Text(
+                            "Markets",
+                            style: TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          ),
+ */
+
+/*
+Padding(
+            padding: EdgeInsets.all(25),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: Duration(milliseconds: 300),
+                    switchInCurve: Curves.easeInCubic,
+                    switchOutCurve: Curves.easeOutCubic,
+                    transitionBuilder: (child, animation) {
+                      return SlideTransition(
+                        position: Tween<Offset>(
+                                begin: Offset(-1, 0), end: Offset(0, 0))
+                            .animate(animation),
+                        child: child,
+                      );
+                    },
+                    child: Text(
+                      "Markets",
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+                AnimatedSwitcher(
+                  duration: Duration(milliseconds: 300),
+                  switchInCurve: Curves.easeInCubic,
+                  switchOutCurve: Curves.easeOutCubic,
+                  transitionBuilder: (child, animation) {
+                    return SlideTransition(
+                      position:
+                          Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0))
+                              .animate(animation),
+                      child: child,
+                    );
+                  },
+                  child: isSearchActive
+                      ? GestureDetector(
+                          key: Key("asd"),
+                          onTap: () {
+                            setState(() {
+                              isSearchActive = !isSearchActive;
+                              //!This is a bug
+                              _scrollController.animateTo(1,
+                                  duration: Duration(milliseconds: 1),
+                                  curve: Curves.easeOutCubic);
+                              _scrollController.animateTo(0,
+                                  duration: Duration(milliseconds: 1),
+                                  curve: Curves.easeOutCubic);
+                            });
+                          },
+                          child: Icon(
+                            Icons.chevron_right_rounded,
+                            size: 45,
+                          ),
+                        )
+                      : GestureDetector(
+                          key: Key("dsa"),
+                          onTap: () {
+                            setState(() {
+                              isSearchActive = !isSearchActive;
+                              //!This is a bug
+                              _scrollController.animateTo(1,
+                                  duration: Duration(milliseconds: 1),
+                                  curve: Curves.easeOutCubic);
+                              _scrollController.animateTo(0,
+                                  duration: Duration(milliseconds: 1),
+                                  curve: Curves.easeOutCubic);
+                            });
+                          },
+                          child: Icon(
+                            Icons.search,
+                            size: 45,
+                          ),
+                        ),
+                ),
+              ],
+            ),
+          ),
+ */

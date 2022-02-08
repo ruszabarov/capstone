@@ -67,7 +67,7 @@ class _HomeState extends State<Home> {
               Padding(
                 padding: const EdgeInsets.all(25),
                 child: Text(
-                  "Wallet",
+                  "Your Wallets",
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
               ),
