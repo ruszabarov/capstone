@@ -55,7 +55,7 @@ class _WrapperState extends State<Wrapper> {
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       // appBar: PreferredSize(
-      //   preferredSize: Size.fromHeight(50),
+      //   preferredSize: Size.fromHeight(80),
       //   child: appBar(
       //     title: "$_currentTitle",
       //   ),

@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 
 Widget appBar({Widget? left, required String title, IconButton? right}) {
   return AppBar(
-    title: Text(
-      title,
-      style: TextStyle(fontSize: 20, color: Colors.white),
+    title: Padding(
+      padding: EdgeInsets.only(left: 15),
+      child: Text(
+        title,
+        style: TextStyle(
+            fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold),
+      ),
     ),
-    centerTitle: true,
-    toolbarHeight: 50,
-    elevation: 1,
-    backgroundColor: Colors.blueAccent,
-    foregroundColor: Colors.white,
+    toolbarHeight: 80,
+    elevation: 0,
+    backgroundColor: Colors.blueGrey[50],
+    foregroundColor: Colors.black,
   );
 }

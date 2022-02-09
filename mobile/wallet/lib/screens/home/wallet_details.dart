@@ -42,11 +42,10 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0),
+        preferredSize: Size.fromHeight(80.0),
         child: appBar(
           title: widget.cryptoWallet.name[0].toUpperCase() +
-              widget.cryptoWallet.name.substring(1) +
-              ' Wallet',
+              widget.cryptoWallet.name.substring(1),
         ),
       ),
       body: Stack(
@@ -57,6 +56,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
               padding: const EdgeInsets.fromLTRB(25, 0, 25, 25),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
                     height: 25,
