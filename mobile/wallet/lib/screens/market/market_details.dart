@@ -45,92 +45,117 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0),
-        child: appBar(
-          title: 'Coin',
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(25),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    borderRadius: BorderRadius.circular(30),
+                    child: Ink(
+                      child: Icon(Icons.arrow_back_ios),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    widget.coinName,
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 25, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ValueListenableBuilder(
+                    valueListenable: currentCoinPrice,
+                    builder: (context, value, child) => Text(
+                      "\$ ${value.toString()}",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  ValueListenableBuilder(
+                      valueListenable: currentDate,
+                      builder: (context, DateTime value, child) {
+                        if (displayMinutes) {
+                          return Text(
+                            DateFormat().add_jm().format(value),
+                            style: TextStyle(fontSize: 20),
+                          );
+                        } else if (displayHours) {
+                          return Text(
+                            DateFormat('MMM d, yyyy h a').format(value),
+                            style: TextStyle(fontSize: 20),
+                          );
+                        } else {
+                          return Text(
+                            DateFormat('MMM d, yyyy').format(value),
+                            style: TextStyle(fontSize: 20),
+                          );
+                        }
+                      }),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 25, top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    '${priceChangeInRange.toStringAsFixed(2)} (${percentChangeInRange.toStringAsFixed(2)}%)',
+                    style: TextStyle(
+                        color: percentChangeInRange >= 0
+                            ? Colors.green
+                            : Colors.red),
+                  ),
+                ],
+              ),
+            ),
+            chartLoaded == true
+                ? MarketChart(_trackballBehavior, currentCoinPrice, minPrice,
+                    maxPrice, data, decimalPlaces, lastPrice, currentDate)
+                : Container(
+                    height: 300,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TimeRangeButton(
+                      days: 1, label: "1D", getCoinData: _getCoinData),
+                  TimeRangeButton(
+                      days: 7, label: "1W", getCoinData: _getCoinData),
+                  TimeRangeButton(
+                      days: 30, label: "1M", getCoinData: _getCoinData),
+                  TimeRangeButton(
+                      days: 90, label: "3M", getCoinData: _getCoinData),
+                  TimeRangeButton(
+                      days: 365, label: "1Y", getCoinData: _getCoinData),
+                  TimeRangeButton(
+                      days: -1, label: "All", getCoinData: _getCoinData),
+                ],
+              ),
+            )
+          ],
         ),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10, top: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                ValueListenableBuilder(
-                  valueListenable: currentCoinPrice,
-                  builder: (context, value, child) => Text(
-                    "\$ ${value.toString()}",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                ValueListenableBuilder(
-                    valueListenable: currentDate,
-                    builder: (context, DateTime value, child) {
-                      if (displayMinutes) {
-                        return Text(
-                          DateFormat().add_jm().format(value),
-                          style: TextStyle(fontSize: 20),
-                        );
-                      } else if (displayHours) {
-                        return Text(
-                          DateFormat('MMM d, yyyy h a').format(value),
-                          style: TextStyle(fontSize: 20),
-                        );
-                      } else {
-                        return Text(
-                          DateFormat('MMM d, yyyy').format(value),
-                          style: TextStyle(fontSize: 20),
-                        );
-                      }
-                    }),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, top: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                    '${priceChangeInRange.toStringAsFixed(2)} (${percentChangeInRange.toStringAsFixed(2)}%)'),
-              ],
-            ),
-          ),
-          chartLoaded == true
-              ? MarketChart(_trackballBehavior, currentCoinPrice, minPrice,
-                  maxPrice, data, decimalPlaces, lastPrice, currentDate)
-              : Container(
-                  height: 300,
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TimeRangeButton(
-                    days: 1, label: "1D", getCoinData: _getCoinData),
-                TimeRangeButton(
-                    days: 7, label: "1W", getCoinData: _getCoinData),
-                TimeRangeButton(
-                    days: 30, label: "1M", getCoinData: _getCoinData),
-                TimeRangeButton(
-                    days: 90, label: "3M", getCoinData: _getCoinData),
-                TimeRangeButton(
-                    days: 365, label: "1Y", getCoinData: _getCoinData),
-                TimeRangeButton(
-                    days: -1, label: "All", getCoinData: _getCoinData),
-              ],
-            ),
-          )
-        ],
       ),
     );
   }
