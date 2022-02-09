@@ -62,7 +62,7 @@ class _WalletCardState extends State<WalletCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "\$${(widget.cryptoWallet.balance * value.markets[widget.cryptoWallet.name]!.currentPrice).toStringAsFixed(1)}",
+                    "\$${(widget.cryptoWallet.balance * value.markets[widget.cryptoWallet.name]!.currentPrice).toStringAsFixed(0)}",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,

@@ -45,7 +45,7 @@ class _MarketPageState extends State<MarketPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(25),
+            padding: const EdgeInsets.fromLTRB(25, 15, 25, 20),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -133,7 +133,7 @@ class _MarketPageState extends State<MarketPage> {
                             ),
                           ),
                         ),
-                      )
+                      ),
               ],
             ),
           ),
