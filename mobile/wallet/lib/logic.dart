@@ -6,6 +6,8 @@ import 'package:web3dart/web3dart.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:wallet/private.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'tokenBalanceAPI.dart';
 
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
@@ -34,7 +36,10 @@ Future<DeployedContract> loadContract(String from) async {
 }
 
 Future<String> loadTokenContract(String tokenName) async {
-  addToken("ABC", "BCA", "CAB", 18);
+  SharedPreferences _preferences = await SharedPreferences.getInstance();
+  TokenService token = new TokenService(_preferences);
+  token.addToken("name", "symbol", "address", 18);
+  print(token.getTokens());
   final String abi = await rootBundle
       .loadString("assets/build/contracts/token-list-rinkeby.json");
   final json = await jsonDecode(
