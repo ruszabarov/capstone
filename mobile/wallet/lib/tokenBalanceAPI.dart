@@ -33,16 +33,32 @@ void getTokenList() async{
   
 }
 
-// class Token {
-//   String name; 
-//   String symbol; 
-//   String address; 
-//   int decimal;
-//   // Token(String name, String symbol, String address, int decimal){
-//   //   this.name = name;
+class Token {
+  String name = ""; 
+  String symbol = ""; 
+  String address = ""; 
+  int decimal = 0;
+  Token({required this.name, required this.symbol, required this.address, required this.decimal});
 
-//   // }
-// }
+        
+  factory Token.fromJson(Map<dynamic, dynamic> parsedJson) {
+    return new Token(
+      name: parsedJson['name'] ?? "",
+      symbol: parsedJson['symbol'] ?? "",
+      address: parsedJson['address'] ?? "",
+      decimal: parsedJson['decimal'] ?? ""
+      );
+  }
+        
+  Map<String, dynamic> toJson() {
+    return {
+      "name": this.name,
+      "symbol": this.symbol,
+      "address": this.address,
+      "decimal": this.decimal,
+    };
+  }
+}
 
 
 abstract class ITokenService {
@@ -58,9 +74,13 @@ class TokenService implements ITokenService {
   @override
   void addToken(String name, String symbol, String address, int decimals) async {
   // use shared_preferences to store user preferences
-  Map<String, dynamic> token = {'name':name,'address':address,'symbol':symbol,'decimals':decimals};
-  // final decode_options = jsonDecode(await rootBundle.loadString("assets/build/contracts/token-list-rinkeby.json"));
-  await _preferences.setString('token', jsonEncode(token));
+  SharedPreferences shared_User = await SharedPreferences.getInstance();
+  Map decode_options = jsonDecode(await rootBundle.loadString(""));
+  String tokens = jsonEncode(Token.fromJson(decode_options));
+  shared_User.setString('tokens', tokens);
+            
+  Map userMap = jsonDecode(shared_User.getString('tokens'));
+  var user = Token.fromJson(userMap);
 }
   // gets
   @override
@@ -68,8 +88,7 @@ class TokenService implements ITokenService {
     String? userTokens = _preferences.getString('token');
     if(userTokens == null) {
       return null;
-    } else {
-      return jsonDecode(userTokens) as Map<String, dynamic>;
     }
+    return jsonDecode(userTokens) as Map<String, dynamic>;
   }
 }
