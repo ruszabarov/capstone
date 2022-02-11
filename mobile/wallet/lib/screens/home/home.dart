@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/screens/home/account_card.dart';
@@ -21,6 +22,8 @@ class _HomeState extends State<Home> {
   bool isAccountDetailsVisible = false;
   bool isEditAccountVisible = false;
   int accountSelectedIndex = 0;
+
+  int selectedInterval = 1;
 
   void handleAddWalletButton() {
     setState(() {
@@ -112,8 +115,8 @@ class _HomeState extends State<Home> {
                   builder: (context, value, child) => GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        crossAxisSpacing: 20,
-                        mainAxisSpacing: 20),
+                        crossAxisSpacing: 25,
+                        mainAxisSpacing: 25),
                     padding: EdgeInsets.all(25),
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,

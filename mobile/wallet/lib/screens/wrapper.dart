@@ -52,7 +52,7 @@ class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey[50],
+      backgroundColor: Colors.grey[200],
       // appBar: PreferredSize(
       //   preferredSize: Size.fromHeight(80),
       //   child: appBar(
@@ -90,6 +90,7 @@ class _WrapperState extends State<Wrapper> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.grey[200],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.blueAccent,
         showUnselectedLabels: false,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:wallet/screens/market/api.dart';
 import 'package:wallet/screens/market/market_chart.dart';
 import 'package:wallet/screens/shared/shared.dart';
@@ -28,6 +29,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
   bool displayMinutes = true;
   bool displayHours = false;
   bool chartLoaded = false;
+  int selectedInterval = 1;
 
   @override
   void initState() {
@@ -44,7 +46,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey[50],
+      backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: Column(
           children: [
@@ -126,8 +128,17 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
               ),
             ),
             chartLoaded == true
-                ? MarketChart(_trackballBehavior, currentCoinPrice, minPrice,
-                    maxPrice, data, decimalPlaces, lastPrice, currentDate)
+                ? MarketChart(
+                    _trackballBehavior,
+                    currentCoinPrice,
+                    minPrice,
+                    maxPrice,
+                    data,
+                    decimalPlaces,
+                    lastPrice,
+                    currentDate,
+                    (percentChangeInRange >= 0 ? Colors.green : Colors.red),
+                  )
                 : Container(
                     height: 300,
                     child: Center(
@@ -135,25 +146,109 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
                     ),
                   ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TimeRangeButton(
-                      days: 1, label: "1D", getCoinData: _getCoinData),
-                  TimeRangeButton(
-                      days: 7, label: "1W", getCoinData: _getCoinData),
-                  TimeRangeButton(
-                      days: 30, label: "1M", getCoinData: _getCoinData),
-                  TimeRangeButton(
-                      days: 90, label: "3M", getCoinData: _getCoinData),
-                  TimeRangeButton(
-                      days: 365, label: "1Y", getCoinData: _getCoinData),
-                  TimeRangeButton(
-                      days: -1, label: "All", getCoinData: _getCoinData),
+                  NeumorphicRadio(
+                    style: NeumorphicRadioStyle(
+                      selectedColor: Colors.grey[200],
+                      unselectedColor: Colors.grey[200],
+                    ),
+                    value: 1,
+                    groupValue: selectedInterval,
+                    padding: const EdgeInsets.all(15),
+                    child: const Text("1D"),
+                    onChanged: (int? value) {
+                      setState(() {
+                        selectedInterval = value!;
+                      });
+                      _getCoinData(value!);
+                    },
+                  ),
+                  NeumorphicRadio(
+                    style: NeumorphicRadioStyle(
+                      selectedColor: Colors.grey[200],
+                      unselectedColor: Colors.grey[200],
+                    ),
+                    value: 7,
+                    groupValue: selectedInterval,
+                    padding: const EdgeInsets.all(15),
+                    child: const Text("1W"),
+                    onChanged: (int? value) {
+                      setState(() {
+                        selectedInterval = value!;
+                      });
+                      _getCoinData(value!);
+                    },
+                  ),
+                  NeumorphicRadio(
+                    style: NeumorphicRadioStyle(
+                      selectedColor: Colors.grey[200],
+                      unselectedColor: Colors.grey[200],
+                    ),
+                    value: 30,
+                    groupValue: selectedInterval,
+                    padding: const EdgeInsets.all(15),
+                    child: const Text("1M"),
+                    onChanged: (int? value) {
+                      setState(() {
+                        selectedInterval = value!;
+                      });
+                      _getCoinData(value!);
+                    },
+                  ),
+                  NeumorphicRadio(
+                    style: NeumorphicRadioStyle(
+                      selectedColor: Colors.grey[200],
+                      unselectedColor: Colors.grey[200],
+                    ),
+                    value: 90,
+                    groupValue: selectedInterval,
+                    padding: const EdgeInsets.all(15),
+                    child: const Text("3M"),
+                    onChanged: (int? value) {
+                      setState(() {
+                        selectedInterval = value!;
+                      });
+                      _getCoinData(value!);
+                    },
+                  ),
+                  NeumorphicRadio(
+                    style: NeumorphicRadioStyle(
+                      selectedColor: Colors.grey[200],
+                      unselectedColor: Colors.grey[200],
+                    ),
+                    value: 365,
+                    groupValue: selectedInterval,
+                    padding: const EdgeInsets.all(15),
+                    child: const Text("1Y"),
+                    onChanged: (int? value) {
+                      setState(() {
+                        selectedInterval = value!;
+                      });
+                      _getCoinData(value!);
+                    },
+                  ),
+                  NeumorphicRadio(
+                    style: NeumorphicRadioStyle(
+                      selectedColor: Colors.grey[200],
+                      unselectedColor: Colors.grey[200],
+                    ),
+                    value: -1,
+                    groupValue: selectedInterval,
+                    padding: const EdgeInsets.all(15),
+                    child: const Text("All"),
+                    onChanged: (int? value) {
+                      setState(() {
+                        selectedInterval = value!;
+                      });
+                      _getCoinData(value!);
+                    },
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -163,6 +258,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
   @override
   void dispose() {
     currentCoinPrice.dispose();
+    currentDate.dispose();
     super.dispose();
   }
 

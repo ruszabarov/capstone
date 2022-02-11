@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/home/receive.dart';
 import 'package:wallet/screens/home/send.dart';
@@ -40,7 +41,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey[50],
+      backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: Stack(
           children: [
@@ -80,7 +81,16 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                     SizedBox(
                       height: 25,
                     ),
-                    card(
+                    Neumorphic(
+                      style: NeumorphicStyle(
+                        color: Colors.grey[200],
+                        shape: NeumorphicShape.flat,
+                        boxShape: NeumorphicBoxShape.roundRect(
+                            BorderRadius.circular(15)),
+                        depth: 8,
+                      ),
+                      duration: Duration(milliseconds: 200),
+                      padding: EdgeInsets.all(20),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,11 +133,19 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                     Row(
                       children: [
                         Expanded(
-                          child: InkWell(
-                            onTap: () {
+                          child: NeumorphicButton(
+                            onPressed: () {
                               handleSendButton();
                             },
-                            borderRadius: BorderRadius.circular(15),
+                            duration: Duration(milliseconds: 100),
+                            style: NeumorphicStyle(
+                              color: Colors.grey[200],
+                              shape: NeumorphicShape.flat,
+                              boxShape: NeumorphicBoxShape.roundRect(
+                                  BorderRadius.circular(15)),
+                              depth: isSendVisible ? -4 : 8,
+                            ),
+                            padding: const EdgeInsets.all(3),
                             child: _actionButton(
                               text: 'Send',
                               color: Colors.red.shade400,
@@ -138,11 +156,19 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                           width: 20,
                         ),
                         Expanded(
-                          child: InkWell(
-                            onTap: () {
+                          child: NeumorphicButton(
+                            onPressed: () {
                               handleReceiveButton();
                             },
-                            borderRadius: BorderRadius.circular(15),
+                            duration: Duration(milliseconds: 100),
+                            style: NeumorphicStyle(
+                              color: Colors.grey[200],
+                              shape: NeumorphicShape.flat,
+                              boxShape: NeumorphicBoxShape.roundRect(
+                                  BorderRadius.circular(15)),
+                              depth: isReceiveVisible ? -4 : 8,
+                            ),
+                            padding: const EdgeInsets.all(3),
                             child: _actionButton(
                               text: 'Receive',
                               color: Colors.green.shade400,
