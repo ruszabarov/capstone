@@ -30,6 +30,13 @@ class _AccountCardState extends State<AccountCard> {
             widget.colorPair[1],
           ],
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade400,
+            offset: Offset(5, 5),
+            blurRadius: 3,
+          ),
+        ],
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       child: Column(

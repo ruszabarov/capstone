@@ -51,7 +51,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(25),
+              padding: const EdgeInsets.all(20),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -70,7 +70,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
                     },
                   ),
                   SizedBox(
-                    width: 10,
+                    width: 15,
                   ),
                   Text(
                     widget.coinName,
