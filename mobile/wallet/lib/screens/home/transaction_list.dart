@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/home/receipt_card.dart';
 
@@ -16,8 +17,8 @@ class TransactionList extends StatelessWidget {
       scrollDirection: Axis.vertical,
       itemCount: transactions.length,
       itemBuilder: (BuildContext ctxt, int index) {
-        return InkWell(
-          onTap: () {
+        return NeumorphicButton(
+          onPressed: () {
             showDialog(
                 context: context,
                 builder: (context) {
@@ -38,6 +39,53 @@ class TransactionList extends StatelessWidget {
                   );
                 });
           },
+          style: NeumorphicStyle(
+            color: Colors.grey[200],
+            shape: NeumorphicShape.flat,
+            boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(0)),
+            depth: 4,
+          ),
+          padding: EdgeInsets.all(20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  transactions[index].type == 'outgoing'
+                      ? Icon(
+                          Icons.arrow_upward,
+                          color: Colors.red,
+                        )
+                      : Icon(
+                          Icons.arrow_downward,
+                          color: Colors.green,
+                        ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "${transactions[index].total.toString()} ETH",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    transactions[index].date,
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+        return InkWell(
           borderRadius: BorderRadius.vertical(
             top: index == 0 ? Radius.circular(10) : Radius.circular(0),
             bottom: index == transactions.length - 1

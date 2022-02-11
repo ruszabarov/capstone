@@ -58,17 +58,22 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          InkWell(
-                            onTap: () {
+                          NeumorphicButton(
+                            style: NeumorphicStyle(
+                              color: Colors.grey[200],
+                              shape: NeumorphicShape.flat,
+                              boxShape: NeumorphicBoxShape.roundRect(
+                                  BorderRadius.circular(15)),
+                              depth: 4,
+                            ),
+                            padding: EdgeInsets.all(10),
+                            child: Icon(Icons.arrow_back),
+                            onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            borderRadius: BorderRadius.circular(30),
-                            child: Ink(
-                              child: Icon(Icons.arrow_back_ios),
-                            ),
                           ),
                           SizedBox(
-                            width: 10,
+                            width: 15,
                           ),
                           Text(
                             widget.cryptoWallet.name,

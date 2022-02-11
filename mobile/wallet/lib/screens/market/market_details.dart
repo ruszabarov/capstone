@@ -55,14 +55,19 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  InkWell(
-                    onTap: () {
+                  NeumorphicButton(
+                    style: NeumorphicStyle(
+                      color: Colors.grey[200],
+                      shape: NeumorphicShape.flat,
+                      boxShape: NeumorphicBoxShape.roundRect(
+                          BorderRadius.circular(15)),
+                      depth: 4,
+                    ),
+                    padding: EdgeInsets.all(10),
+                    child: Icon(Icons.arrow_back),
+                    onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    borderRadius: BorderRadius.circular(30),
-                    child: Ink(
-                      child: Icon(Icons.arrow_back_ios),
-                    ),
                   ),
                   SizedBox(
                     width: 10,
@@ -266,6 +271,8 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
     chartLoaded = false;
     data = [];
 
+    setState(() {});
+
     if (days == 1) {
       displayMinutes = true;
       displayHours = false;
@@ -280,6 +287,8 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
     List prices = await getMarketData(widget.coinName, days);
 
     _calculateBounds(prices);
+
+    setState(() {});
 
     lastPrice = await getSimpleTokenData(widget.coinName)
         .then((value) => value[widget.coinName]['usd']);

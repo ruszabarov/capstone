@@ -39,7 +39,7 @@ class _MarketCardState extends State<MarketCard> {
         color: Colors.grey[200],
         shape: NeumorphicShape.flat,
         boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
-        depth: 8,
+        depth: 4,
       ),
       padding: const EdgeInsets.all(20),
       child: Consumer<MarketList>(

@@ -26,10 +26,10 @@ class _WalletCardState extends State<WalletCard> {
   Widget build(BuildContext context) {
     return NeumorphicButton(
       onPressed: () {
-        Navigator.push(
-          context,
+        Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => WalletDetailsPage(widget.cryptoWallet)),
+            builder: (context) => WalletDetailsPage(widget.cryptoWallet),
+          ),
         );
       },
       duration: Duration(milliseconds: 100),
