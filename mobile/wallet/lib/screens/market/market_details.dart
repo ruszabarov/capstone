@@ -70,7 +70,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
                     },
                   ),
                   SizedBox(
-                    width: 15,
+                    width: 20,
                   ),
                   Text(
                     widget.coinName,

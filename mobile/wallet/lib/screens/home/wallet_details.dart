@@ -73,7 +73,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                             },
                           ),
                           SizedBox(
-                            width: 15,
+                            width: 20,
                           ),
                           Text(
                             widget.cryptoWallet.name,

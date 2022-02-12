@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/providers/Market.dart';
-import 'package:wallet/screens/account/account.dart';
+import 'package:wallet/screens/account/settings.dart';
 import 'package:wallet/screens/home/add_wallet.dart';
 import 'package:wallet/screens/market/market.dart';
 import 'package:wallet/screens/shared/appBar.dart';
@@ -39,7 +39,7 @@ class _WrapperState extends State<Wrapper> {
     _pageController = PageController();
     home = Home();
     market = MarketPage();
-    account = AccountPage();
+    account = SettingsPage();
     super.initState();
   }
 
