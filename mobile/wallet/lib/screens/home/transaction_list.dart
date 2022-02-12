@@ -11,26 +11,23 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
+      separatorBuilder: (context, index) {
+        return SizedBox(
+          height: 10,
+        );
+      },
       itemCount: transactions.length,
       itemBuilder: (BuildContext ctxt, int index) {
         return NeumorphicButton(
           style: NeumorphicStyle(
             color: Colors.grey[200],
-            shadowLightColor: index == 0 ? Colors.white : Colors.grey.shade200,
-            shadowLightColorEmboss:
-                index == 0 ? Colors.white : Colors.grey.shade200,
             shape: NeumorphicShape.flat,
             boxShape: NeumorphicBoxShape.roundRect(
-              BorderRadius.vertical(
-                top: index == 0 ? Radius.circular(10) : Radius.circular(0),
-                bottom: index == transactions.length - 1
-                    ? Radius.circular(10)
-                    : Radius.circular(0),
-              ),
+              BorderRadius.circular(15),
             ),
             depth: 4,
           ),

@@ -31,137 +31,94 @@ class _AccountPageState extends State<AccountPage> {
             SizedBox(
               height: 30,
             ),
-            NeumorphicButton(
-              style: NeumorphicStyle(
-                color: Colors.grey[200],
-                shape: NeumorphicShape.flat,
-                boxShape:
-                    NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
-                depth: 4,
-              ),
-              padding: EdgeInsets.all(20),
-              onPressed: () {},
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.settings_outlined,
-                    color: Colors.blueGrey,
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                        "General",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "Currency · Timezone · Language",
-                        style: TextStyle(color: Colors.grey[800]),
-                      ),
-                    ],
-                  )
-                ],
-              ),
+            NeumorphicCard(
+              Icons.settings_outlined,
+              Colors.blueGrey,
+              "General",
+              "Currency · Timezone · Language",
+              Container(),
             ),
             SizedBox(
               height: 20,
             ),
-            NeumorphicButton(
-              style: NeumorphicStyle(
-                color: Colors.grey[200],
-                shape: NeumorphicShape.flat,
-                boxShape:
-                    NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
-                depth: 4,
-              ),
-              padding: EdgeInsets.all(20),
-              onPressed: () {},
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.security,
-                    color: Colors.blue,
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                        "Security",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "Biometrics · PIN · Backup",
-                        style: TextStyle(color: Colors.grey[800]),
-                      ),
-                    ],
-                  )
-                ],
-              ),
+            NeumorphicCard(
+              Icons.security,
+              Colors.blue,
+              "Security",
+              "Biometrics · PIN · Backup",
+              Container(),
             ),
             SizedBox(
               height: 20,
             ),
-            NeumorphicButton(
-              style: NeumorphicStyle(
-                color: Colors.grey[200],
-                shape: NeumorphicShape.flat,
-                boxShape:
-                    NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
-                depth: 4,
-              ),
-              padding: EdgeInsets.all(20),
-              onPressed: () {},
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.notifications,
-                    color: Colors.amber,
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                        "Notifications",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "Transactions · Markets",
-                        style: TextStyle(color: Colors.grey[800]),
-                      ),
-                    ],
-                  )
-                ],
-              ),
+            NeumorphicCard(
+              Icons.notifications,
+              Colors.amber,
+              "Notifications",
+              "Transactions · Markets",
+              Container(),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class NeumorphicCard extends StatefulWidget {
+  final IconData icon;
+  final Color iconColor;
+  final String title;
+  final String description;
+  final Widget page;
+
+  const NeumorphicCard(
+      this.icon, this.iconColor, this.title, this.description, this.page);
+
+  @override
+  _NeumorphicCardState createState() => _NeumorphicCardState();
+}
+
+class _NeumorphicCardState extends State<NeumorphicCard> {
+  @override
+  Widget build(BuildContext context) {
+    return NeumorphicButton(
+      style: NeumorphicStyle(
+        color: Colors.grey[200],
+        shape: NeumorphicShape.flat,
+        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
+        depth: 4,
+      ),
+      padding: EdgeInsets.all(20),
+      onPressed: () {},
+      child: Row(
+        children: [
+          Icon(
+            widget.icon,
+            color: widget.iconColor,
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(
+                widget.title,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                widget.description,
+                style: TextStyle(color: Colors.grey[800]),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
