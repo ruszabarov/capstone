@@ -10,6 +10,8 @@ class GeneralPage extends StatefulWidget {
 }
 
 class _GeneralPageState extends State<GeneralPage> {
+  bool isVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,17 +61,29 @@ class _GeneralPageState extends State<GeneralPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Local Currency"),
-                    NeumorphicButton(
-                      style: NeumorphicStyle(
-                        color: Colors.grey[200],
-                        shape: NeumorphicShape.flat,
-                        boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(15)),
-                        depth: -4,
+                    Text(
+                      "Local Currency",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    DropdownButton<String>(
+                      value: "USD",
+                      icon: const Icon(Icons.arrow_drop_down),
+                      elevation: 0,
+                      underline: Container(
+                        height: 0,
                       ),
-                      child: Text("USD \$"),
-                      onPressed: () {},
+                      borderRadius: BorderRadius.circular(15),
+                      dropdownColor: Colors.grey[300],
+                      onChanged: (String? newValue) {
+                        setState(() {});
+                      },
+                      items: <String>['USD', 'EUR', 'RUB', 'YEN']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
                   ],
                 ),
@@ -91,17 +105,29 @@ class _GeneralPageState extends State<GeneralPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Local Timezone"),
-                    NeumorphicButton(
-                      style: NeumorphicStyle(
-                        color: Colors.grey[200],
-                        shape: NeumorphicShape.flat,
-                        boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(15)),
-                        depth: -4,
+                    Text(
+                      "Local Timezone",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    DropdownButton<String>(
+                      value: "UTC-5",
+                      icon: const Icon(Icons.arrow_drop_down),
+                      elevation: 0,
+                      underline: Container(
+                        height: 0,
                       ),
-                      child: Text("UTC -5"),
-                      onPressed: () {},
+                      borderRadius: BorderRadius.circular(15),
+                      dropdownColor: Colors.grey[300],
+                      onChanged: (String? newValue) {
+                        setState(() {});
+                      },
+                      items: <String>['UTC-5', 'UTC-4', 'UTC-3', 'UTC-2']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
                   ],
                 ),
@@ -123,17 +149,29 @@ class _GeneralPageState extends State<GeneralPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Language"),
-                    NeumorphicButton(
-                      style: NeumorphicStyle(
-                        color: Colors.grey[200],
-                        shape: NeumorphicShape.flat,
-                        boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(15)),
-                        depth: -4,
+                    Text(
+                      "Language",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    DropdownButton<String>(
+                      value: "English",
+                      icon: const Icon(Icons.arrow_drop_down),
+                      elevation: 0,
+                      underline: Container(
+                        height: 0,
                       ),
-                      child: Text("English"),
-                      onPressed: () {},
+                      borderRadius: BorderRadius.circular(15),
+                      dropdownColor: Colors.grey[300],
+                      onChanged: (String? newValue) {
+                        setState(() {});
+                      },
+                      items: <String>['English', 'Spanish', 'Russian']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
                   ],
                 ),
