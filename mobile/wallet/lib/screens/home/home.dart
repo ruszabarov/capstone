@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/screens/home/account_card.dart';
@@ -18,11 +18,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool isAddWalletVisible = false;
   bool isAccountDetailsVisible = false;
   bool isEditAccountVisible = false;
   int accountSelectedIndex = 0;
+
+  int selectedInterval = 1;
 
   void handleAddWalletButton() {
     setState(() {
@@ -74,7 +75,7 @@ class _HomeState extends State<Home> {
               Material(
                 child: Ink(
                   color: Colors.grey[200],
-                  height: 210,
+                  height: 230,
                   child: Consumer<AccountList>(
                     builder: (context, value, child) => PageView.builder(
                       itemCount: value.accounts.length,
@@ -86,7 +87,7 @@ class _HomeState extends State<Home> {
                           scale: i == accountSelectedIndex ? 1.1 : 0.9,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 15),
+                                horizontal: 5, vertical: 25),
                             child: InkWell(
                               borderRadius: BorderRadius.circular(15),
                               onTap: () {
@@ -114,8 +115,8 @@ class _HomeState extends State<Home> {
                   builder: (context, value, child) => GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        crossAxisSpacing: 20,
-                        mainAxisSpacing: 20),
+                        crossAxisSpacing: 25,
+                        mainAxisSpacing: 25),
                     padding: EdgeInsets.all(25),
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,

@@ -24,8 +24,6 @@ class _LoadDataPageState extends State<LoadDataPage> {
           await getTokenBalance(initAccountData[0].address, "ChainLink Token"));
     }
 
-    print(initMarketData);
-
     // load Market data
     String request = "";
     initMarketData.keys.forEach((key) {
@@ -52,7 +50,6 @@ class _LoadDataPageState extends State<LoadDataPage> {
 
   @override
   void initState() {
-    print("built");
     super.initState();
     loadData();
   }
