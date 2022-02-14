@@ -22,7 +22,7 @@ void getTokenList() async {
     abi,
   );
   String getAddresses(int i) {
-    return json[i]["address"] as String;
+    return json[i]["address"];
   }
 
   for (int i = 0; i < json.length; i++) {
@@ -30,7 +30,7 @@ void getTokenList() async {
         address: myAddress, contractAddress: getAddresses(i));
 
     await Future.delayed(Duration(seconds: 1));
-    print(balance);
+    print(balance.result);
   }
 }
 
