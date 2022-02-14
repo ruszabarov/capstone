@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/providers/Market.dart';
 import 'package:wallet/screens/account/settings.dart';
-import 'package:wallet/screens/home/add_wallet.dart';
 import 'package:wallet/screens/market/market.dart';
 import 'package:wallet/screens/shared/appBar.dart';
 import 'package:wallet/wallet_icons.dart';
