@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet/screens/auth/auth_page.dart';
 import 'package:wallet/screens/load_data.dart';
 import 'package:flutter/services.dart';
 
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
 class Authenticate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return LoadDataPage();
+    return AuthPage();
     // return StreamBuilder<User?>(
     //   stream: context.read<AuthenticationProvider>().authState,
     //   builder: (context, snapshot) {

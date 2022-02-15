@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/screens/home/account_card.dart';
 import 'package:wallet/screens/home/add_account_card.dart';
+import 'package:wallet/screens/home/add_account_page.dart';
 import 'package:wallet/screens/home/add_token.dart';
 import 'package:wallet/screens/home/account_details_card.dart';
 import 'package:wallet/screens/home/edit_account_card.dart';
@@ -138,84 +139,7 @@ class _HomeState extends State<Home> {
                         )
                       : Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Nickname (required)"),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Neumorphic(
-                                style: NeumorphicStyle(
-                                  color: Colors.grey[200],
-                                  boxShape: NeumorphicBoxShape.roundRect(
-                                      BorderRadius.circular(15)),
-                                  depth: -4,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  child: TextField(
-                                    style: TextStyle(
-                                      decoration: TextDecoration.none,
-                                    ),
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: "Enter Name",
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Text("Mnemonic / private key (optional)"),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Neumorphic(
-                                style: NeumorphicStyle(
-                                  color: Colors.grey[200],
-                                  boxShape: NeumorphicBoxShape.roundRect(
-                                      BorderRadius.circular(15)),
-                                  depth: -4,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  child: TextField(
-                                    style: TextStyle(
-                                      decoration: TextDecoration.none,
-                                    ),
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: "Enter Key",
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Expanded(
-                                    child: Consumer<AccountList>(
-                                      builder: (context, value, child) {
-                                        return NeumorphicCard(
-                                            Center(
-                                              child: Text("CREATE ACCOUNT"),
-                                            ),
-                                            () {});
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
+                          child: AddAccountPage(),
                         ),
                 ),
               ),
