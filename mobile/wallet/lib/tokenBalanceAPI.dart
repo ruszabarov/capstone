@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final etherscan = EtherscanAPI(apiKey: apiKey, chain: EthChain.rinkeby);
+final etherscan = EtherscanAPI(apiKey: apiKey, chain: EthChain.rinkeby, enableLogs: false);
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 
 void getTokenList() async {
@@ -21,6 +21,10 @@ void getTokenList() async {
   final json = await jsonDecode(
     abi,
   );
+
+
+  List<dynamic> tokenList = [];
+
   String getAddresses(int i) {
     return json[i]["address"];
   }
@@ -30,8 +34,10 @@ void getTokenList() async {
         address: myAddress, contractAddress: getAddresses(i));
 
     await Future.delayed(Duration(seconds: 1));
-    print(balance.result);
+    tokenList.add(balance.result);
   }
+
+  print(tokenList);
 }
 
 class Token {
@@ -76,17 +82,7 @@ class TokenService implements ITokenService {
   @override
   void addToken(
       String name, String symbol, String address, int decimals) async {
-    // use shared_preferences to store user preferences
-    /*
-    SharedPreferences shared_User = await SharedPreferences.getInstance();
-    Map decode_options = jsonDecode(await rootBundle.loadString(""));
-    String tokens = jsonEncode(Token.fromJson(decode_options));
-    shared_User.setString('tokens', tokens);
-
-    Map userMap = jsonDecode(shared_User.getString('tokens'));
-    var user = Token.fromJson(userMap);
-
-     */
+  
   }
 
   // gets

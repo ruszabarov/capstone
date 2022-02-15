@@ -40,6 +40,7 @@ Future<String> loadTokenContract(String tokenName) async {
   TokenService token = new TokenService(_preferences);
   token.addToken("name", "symbol", "address", 18);
   print(token.getTokens());
+  getTokenList();
   final String abi = await rootBundle
       .loadString("assets/build/contracts/token-list-rinkeby.json");
   final json = await jsonDecode(
