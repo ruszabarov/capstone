@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:wallet/providers/Token.dart';
-
 import 'private.dart';
 import 'package:etherscan_api/etherscan_api.dart';
 import 'package:http/http.dart';
@@ -82,7 +81,7 @@ class TokenService implements ITokenService {
   @override
   void addToken(
       String name, String symbol, String address, int decimals) async {
-  
+      
   }
 
   // gets
@@ -94,4 +93,45 @@ class TokenService implements ITokenService {
     }
     return jsonDecode(userTokens) as Map<String, dynamic>;
   }
+}
+
+
+Future<void> setPath() async {
+    bool fileExists = false;
+    String fileName = "tokensJSON.json";
+    Map<String, dynamic> fileContent;
+    Directory dir = await getApplicationDocumentsDirectory();
+    File jsonFile = new File(dir.path + "/" + fileName);
+    fileExists = await jsonFile.exists();
+    if(fileExists) {
+      fileContent = jsonDecode(jsonFile.readAsStringSync());
+    }
+
+    void createFile(Map<String, dynamic> content, Directory dir, String fileName) {
+      print("Creating file");
+      File file =  new File(dir.path + "/" + fileName);
+      file.createSync();
+      fileExists = true;
+      file.writeAsStringSync(jsonEncode(content));
+    }
+
+    void writeToFile(String key, dynamic value) {
+      print("Writing to file");
+      Map<String, dynamic> content = {key: value};
+      if(fileExists){
+        print("File exists");
+        Map<String, dynamic> jsonFileContent = jsonDecode(jsonFile.readAsStringSync());
+        jsonFileContent.addAll(content);
+        jsonFile.writeAsStringSync(jsonEncode(jsonFileContent));
+      } else {
+        print("File does not exist");
+        createFile(content, dir, fileName);
+      }
+    }
+
+}
+
+
+class FileManager {
+
 }
