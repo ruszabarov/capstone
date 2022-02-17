@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet/providers/Account.dart';
+import 'package:wallet/providers/Navbar.dart';
 import 'package:wallet/screens/home/account_card.dart';
 import 'package:wallet/screens/home/add_account_card.dart';
 import 'package:wallet/screens/home/add_account_page.dart';
@@ -27,28 +28,30 @@ class _HomeState extends State<Home> {
 
   int selectedInterval = 1;
 
-  void handleAddWalletButton() {
-    setState(() {
-      isAccountDetailsVisible = false;
-      isEditAccountVisible = false;
-      isAddWalletVisible = !isAddWalletVisible;
-    });
-  }
-
   void handleAccountDetailsButton() {
     setState(() {
-      isAddWalletVisible = false;
       isEditAccountVisible = false;
       isAccountDetailsVisible = !isAccountDetailsVisible;
     });
+
+    handleNavBar();
   }
 
   void handleEditAccountButton() {
     setState(() {
-      isAddWalletVisible = false;
       isAccountDetailsVisible = false;
       isEditAccountVisible = !isEditAccountVisible;
     });
+
+    handleNavBar();
+  }
+
+  void handleNavBar() {
+    if (!isAccountDetailsVisible && !isEditAccountVisible) {
+      context.read<Navbar>().show();
+    } else {
+      context.read<Navbar>().hide();
+    }
   }
 
   @override
