@@ -68,70 +68,54 @@ class Token {
   }
 }
 
-abstract class ITokenService {
-  void addToken(String name, String symbol, String address, int decimal);
-  Map<String, dynamic>? getTokens();
-}
 
-class TokenService implements ITokenService {
-  const TokenService(this._preferences);
+class TokenManager {
+  bool fileExists = false;
+  String fileName = "tokensJSON.json";
+  Map<String, dynamic> fileContent = {};
 
-  final SharedPreferences _preferences;
-
-  @override
-  void addToken(
-      String name, String symbol, String address, int decimals) async {
-      
+  Future<Directory> get _localPath async {
+    final dir = await getApplicationDocumentsDirectory();
+    return dir;
   }
 
-  // gets
-  @override
-  Map<String, dynamic>? getTokens() {
-    String? userTokens = _preferences.getString('token');
-    if (userTokens == null) {
-      return null;
-    }
-    return jsonDecode(userTokens) as Map<String, dynamic>;
+  Future<File> get _jsonFile async {
+    Directory localPath = await _localPath;
+    return File(localPath.path + "/" + fileName);
   }
-}
 
-
-Future<void> setPath() async {
-    bool fileExists = false;
-    String fileName = "tokensJSON.json";
-    Map<String, dynamic> fileContent;
-    Directory dir = await getApplicationDocumentsDirectory();
-    File jsonFile = new File(dir.path + "/" + fileName);
-    fileExists = await jsonFile.exists();
+  Future<void> get _fileExists async{
+    File jsonFile = await _jsonFile;
+    fileExists = await jsonFile.existsSync();
     if(fileExists) {
       fileContent = jsonDecode(jsonFile.readAsStringSync());
     }
+  }
 
-    void createFile(Map<String, dynamic> content, Directory dir, String fileName) {
-      print("Creating file");
-      File file =  new File(dir.path + "/" + fileName);
-      file.createSync();
-      fileExists = true;
-      file.writeAsStringSync(jsonEncode(content));
+  void createFile(Map<String, dynamic> content, Directory dir, String fileName) {
+    print("Creating file");
+    File file =  new File(dir.path + "/" + fileName);
+    file.createSync();
+    fileExists = true;
+    file.writeAsStringSync(jsonEncode(content));
+  }
+
+  dynamic writeToFile(String key, dynamic value) async{
+    print("Writing to file");
+    Map<String, dynamic> content = {key: value};
+    Directory dir = await _localPath;
+    File jsonFile = await _jsonFile;
+    await _fileExists;
+    if(fileExists){
+      print("File exists");
+      Map<String, dynamic> jsonFileContent = jsonDecode(jsonFile.readAsStringSync());
+      jsonFileContent.addAll(content);
+      jsonFile.writeAsStringSync(jsonEncode(jsonFileContent));
+    } else {
+      print("File does not exist");
+      createFile(content, dir, fileName);
     }
-
-    void writeToFile(String key, dynamic value) {
-      print("Writing to file");
-      Map<String, dynamic> content = {key: value};
-      if(fileExists){
-        print("File exists");
-        Map<String, dynamic> jsonFileContent = jsonDecode(jsonFile.readAsStringSync());
-        jsonFileContent.addAll(content);
-        jsonFile.writeAsStringSync(jsonEncode(jsonFileContent));
-      } else {
-        print("File does not exist");
-        createFile(content, dir, fileName);
-      }
-    }
-
-}
-
-
-class FileManager {
-
+    fileContent = jsonDecode(jsonFile.readAsStringSync());
+    return fileContent;
+  }
 }

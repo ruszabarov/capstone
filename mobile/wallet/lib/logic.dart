@@ -36,11 +36,11 @@ Future<DeployedContract> loadContract(String from) async {
 }
 
 Future<String> loadTokenContract(String tokenName) async {
-  SharedPreferences _preferences = await SharedPreferences.getInstance();
-  TokenService token = new TokenService(_preferences);
-  token.addToken("name", "symbol", "address", 18);
-  print(token.getTokens());
   getTokenList();
+
+  TokenManager tokenManager = new TokenManager();
+  print(await tokenManager.writeToFile("key", "value"));
+
   final String abi = await rootBundle
       .loadString("assets/build/contracts/token-list-rinkeby.json");
   final json = await jsonDecode(
