@@ -100,7 +100,7 @@ class TokenManager {
     file.writeAsStringSync(jsonEncode(content));
   }
 
-  dynamic writeToFile(String key, dynamic value) async{
+  void writeToFile(String key, dynamic value) async{
     print("Writing to file");
     Map<String, dynamic> content = {key: value};
     Directory dir = await _localPath;
@@ -115,6 +115,10 @@ class TokenManager {
       print("File does not exist");
       createFile(content, dir, fileName);
     }
+  }
+
+  dynamic readFile() async {
+    File jsonFile = await _jsonFile;
     fileContent = jsonDecode(jsonFile.readAsStringSync());
     return fileContent;
   }

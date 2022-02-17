@@ -14,7 +14,7 @@ EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
 
 Client httpClient = new Client();
 Web3Client ethClient = new Web3Client(
-    "https://rinkeby.infura.io/v3/f58b56df688c4bafba806114fb329aaa",
+    "https://rinkeby.infura.io/v3/38ba5f4475644e4ba48d25313c80347b",
     httpClient);
 
 Future<String> getEthBalance(EthereumAddress from) async {
@@ -36,10 +36,10 @@ Future<DeployedContract> loadContract(String from) async {
 }
 
 Future<String> loadTokenContract(String tokenName) async {
-  getTokenList();
+  //getTokenList();
 
   TokenManager tokenManager = new TokenManager();
-  print(await tokenManager.writeToFile("key", "value"));
+  print(await tokenManager.readFile());
 
   final String abi = await rootBundle
       .loadString("assets/build/contracts/token-list-rinkeby.json");
@@ -57,7 +57,7 @@ Future<String> loadTokenContract(String tokenName) async {
 Future<String> getTokenBalance(String from, String tokenName) async {
   Client httpClient = new Client();
   Web3Client ethClient = new Web3Client(
-      "https://rinkeby.infura.io/v3/f58b56df688c4bafba806114fb329aaa",
+      "https://rinkeby.infura.io/v3/38ba5f4475644e4ba48d25313c80347b",
       httpClient);
 
   final decimals = 18;
