@@ -11,7 +11,8 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final etherscan = EtherscanAPI(apiKey: apiKey, chain: EthChain.rinkeby, enableLogs: false);
+final etherscan =
+    EtherscanAPI(apiKey: apiKey, chain: EthChain.rinkeby, enableLogs: false);
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 
 void getTokenList() async {
@@ -20,7 +21,6 @@ void getTokenList() async {
   final json = await jsonDecode(
     abi,
   );
-
 
   List<dynamic> tokenList = [];
 
@@ -68,7 +68,6 @@ class Token {
   }
 }
 
-
 class TokenManager {
   bool fileExists = false;
   String fileName = "tokensJSON.json";
@@ -84,31 +83,39 @@ class TokenManager {
     return File(localPath.path + "/" + fileName);
   }
 
-  Future<void> get _fileExists async{
+  Future<void> get _fileExists async {
     File jsonFile = await _jsonFile;
     fileExists = await jsonFile.existsSync();
-    if(fileExists) {
+    if (fileExists) {
       fileContent = jsonDecode(jsonFile.readAsStringSync());
     }
   }
 
-  void createFile(Map<String, dynamic> content, Directory dir, String fileName) {
+  void createFile(
+      Map<String, dynamic> content, Directory dir, String fileName) {
     print("Creating file");
-    File file =  new File(dir.path + "/" + fileName);
+    File file = new File(dir.path + "/" + fileName);
     file.createSync();
     fileExists = true;
     file.writeAsStringSync(jsonEncode(content));
   }
 
-  void writeToFile(String key, dynamic value) async{
+  void writeToFile(
+      String name, String address, String symbol, int decimals) async {
     print("Writing to file");
-    Map<String, dynamic> content = {key: value};
+    Map<String, dynamic> content = {
+      "name": name,
+      "symbol": symbol,
+      "address": address,
+      "decimals": decimals
+    };
     Directory dir = await _localPath;
     File jsonFile = await _jsonFile;
     await _fileExists;
-    if(fileExists){
+    if (fileExists) {
       print("File exists");
-      Map<String, dynamic> jsonFileContent = jsonDecode(jsonFile.readAsStringSync());
+      Map<String, dynamic> jsonFileContent =
+          jsonDecode(jsonFile.readAsStringSync());
       jsonFileContent.addAll(content);
       jsonFile.writeAsStringSync(jsonEncode(jsonFileContent));
     } else {
@@ -118,8 +125,24 @@ class TokenManager {
   }
 
   dynamic readFile() async {
+    await _fileExists;
+
+    if (fileExists == false) {
+      return "File doesn't exist";
+    }
+
     File jsonFile = await _jsonFile;
-    fileContent = jsonDecode(jsonFile.readAsStringSync());
+    fileContent = jsonDecode(await jsonFile.readAsStringSync());
     return fileContent;
+  }
+
+  Future<int?> deleteFile() async {
+    try {
+      final file = await _jsonFile;
+
+      await file.delete();
+    } catch (e) {
+      return 0;
+    }
   }
 }

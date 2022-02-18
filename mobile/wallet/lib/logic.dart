@@ -39,6 +39,8 @@ Future<String> loadTokenContract(String tokenName) async {
   //getTokenList();
 
   TokenManager tokenManager = new TokenManager();
+  tokenManager.deleteFile();
+  //tokenManager.writeToFile("Ether", "0x0000000", "ETH", 18);
   print(await tokenManager.readFile());
 
   final String abi = await rootBundle
