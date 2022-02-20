@@ -103,12 +103,8 @@ class TokenManager {
   void writeToFile(
       String name, String address, String symbol, int decimals) async {
     print("Writing to file");
-    Map<String, dynamic> content = {
-      "name": name,
-      "symbol": symbol,
-      "address": address,
-      "decimals": decimals
-    };
+    String valSetOne = symbol + "," + address + "," + decimals.toString();
+    Map<String, dynamic> content = {name: valSetOne};
     Directory dir = await _localPath;
     File jsonFile = await _jsonFile;
     await _fileExists;
@@ -134,6 +130,102 @@ class TokenManager {
     File jsonFile = await _jsonFile;
     fileContent = jsonDecode(await jsonFile.readAsStringSync());
     return fileContent;
+  }
+
+  Future<String?> getTokenContractByName(String tokenName) async {
+    String contract = '';
+    try {
+      final file = await readFile();
+      await file.forEach((key, value) {
+        if (key == tokenName) {
+          List args = value.split(',');
+          contract = args[1];
+        }
+      });
+    } catch (e) {
+      print("No contract was found!");
+    }
+    return contract;
+  }
+
+  Future<String?> getTokenSymbolByName(String tokenName) async {
+    String symbol = '';
+    try {
+      final file = await readFile();
+      await file.forEach((key, value) {
+        if (key == tokenName) {
+          List args = value.split(',');
+          symbol = args[0];
+        }
+      });
+    } catch (e) {
+      print("No token symbol was found!");
+    }
+    return symbol;
+  }
+
+  Future<int?> getTokenDecimalsByName(String tokenName) async {
+    int decimals = 0;
+    try {
+      final file = await readFile();
+      await file.forEach((key, value) {
+        if (key == tokenName) {
+          List args = value.split(',');
+          decimals = int.parse(args[2]);
+        }
+      });
+    } catch (e) {
+      print("No token symbol was found");
+    }
+    return decimals;
+  }
+
+  Future<String?> getTokenNameByContract(String address) async {
+    String name = '';
+    try {
+      final file = await readFile();
+      await file.forEach((key, value) {
+        List args = value.split(',');
+        if (args[1] == address) {
+          name = key;
+        }
+      });
+    } catch (e) {
+      print("No name was found!");
+    }
+    return name;
+  }
+
+  Future<String?> getTokenSymbolByContract(String address) async {
+    String symbol = '';
+    try {
+      final file = await readFile();
+      await file.forEach((key, value) {
+        List args = value.split(',');
+        if (args[1] == address) {
+          symbol = args[0];
+        }
+      });
+    } catch (e) {
+      print("No symbol was found!");
+    }
+    return symbol;
+  }
+
+  Future<int?> getTokenDecimalsByContract(String address) async {
+    int decimals = 0;
+    try {
+      final file = await readFile();
+      await file.forEach((key, value) {
+        List args = value.split(',');
+        if (args[1] == address) {
+          decimals = int.parse(args[2]);
+        }
+      });
+    } catch (e) {
+      print("No decimals was found");
+    }
+    return decimals;
   }
 
   Future<int?> deleteFile() async {
