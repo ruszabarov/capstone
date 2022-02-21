@@ -14,7 +14,7 @@ EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
 
 Client httpClient = new Client();
 Web3Client ethClient = new Web3Client(
-    "https://rinkeby.infura.io/v3/f58b56df688c4bafba806114fb329aaa",
+    "https://eth-rinkeby.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
     httpClient);
 
 Future<String> getEthBalance(EthereumAddress from) async {
@@ -36,10 +36,22 @@ Future<DeployedContract> loadContract(String from) async {
 }
 
 Future<String> loadTokenContract(String tokenName) async {
-  SharedPreferences _preferences = await SharedPreferences.getInstance();
-  TokenService token = new TokenService(_preferences);
-  token.addToken("name", "symbol", "address", 18);
-  print(token.getTokens());
+  //getTokenList();
+
+  TokenManager tokenManager = new TokenManager();
+  tokenManager.writeToFile("Ether", "0x0000000", "ETH", 18);
+  tokenManager.writeToFile("ChainLink", "0x0000011", "LINK", 18);
+  print(await tokenManager.readFile());
+  print(await tokenManager.getTokenContractByName("Ether"));
+  print(await tokenManager.getTokenSymbolByName("Ether"));
+  print(await tokenManager.getTokenDecimalsByName("Ether"));
+  print(await tokenManager.getTokenNameByContract("0x0000000"));
+  // tokenManager.writeToFile("Ether", "0x0000000", "ETH", 18);
+  // await Future.delayed(Duration(seconds: 3));
+  // print(await tokenManager.readFile());
+
+  await Future.delayed(Duration(seconds: 3));
+
   final String abi = await rootBundle
       .loadString("assets/build/contracts/token-list-rinkeby.json");
   final json = await jsonDecode(
@@ -56,7 +68,7 @@ Future<String> loadTokenContract(String tokenName) async {
 Future<String> getTokenBalance(String from, String tokenName) async {
   Client httpClient = new Client();
   Web3Client ethClient = new Web3Client(
-      "https://rinkeby.infura.io/v3/f58b56df688c4bafba806114fb329aaa",
+      "https://eth-rinkeby.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
       httpClient);
 
   final decimals = 18;
