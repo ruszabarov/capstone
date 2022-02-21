@@ -1,3 +1,4 @@
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -131,7 +132,8 @@ class _AddAccountPageState extends State<AddAccountPage> {
                     print(mnemonic);
                     ConfigurationService configurationService =
                         ConfigurationService(
-                            await SharedPreferences.getInstance());
+                            await SharedPreferences.getInstance(),
+                            await EncryptedSharedPreferences());
                     await configurationService.setMnemonic(mnemonic);
                     configurationService.setPrivateKey(
                         await walletAddressService.getPrivateKey(mnemonic));

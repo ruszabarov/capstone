@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
+import 'package:wallet/configuration_service.dart';
 import 'package:wallet/tokenBalanceAPI.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:flutter/services.dart';
@@ -39,6 +41,12 @@ Future<String> loadTokenContract(String tokenName) async {
   //getTokenList();
 
   TokenManager tokenManager = new TokenManager();
+  ConfigurationService configurationService = new ConfigurationService(
+      await SharedPreferences.getInstance(),
+      await EncryptedSharedPreferences());
+
+  configurationService.addAccount();
+  print(configurationService.getAllAccounts());
 
   await Future.delayed(Duration(seconds: 3));
 
