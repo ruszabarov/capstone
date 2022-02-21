@@ -39,16 +39,6 @@ Future<String> loadTokenContract(String tokenName) async {
   //getTokenList();
 
   TokenManager tokenManager = new TokenManager();
-  tokenManager.writeToFile("Ether", "0x0000000", "ETH", 18);
-  tokenManager.writeToFile("ChainLink", "0x0000011", "LINK", 18);
-  print(await tokenManager.readFile());
-  print(await tokenManager.getTokenContractByName("Ether"));
-  print(await tokenManager.getTokenSymbolByName("Ether"));
-  print(await tokenManager.getTokenDecimalsByName("Ether"));
-  print(await tokenManager.getTokenNameByContract("0x0000000"));
-  // tokenManager.writeToFile("Ether", "0x0000000", "ETH", 18);
-  // await Future.delayed(Duration(seconds: 3));
-  // print(await tokenManager.readFile());
 
   await Future.delayed(Duration(seconds: 3));
 

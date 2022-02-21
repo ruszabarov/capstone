@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wallet/configuration_service.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/screens/shared/neumorphic_card.dart';
+import 'package:wallet/wallet_setup.dart';
 
 class AddAccountPage extends StatefulWidget {
   const AddAccountPage({Key? key}) : super(key: key);
@@ -122,8 +125,17 @@ class _AddAccountPageState extends State<AddAccountPage> {
                                   ],
                                 ),
                               ),
-                      ),
-                      () {});
+                      ), () async {
+                    WalletAddress walletAddressService = WalletAddress();
+                    String mnemonic = walletAddressService.generateMnemonic();
+                    print(mnemonic);
+                    ConfigurationService configurationService =
+                        ConfigurationService(
+                            await SharedPreferences.getInstance());
+                    await configurationService.setMnemonic(mnemonic);
+                    configurationService.setPrivateKey(
+                        await walletAddressService.getPrivateKey(mnemonic));
+                  });
                 },
               ),
             ),
