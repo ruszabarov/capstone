@@ -14,7 +14,7 @@ EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
 
 Client httpClient = new Client();
 Web3Client ethClient = new Web3Client(
-    "https://rinkeby.infura.io/v3/38ba5f4475644e4ba48d25313c80347b",
+    "https://eth-rinkeby.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
     httpClient);
 
 Future<String> getEthBalance(EthereumAddress from) async {
@@ -68,7 +68,7 @@ Future<String> loadTokenContract(String tokenName) async {
 Future<String> getTokenBalance(String from, String tokenName) async {
   Client httpClient = new Client();
   Web3Client ethClient = new Web3Client(
-      "https://rinkeby.infura.io/v3/38ba5f4475644e4ba48d25313c80347b",
+      "https://eth-rinkeby.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
       httpClient);
 
   final decimals = 18;
