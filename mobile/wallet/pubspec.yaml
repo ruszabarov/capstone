@@ -42,6 +42,8 @@ dependencies:
   etherscan_api: ^1.0.0-beta
   path_provider: ^2.0.8
   flutter_neumorphic: ^3.2.0
+  local_auth: ^1.1.10
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:
