@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
+import 'package:wallet/logic.dart';
+import 'package:wallet/wallet_setup.dart';
+import 'package:web3dart/credentials.dart';
 
 abstract class IConfigurationService {
   Future<void> setMnemonic(String? value);
@@ -12,11 +15,13 @@ abstract class IConfigurationService {
   bool didSetupWallet();
   Future<List<Account>> getAllAccounts();
   Future<void> addAccount();
+  Future<void> clearPreferences();
 }
 
 class ConfigurationService implements IConfigurationService {
-  const ConfigurationService(this._preferences, this._encryptedPreferences);
+  ConfigurationService(this._preferences, this._encryptedPreferences);
 
+  int accountCounter = 0;
   final SharedPreferences _preferences;
   final EncryptedSharedPreferences _encryptedPreferences;
 
@@ -60,14 +65,25 @@ class ConfigurationService implements IConfigurationService {
 
   @override
   Future<void> addAccount() async {
+    WalletAddress walletAddressService = new WalletAddress();
+    accountCounter += 1;
+    setMnemonic(walletAddressService.generateMnemonic());
+    setPrivateKey(await walletAddressService.getPrivateKey(getMnemonic()!));
     String encodedData = Account.encode([
       Account(
-          id: 1,
-          privateKey: "privateKey",
-          publicKey: "publicKey",
-          mnemonic: "mnemonic")
+          id: accountCounter,
+          privateKey: await getPrivateKey()!,
+          publicKey: await walletAddressService
+              .getPublicKey(getPrivateKey()!)
+              .toString(),
+          mnemonic: await getMnemonic()!)
     ]);
     await _encryptedPreferences.setString('accountList', encodedData);
+  }
+
+  Future<void> clearPreferences() async {
+    await _encryptedPreferences.clear();
+    await _preferences.clear();
   }
 }
 
@@ -87,7 +103,7 @@ class Account {
       id: jsonData['id'],
       mnemonic: jsonData['mnemonic'],
       publicKey: jsonData['publicKey'],
-      privateKey: jsonData['duration'],
+      privateKey: jsonData['privateKey'],
     );
   }
 

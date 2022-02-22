@@ -45,8 +45,13 @@ Future<String> loadTokenContract(String tokenName) async {
       await SharedPreferences.getInstance(),
       await EncryptedSharedPreferences());
 
-  configurationService.addAccount();
-  print(configurationService.getAllAccounts());
+  await configurationService.clearPreferences();
+  await configurationService.addAccount();
+  await configurationService.addAccount();
+  List newList = await configurationService.getAllAccounts();
+  String address = newList.elementAt(0).mnemonic;
+  print(address);
+  print(await configurationService.getAllAccounts());
 
   await Future.delayed(Duration(seconds: 3));
 

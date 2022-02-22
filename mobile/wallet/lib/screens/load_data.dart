@@ -28,9 +28,9 @@ class _LoadDataPageState extends State<LoadDataPage> {
     ConfigurationService configurationService = ConfigurationService(
         await SharedPreferences.getInstance(),
         await EncryptedSharedPreferences());
-    EthereumAddress test = await walletAddressService
-        .getPublicKey(configurationService.getPrivateKey()!);
-    print(test.toString());
+    //EthereumAddress test = await walletAddressService
+    //    .getPublicKey(configurationService.getPrivateKey()!);
+    //print(test.toString());
 
     for (int i = 0; i < initAccountData[0].tokens.tokenList.length; i++) {
       initAccountData[0].tokens.tokenList[i].balance = double.parse(
