@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:wallet/providers/Account.dart';
+import 'package:wallet/screens/home/mnemonic_page.dart';
 import 'package:wallet/screens/shared/neumorphic_card.dart';
 
 class AddAccountPage extends StatefulWidget {
@@ -92,38 +93,45 @@ class _AddAccountPageState extends State<AddAccountPage> {
               child: Consumer<AccountList>(
                 builder: (context, value, child) {
                   return NeumorphicCard(
-                      Center(
-                        child: addAccount
-                            ? Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: "IMPORT ",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    TextSpan(
-                                      text: "ACCOUNT",
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: "CREATE ",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    TextSpan(
-                                      text: "ACCOUNT",
-                                    ),
-                                  ],
-                                ),
+                    Center(
+                      child: addAccount
+                          ? Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "IMPORT ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                    text: "ACCOUNT",
+                                  ),
+                                ],
                               ),
-                      ),
-                      () {});
+                            )
+                          : Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "CREATE ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                    text: "ACCOUNT",
+                                  ),
+                                ],
+                              ),
+                            ),
+                    ),
+                    () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => MnemonicPage(),
+                        ),
+                      );
+                    },
+                  );
                 },
               ),
             ),
