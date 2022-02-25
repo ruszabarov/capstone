@@ -62,7 +62,11 @@ class _MnemonicPageState extends State<MnemonicPage> {
                 curve: Curves.easeOutCubic);
           },
         ),
-        Text("Page 3"),
+        PageThree(() {
+          pageController.animateToPage(1,
+              duration: Duration(milliseconds: 200),
+              curve: Curves.easeOutCubic);
+        }),
       ],
     );
   }
@@ -260,7 +264,7 @@ class PageTwo extends StatelessWidget {
                 padding: EdgeInsets.all(10),
                 child: Icon(Icons.arrow_back),
                 onPressed: () {
-                  returnFunction;
+                  returnFunction();
                 },
               ),
               SizedBox(
@@ -311,6 +315,56 @@ class PageTwo extends StatelessWidget {
                   ),
                   () {
                     proceedFunction();
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PageThree extends StatelessWidget {
+  final Function returnFunction;
+
+  PageThree(this.returnFunction);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(25),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+            child: Text(
+              "Mnemonic saved. Good job!",
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                child: NeumorphicCard(
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Continue"),
+                    ],
+                  ),
+                  () {
+                    Navigator.of(context).pop();
                   },
                 ),
               ),
