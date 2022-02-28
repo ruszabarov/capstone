@@ -36,6 +36,7 @@ class TransactionList extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return Dialog(
+                    backgroundColor: Colors.grey[200],
                     insetPadding: EdgeInsets.all(20),
                     child: Stack(
                       alignment: Alignment.center,
