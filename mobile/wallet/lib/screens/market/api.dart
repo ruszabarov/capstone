@@ -56,7 +56,19 @@ Future<List> getMarketData(String id, dynamic days) async {
     var prices = json['prices'];
     return prices;
   } catch (e) {
-    var prices = [];
-    return prices;
+    throw (e.toString());
+  }
+}
+
+Future<String> getMarketNews(String id) async {
+  try {
+    Uri uri = Uri.parse(
+        "https://cryptopanic.com/api/v1/posts/?auth_token=7834f0972b8c384c9a5647c0b53238409361315b&public=true");
+    dynamic response = await http.get(uri);
+    dynamic json = jsonDecode(response.body);
+    print(json['results'][0]);
+    return json;
+  } catch (e) {
+    throw (e.toString());
   }
 }

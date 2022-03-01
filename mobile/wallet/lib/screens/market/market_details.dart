@@ -254,6 +254,11 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
                 ],
               ),
             ),
+            ElevatedButton(
+                onPressed: () async {
+                  await getMarketNews("ETH");
+                },
+                child: Text("Print news")),
           ],
         ),
       ),

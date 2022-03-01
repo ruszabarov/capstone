@@ -111,25 +111,16 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                                       Image.asset(widget.cryptoWallet.iconURL),
                                 ),
                               ),
-                              SizedBox(width: 20),
-                              Expanded(
-                                child: Text(
-                                  widget.cryptoWallet.name,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
+                              SizedBox(width: 10),
+                              Text(
+                                "${widget.cryptoWallet.balance} ${widget.cryptoWallet.shortName}",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30,
+                                    color: Colors.black87),
                               ),
                               // Text('$cryptoShort')
                             ],
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            "${widget.cryptoWallet.balance} ${widget.cryptoWallet.shortName}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30,
-                                color: Colors.black87),
                           ),
                         ],
                       ),
