@@ -4,6 +4,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/src/provider.dart';
 import 'package:wallet/providers/Market.dart';
 import 'package:wallet/screens/market/api.dart';
+import 'package:wallet/screens/market/news_page.dart';
 import 'market_card.dart';
 
 class MarketPage extends StatefulWidget {
