@@ -63,7 +63,7 @@ Future<List> getMarketData(String id, dynamic days) async {
 Future getMarketNews(String id) async {
   try {
     Uri uri = Uri.parse(
-        "https://cryptopanic.com/api/v1/posts/?auth_token=7834f0972b8c384c9a5647c0b53238409361315b&public=true");
+        "https://cryptopanic.com/api/v1/posts/?auth_token=7834f0972b8c384c9a5647c0b53238409361315b&public=true&currencies=USDT");
     dynamic response = await http.get(uri);
     dynamic json = jsonDecode(response.body);
     return json;
