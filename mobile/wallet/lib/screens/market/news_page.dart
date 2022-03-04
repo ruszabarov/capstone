@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:intl/intl.dart';
 import 'api.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NewsPage extends StatefulWidget {
   const NewsPage({Key? key}) : super(key: key);
@@ -43,11 +42,7 @@ class _NewsPageState extends State<NewsPage> {
                       NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
                   depth: 4,
                 ),
-                onPressed: () async {
-                  if (!await launch(newsList[index].url,
-                      forceWebView: true,
-                      enableJavaScript: true)) throw 'Could not launch url';
-                },
+                onPressed: () async {},
                 padding: EdgeInsets.all(15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
