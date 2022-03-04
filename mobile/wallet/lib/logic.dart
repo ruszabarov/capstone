@@ -51,7 +51,9 @@ Future<String> loadTokenContract(String tokenName) async {
   List newList = await configurationService.getAllAccounts();
   String address = newList.elementAt(0).mnemonic;
   print(address);
-  print(await configurationService.getAllAccounts());
+  address = newList.elementAt(1).mnemonic;
+  print(address);
+  
 
   await Future.delayed(Duration(seconds: 3));
 

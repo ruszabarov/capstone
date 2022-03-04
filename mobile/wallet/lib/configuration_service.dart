@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:wallet/logic.dart';
@@ -16,6 +17,8 @@ abstract class IConfigurationService {
   Future<List<Account>> getAllAccounts();
   Future<void> addAccount();
   Future<void> clearPreferences();
+  Future<void> addAccountCounter();
+  Future<int?> getAccountCounter();
 }
 
 class ConfigurationService implements IConfigurationService {
@@ -57,16 +60,33 @@ class ConfigurationService implements IConfigurationService {
   }
 
   @override
+  Future<void> addAccountCounter() async {
+    int? num = await _preferences.getInt("accountNumber");
+    
+    if(num == null) {
+      num = 1;
+    }
+    num + 1;
+    await _preferences.setInt("accountNumber", num);
+  }
+
+  Future<int?> getAccountCounter() async {
+    return await _preferences.getInt("accountNumber");
+  }
+
+  @override
   Future<List<Account>> getAllAccounts() async {
     final String allAccounts =
         await _encryptedPreferences.getString('accountList');
+    List<Map> accounts = [];
     return Account.decode(allAccounts);
   }
+
 
   @override
   Future<void> addAccount() async {
     WalletAddress walletAddressService = new WalletAddress();
-    accountCounter += 1;
+    addAccountCounter();
     setMnemonic(walletAddressService.generateMnemonic());
     setPrivateKey(await walletAddressService.getPrivateKey(getMnemonic()!));
     String encodedData = Account.encode([
@@ -86,6 +106,7 @@ class ConfigurationService implements IConfigurationService {
     await _preferences.clear();
   }
 }
+
 
 class Account {
   final int id;
