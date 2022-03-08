@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:wallet/logic.dart';
+import 'package:wallet/private.dart';
 import 'package:wallet/wallet_setup.dart';
 import 'package:web3dart/credentials.dart';
 
@@ -15,16 +16,14 @@ abstract class IConfigurationService {
   String? getPrivateKey();
   bool didSetupWallet();
   Future<List<Account>> getAllAccounts();
-  Future<void> addAccount();
+  Future<void> addAccount(String name);
   Future<void> clearPreferences();
-  Future<void> addAccountCounter();
-  Future<int?> getAccountCounter();
+  Future<void> firstAccount(String name);
 }
 
 class ConfigurationService implements IConfigurationService {
   ConfigurationService(this._preferences, this._encryptedPreferences);
 
-  int accountCounter = 0;
   final SharedPreferences _preferences;
   final EncryptedSharedPreferences _encryptedPreferences;
 
@@ -60,44 +59,50 @@ class ConfigurationService implements IConfigurationService {
   }
 
   @override
-  Future<void> addAccountCounter() async {
-    int? num = await _preferences.getInt("accountNumber");
-    
-    if(num == null) {
-      num = 1;
-    }
-    num + 1;
-    await _preferences.setInt("accountNumber", num);
-  }
-
-  Future<int?> getAccountCounter() async {
-    return await _preferences.getInt("accountNumber");
-  }
-
-  @override
   Future<List<Account>> getAllAccounts() async {
-    final String allAccounts =
-        await _encryptedPreferences.getString('accountList');
-    List<Map> accounts = [];
-    return Account.decode(allAccounts);
+    List<Account> accounts = await Account.decode(await _encryptedPreferences.getString('accountList'));
+    return accounts;
   }
 
-
   @override
-  Future<void> addAccount() async {
+  Future<void> firstAccount(String name) async {
     WalletAddress walletAddressService = new WalletAddress();
-    addAccountCounter();
     setMnemonic(walletAddressService.generateMnemonic());
     setPrivateKey(await walletAddressService.getPrivateKey(getMnemonic()!));
+
     String encodedData = Account.encode([
       Account(
-          id: accountCounter,
+          id: 1,
+          name: name,
           privateKey: await getPrivateKey()!,
           publicKey: await walletAddressService
               .getPublicKey(getPrivateKey()!)
               .toString(),
           mnemonic: await getMnemonic()!)
     ]);
+    await _encryptedPreferences.setString('accountList', encodedData);
+  }
+
+  @override
+  Future<void> addAccount(String name) async {
+    WalletAddress walletAddressService = new WalletAddress();
+    setMnemonic(walletAddressService.generateMnemonic());
+    setPrivateKey(await walletAddressService.getPrivateKey(getMnemonic()!));
+    
+  
+    List<Account> acc = await Account.decode(await _encryptedPreferences.getString('accountList'));
+    acc.add(
+      Account(
+        id: acc.length + 1,
+        name: name, 
+        privateKey: await getPrivateKey()!, 
+        publicKey: await walletAddressService
+              .getPublicKey(getPrivateKey()!)
+              .toString(), 
+        mnemonic: await getMnemonic()!));
+
+    String encodedData = Account.encode(acc);
+
     await _encryptedPreferences.setString('accountList', encodedData);
   }
 
@@ -110,10 +115,11 @@ class ConfigurationService implements IConfigurationService {
 
 class Account {
   final int id;
-  final String privateKey, publicKey, mnemonic;
+  final String privateKey, publicKey, mnemonic,name;
 
   Account({
     required this.id,
+    required this.name,
     required this.privateKey,
     required this.publicKey,
     required this.mnemonic,
@@ -122,6 +128,7 @@ class Account {
   factory Account.fromJson(Map<String, dynamic> jsonData) {
     return Account(
       id: jsonData['id'],
+      name: jsonData['name'],
       mnemonic: jsonData['mnemonic'],
       publicKey: jsonData['publicKey'],
       privateKey: jsonData['privateKey'],
@@ -130,6 +137,7 @@ class Account {
 
   static Map<String, dynamic> toMap(Account account) => {
         'id': account.id,
+        'name': account.name,
         'mnemonic': account.mnemonic,
         'publicKey': account.publicKey,
         'privateKey': account.privateKey,
@@ -141,8 +149,8 @@ class Account {
             .toList(),
       );
 
-  static List<Account> decode(String accounts) =>
-      (json.decode(accounts) as List<dynamic>)
+  static List<Account> decode(String? accounts) =>
+      (json.decode(accounts!) as List<dynamic>)
           .map<Account>((item) => Account.fromJson(item))
           .toList();
 }

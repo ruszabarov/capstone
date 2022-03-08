@@ -45,17 +45,14 @@ Future<String> loadTokenContract(String tokenName) async {
       await SharedPreferences.getInstance(),
       await EncryptedSharedPreferences());
 
-  await configurationService.clearPreferences();
-  await configurationService.addAccount();
-  await configurationService.addAccount();
-  List newList = await configurationService.getAllAccounts();
-  String address = newList.elementAt(0).mnemonic;
-  print(address);
-  address = newList.elementAt(1).mnemonic;
-  print(address);
   
-
+  await configurationService.clearPreferences();
+  await configurationService.firstAccount("1");
+  await configurationService.addAccount("1");
+  List<Account> newList = await configurationService.getAllAccounts();
+  print(newList[0].id);
   await Future.delayed(Duration(seconds: 3));
+  print(newList[1].id);
 
   final String abi = await rootBundle
       .loadString("assets/build/contracts/token-list-rinkeby.json");
