@@ -1,7 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-// 22895445-71be-40d1-810a-93ad9df49465
+import 'package:wallet/private.dart';
 
 Future<Map<String, dynamic>> getCoinData(String id) async {
   try {
@@ -63,7 +62,7 @@ Future<List> getMarketData(String id, dynamic days) async {
 Future getMarketNews(String id) async {
   try {
     Uri uri = Uri.parse(
-        "https://cryptopanic.com/api/v1/posts/?auth_token=7834f0972b8c384c9a5647c0b53238409361315b&public=true&currencies=USDT");
+        "https://newsdata.io/api/1/news?apikey=${newsKey}&q=ethereum&language=en");
     dynamic response = await http.get(uri);
     dynamic json = jsonDecode(response.body);
     return json;

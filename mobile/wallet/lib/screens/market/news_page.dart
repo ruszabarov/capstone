@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:intl/intl.dart';
 import 'api.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class NewsPage extends StatefulWidget {
-  const NewsPage({Key? key}) : super(key: key);
+  NewsPage({Key? key}) : super(key: key);
+  final InAppBrowser browser = new InAppBrowser();
 
   @override
   State<NewsPage> createState() => _NewsPageState();
@@ -12,6 +14,10 @@ class NewsPage extends StatefulWidget {
 
 class _NewsPageState extends State<NewsPage> {
   List<NewsArticle> newsList = [];
+  var options = InAppBrowserClassOptions(
+      crossPlatform: InAppBrowserOptions(hideUrlBar: false),
+      inAppWebViewGroupOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(javaScriptEnabled: true)));
 
   @override
   void initState() {
@@ -42,15 +48,16 @@ class _NewsPageState extends State<NewsPage> {
                       NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
                   depth: 4,
                 ),
-                onPressed: () async {},
+                onPressed: () async {
+                  widget.browser.openUrlRequest(
+                      urlRequest:
+                          URLRequest(url: Uri.parse(newsList[index].url)),
+                      options: options);
+                },
                 padding: EdgeInsets.all(15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(newsList[index].title),
-                    SizedBox(
-                      height: 15,
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -59,6 +66,10 @@ class _NewsPageState extends State<NewsPage> {
                             .format(newsList[index].date)),
                       ],
                     ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(newsList[index].title),
                   ],
                 ),
               );
@@ -73,9 +84,9 @@ class _NewsPageState extends State<NewsPage> {
     for (int i = 0; i < result['results'].length; i++) {
       newsList.add(NewsArticle(
           result['results'][i]['title'],
-          DateTime.parse(result['results'][i]['published_at']),
-          result['results'][i]['url'],
-          result['results'][i]['source']['title']));
+          DateTime.parse(result['results'][i]['pubDate']),
+          result['results'][i]['link'],
+          result['results'][i]['source_id']));
     }
 
     setState(() {});
