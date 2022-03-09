@@ -20,6 +20,7 @@ class _SendCardState extends State<SendCard> {
   bool isAddressFocused = false;
   bool isAmountFocused = false;
   String _scanBarcode = 'Unknown';
+  int selectedPriority = 1;
 
   late FocusNode addressFocusNode;
   late FocusNode amountFocusNode;
@@ -66,7 +67,7 @@ class _SendCardState extends State<SendCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 400,
+      height: 500,
       decoration: BoxDecoration(
         color: Colors.grey[900],
         borderRadius: BorderRadius.only(
@@ -175,7 +176,7 @@ class _SendCardState extends State<SendCard> {
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
                 Text(
                   "Amount",
@@ -208,6 +209,126 @@ class _SendCardState extends State<SendCard> {
                       hintStyle: TextStyle(color: Colors.white, fontSize: 16),
                       fillColor: Colors.blue,
                     ),
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Priority",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Advanced",
+                          style:
+                              TextStyle(color: Colors.blueAccent, fontSize: 16),
+                        ),
+                        Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.blueAccent,
+                          size: 16,
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade900.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                        color: Colors.blue.shade900.withOpacity(0.2), width: 2),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedPriority = 0;
+                            });
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            decoration: BoxDecoration(
+                              color: selectedPriority == 0
+                                  ? Colors.blueAccent
+                                  : Colors.blue.shade900.withOpacity(0.2),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Low",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedPriority = 1;
+                            });
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            decoration: BoxDecoration(
+                              color: selectedPriority == 1
+                                  ? Colors.blueAccent
+                                  : Colors.blue.shade900.withOpacity(0.2),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Medium",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedPriority = 2;
+                            });
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            decoration: BoxDecoration(
+                              color: selectedPriority == 2
+                                  ? Colors.blueAccent
+                                  : Colors.blue.shade900.withOpacity(0.2),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "High",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

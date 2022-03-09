@@ -211,8 +211,8 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
             AnimatedPositioned(
               left: 0,
               right: 0,
-              bottom: isSendVisible ? 0 : -400,
-              height: 400,
+              bottom: isSendVisible ? 0 : -500,
+              height: 500,
               duration: Duration(milliseconds: 200),
               curve: Curves.easeOutCubic,
               child: SendCard(
