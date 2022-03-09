@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'dart:html';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
@@ -19,6 +20,8 @@ abstract class IConfigurationService {
   Future<void> addAccount(String name);
   Future<void> clearPreferences();
   Future<void> firstAccount(String name);
+  Future<void> importAccount(String privateKey, String name);
+
 }
 
 class ConfigurationService implements IConfigurationService {
@@ -68,15 +71,14 @@ class ConfigurationService implements IConfigurationService {
   Future<void> firstAccount(String name) async {
     WalletAddress walletAddressService = new WalletAddress();
     setMnemonic(walletAddressService.generateMnemonic());
-    setPrivateKey(await walletAddressService.getPrivateKey(getMnemonic()!));
 
     String encodedData = Account.encode([
       Account(
           id: 1,
           name: name,
-          privateKey: await getPrivateKey()!,
+          privateKey: await walletAddressService.getPrivateKey(getMnemonic()!),
           publicKey: await walletAddressService
-              .getPublicKey(getPrivateKey()!)
+              .getPublicKey(await walletAddressService.getPrivateKey(getMnemonic()!))
               .toString(),
           mnemonic: await getMnemonic()!)
     ]);
@@ -84,9 +86,32 @@ class ConfigurationService implements IConfigurationService {
   }
 
   @override
+  Future<void> importAccount(String privateKey, String name) async {
+    WalletAddress walletAddressService = new WalletAddress();
+    List<Account> acc = [];
+    if((await _encryptedPreferences.getString('accountList')).isNotEmpty) {
+      acc = await Account.decode(await _encryptedPreferences.getString('accountList'));
+      await setMnemonic(walletAddressService.generateMnemonic());
+    }
+
+    acc.add(
+      Account(
+          id: acc.length + 1,
+          name: name,
+          privateKey: privateKey,
+          publicKey:  await walletAddressService
+              .getPublicKey(await walletAddressService.getPrivateKey(getMnemonic()!))
+              .toString(),
+          mnemonic: await getMnemonic()!)
+    );
+    String encodedData = Account.encode(acc);
+    await _encryptedPreferences.setString('accountList', encodedData);
+  }
+
+
+  @override
   Future<void> addAccount(String name) async {
     WalletAddress walletAddressService = new WalletAddress();
-    setMnemonic(walletAddressService.generateMnemonic());
     setPrivateKey(await walletAddressService.getPrivateKey(getMnemonic()!));
     
   
@@ -116,6 +141,7 @@ class ConfigurationService implements IConfigurationService {
 class Account {
   final int id;
   final String privateKey, publicKey, mnemonic,name;
+  List<Token> tokens;
 
   Account({
     required this.id,
@@ -123,9 +149,13 @@ class Account {
     required this.privateKey,
     required this.publicKey,
     required this.mnemonic,
+    required this.tokens,
   });
 
   factory Account.fromJson(Map<String, dynamic> jsonData) {
+    if (json['tags'] != null) {
+      
+    }
     return Account(
       id: jsonData['id'],
       name: jsonData['name'],
@@ -153,4 +183,21 @@ class Account {
       (json.decode(accounts!) as List<dynamic>)
           .map<Account>((item) => Account.fromJson(item))
           .toList();
+}
+
+class Token {
+  String name;
+  String symbol;
+  String address;
+  int decimals;
+
+  Token(this.name, this.symbol, this.address, this.decimals);
+  factory Token.fromJson(dynamic json) {
+    return Token(json['name'] as String, json['symbol'] as String, json['address'] as String, json['decimals'] as int);
+  }
+
+  @override
+  String toString() {
+    return '{ ${this.name}, ${this.symbol}, ${this.address}, ${this.decimals} }';
+  }
 }
