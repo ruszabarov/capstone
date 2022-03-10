@@ -12,38 +12,8 @@ class AddTokenPage extends StatefulWidget {
 }
 
 class _AddTokenPageState extends State<AddTokenPage> {
-  bool isNameFocused = false;
-  bool isAddressFocused = false;
-  bool isDecimalsFocused = false;
-
-  late FocusNode nameFocusNode;
-  late FocusNode addressFocusNode;
-  late FocusNode decimalsFocusNode;
-
   @override
   void initState() {
-    nameFocusNode = FocusNode();
-    addressFocusNode = FocusNode();
-    decimalsFocusNode = FocusNode();
-
-    nameFocusNode.addListener(() {
-      setState(() {
-        isNameFocused = nameFocusNode.hasFocus;
-      });
-    });
-
-    addressFocusNode.addListener(() {
-      setState(() {
-        isAddressFocused = addressFocusNode.hasFocus;
-      });
-    });
-
-    decimalsFocusNode.addListener(() {
-      setState(() {
-        isDecimalsFocused = decimalsFocusNode.hasFocus;
-      });
-    });
-
     super.initState();
   }
 
@@ -134,7 +104,6 @@ class _AddTokenPageState extends State<AddTokenPage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: TextField(
-                    focusNode: addressFocusNode,
                     style: TextStyle(
                       color: Colors.black,
                     ),
@@ -165,7 +134,6 @@ class _AddTokenPageState extends State<AddTokenPage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: TextField(
-                    focusNode: addressFocusNode,
                     style: TextStyle(
                       color: Colors.black,
                     ),

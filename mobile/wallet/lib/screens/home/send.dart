@@ -7,9 +7,13 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 class SendCard extends StatefulWidget {
   final Token cryptoWallet;
   final Function handleCloseButton;
+  final Function handleAdvancedButton;
 
   const SendCard(
-      {Key? key, required this.cryptoWallet, required this.handleCloseButton})
+      {Key? key,
+      required this.cryptoWallet,
+      required this.handleCloseButton,
+      required this.handleAdvancedButton})
       : super(key: key);
 
   @override
@@ -214,28 +218,33 @@ class _SendCardState extends State<SendCard> {
                 SizedBox(
                   height: 15,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Priority",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Advanced",
-                          style:
-                              TextStyle(color: Colors.blueAccent, fontSize: 16),
-                        ),
-                        Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.blueAccent,
-                          size: 16,
-                        )
-                      ],
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    widget.handleAdvancedButton();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Priority",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "Advanced",
+                            style: TextStyle(
+                                color: Colors.blueAccent, fontSize: 16),
+                          ),
+                          Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.blueAccent,
+                            size: 16,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 10,

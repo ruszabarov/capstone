@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:wallet/providers/Token.dart';
+import 'package:wallet/screens/home/advanced_gas.dart';
 import 'package:wallet/screens/home/receive.dart';
 import 'package:wallet/screens/home/send.dart';
 import 'package:wallet/screens/home/test_data.dart';
@@ -19,10 +20,12 @@ class WalletDetailsPage extends StatefulWidget {
 class _WalletDetailsPageState extends State<WalletDetailsPage> {
   bool isSendVisible = false;
   bool isReceiveVisible = false;
+  bool isAdvancedVisible = false;
 
   void handleSendButton() {
     setState(() {
       isReceiveVisible = false;
+      isAdvancedVisible = false;
       isSendVisible = !isSendVisible;
     });
   }
@@ -30,8 +33,27 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
   void handleReceiveButton() {
     setState(() {
       isSendVisible = false;
+      isAdvancedVisible = false;
       isReceiveVisible = !isReceiveVisible;
     });
+  }
+
+  void handleAdvancedButton() {
+    if (isAdvancedVisible) {
+      FocusManager.instance.primaryFocus?.unfocus();
+      setState(() {
+        isReceiveVisible = false;
+        isAdvancedVisible = false;
+        isSendVisible = true;
+      });
+    } else {
+      FocusManager.instance.primaryFocus?.unfocus();
+      setState(() {
+        isReceiveVisible = false;
+        isAdvancedVisible = true;
+        isSendVisible = false;
+      });
+    }
   }
 
   void handleReceiptButton() {
@@ -213,11 +235,12 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
               right: 0,
               bottom: isSendVisible ? 0 : -500,
               height: 500,
-              duration: Duration(milliseconds: 200),
+              duration: Duration(milliseconds: 400),
               curve: Curves.easeOutCubic,
               child: SendCard(
                 cryptoWallet: widget.cryptoWallet,
                 handleCloseButton: handleSendButton,
+                handleAdvancedButton: handleAdvancedButton,
               ),
             ),
             AnimatedPositioned(
@@ -225,12 +248,21 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
               right: 0,
               bottom: isReceiveVisible ? 0 : -400,
               height: 400,
-              duration: Duration(milliseconds: 200),
+              duration: Duration(milliseconds: 400),
               curve: Curves.easeOutCubic,
               child: ReceiveCard(
                 cryptoWallet: widget.cryptoWallet,
                 handleReceiveButton: handleReceiveButton,
               ),
+            ),
+            AnimatedPositioned(
+              left: 0,
+              right: 0,
+              bottom: isAdvancedVisible ? 0 : -500,
+              height: 500,
+              duration: Duration(milliseconds: 400),
+              curve: Curves.easeOutCubic,
+              child: AdvancedGas(handleAdvancedButton),
             ),
           ],
         ),
