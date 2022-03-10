@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:html';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:wallet/logic.dart';
@@ -21,7 +22,7 @@ abstract class IConfigurationService {
   Future<void> clearPreferences();
   Future<void> firstAccount(String name);
   Future<void> importAccount(String privateKey, String name);
-
+  Future<void> addToken(int id, String name, String symbol, String address, int decimals);
 }
 
 class ConfigurationService implements IConfigurationService {
@@ -91,7 +92,6 @@ class ConfigurationService implements IConfigurationService {
     List<Account> acc = [];
     if((await _encryptedPreferences.getString('accountList')).isNotEmpty) {
       acc = await Account.decode(await _encryptedPreferences.getString('accountList'));
-      await setMnemonic(walletAddressService.generateMnemonic());
     }
 
     acc.add(
@@ -131,9 +131,21 @@ class ConfigurationService implements IConfigurationService {
     await _encryptedPreferences.setString('accountList', encodedData);
   }
 
+
   Future<void> clearPreferences() async {
     await _encryptedPreferences.clear();
     await _preferences.clear();
+  }
+
+  @override
+  Future<void> addToken(int id, String name, String symbol, String address, int decimals) async {
+    List<Token> tokenList = await Token.decode(await _encryptedPreferences.getString('tokenList'));
+    tokenList.add(
+      Token(id: id, name: name, symbol: symbol, address: address, decimals: decimals)
+    );
+
+    String encodedData = Token.encode(tokenList);
+    await _encryptedPreferences.setString('tokenList', encodedData);
   }
 }
 
@@ -141,7 +153,6 @@ class ConfigurationService implements IConfigurationService {
 class Account {
   final int id;
   final String privateKey, publicKey, mnemonic,name;
-  List<Token> tokens;
 
   Account({
     required this.id,
@@ -149,13 +160,9 @@ class Account {
     required this.privateKey,
     required this.publicKey,
     required this.mnemonic,
-    required this.tokens,
   });
 
   factory Account.fromJson(Map<String, dynamic> jsonData) {
-    if (json['tags'] != null) {
-      
-    }
     return Account(
       id: jsonData['id'],
       name: jsonData['name'],
@@ -189,15 +196,42 @@ class Token {
   String name;
   String symbol;
   String address;
-  int decimals;
+  int decimals, id;
 
-  Token(this.name, this.symbol, this.address, this.decimals);
-  factory Token.fromJson(dynamic json) {
-    return Token(json['name'] as String, json['symbol'] as String, json['address'] as String, json['decimals'] as int);
+  Token({
+    required this.id,
+    required this.name,
+    required this.symbol,
+    required this.address,
+    required this.decimals,
+  });
+
+  factory Token.fromJson(Map<String, dynamic> jsonData) {
+    return Token(
+      id: jsonData['id'],
+      name: jsonData['name'],
+      symbol: jsonData['symbol'],
+      address: jsonData['address'],
+      decimals: jsonData['decimals'],
+    );
   }
 
-  @override
-  String toString() {
-    return '{ ${this.name}, ${this.symbol}, ${this.address}, ${this.decimals} }';
-  }
+  static Map<String, dynamic> toMap(Token token) => {
+        'id': token.id,
+        'name': token.name,
+        'symbol': token.symbol,
+        'address': token.address,
+        'decimals': token.decimals,
+      };
+
+  static String encode(List<Token> tokens) => json.encode(
+        tokens
+            .map<Map<String, dynamic>>((token) => Token.toMap(token))
+            .toList(),
+      );
+
+  static List<Token> decode(String? tokens) =>
+      (json.decode(tokens!) as List<dynamic>)
+          .map<Token>((item) => Token.fromJson(item))
+          .toList();  
 }
