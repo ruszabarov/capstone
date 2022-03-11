@@ -29,7 +29,6 @@ dependencies:
   qr_flutter: ^4.0.0
   flutter_barcode_scanner: ^2.0.0
   syncfusion_flutter_charts: ^19.3.57
-  http: ^0.13.4
   animated_text_kit: ^4.2.1
   cached_network_image: ^3.2.0
   flutter_cache_manager: ^3.3.0
@@ -41,9 +40,11 @@ dependencies:
   etherscan_api: ^1.0.0-beta
   path_provider: ^2.0.8
   flutter_neumorphic: ^3.2.0
-  local_auth: ^1.1.10
+  local_auth: ^1.1.11
   shared_preferences: ^2.0.13
   flutter_inappwebview: ^5.3.2
+  encrypted_shared_preferences: ^3.0.0
+  http: ^0.13.4
 
 dev_dependencies:
   flutter_test:

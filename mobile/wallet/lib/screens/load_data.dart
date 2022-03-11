@@ -1,10 +1,15 @@
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wallet/configuration_service.dart';
 import 'package:wallet/logic.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/providers/Token.dart';
 import 'package:wallet/providers/Market.dart';
 import 'package:wallet/screens/market/api.dart';
 import 'package:wallet/screens/wrapper.dart';
+import 'package:wallet/wallet_setup.dart';
+import 'package:web3dart/credentials.dart';
 
 class LoadDataPage extends StatefulWidget {
   LoadDataPage({Key? key}) : super(key: key);
@@ -19,6 +24,14 @@ class _LoadDataPageState extends State<LoadDataPage> {
 
   void loadData() async {
     // load Account data
+    WalletAddress walletAddressService = WalletAddress();
+    ConfigurationService configurationService = ConfigurationService(
+        await SharedPreferences.getInstance(),
+        await EncryptedSharedPreferences());
+    //EthereumAddress test = await walletAddressService
+    //    .getPublicKey(configurationService.getPrivateKey()!);
+    //print(test.toString());
+
     for (int i = 0; i < initAccountData[0].tokens.tokenList.length; i++) {
       initAccountData[0].tokens.tokenList[i].balance = double.parse(
           await getTokenBalance(initAccountData[0].address, "ChainLink Token"));

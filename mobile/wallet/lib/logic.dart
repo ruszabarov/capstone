@@ -1,18 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
+import 'package:wallet/configuration_service.dart';
 import 'package:wallet/tokenBalanceAPI.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:wallet/private.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'tokenBalanceAPI.dart';
 
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
 
 Client httpClient = new Client();
 Web3Client ethClient = new Web3Client(
-    "https://rinkeby.infura.io/v3/f58b56df688c4bafba806114fb329aaa",
+    "https://eth-rinkeby.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
     httpClient);
 
 Future<String> getEthBalance(EthereumAddress from) async {
@@ -34,7 +38,22 @@ Future<DeployedContract> loadContract(String from) async {
 }
 
 Future<String> loadTokenContract(String tokenName) async {
-  getTokenList();
+  //getTokenList();
+
+  TokenManager tokenManager = new TokenManager();
+  ConfigurationService configurationService = new ConfigurationService(
+      await SharedPreferences.getInstance(),
+      await EncryptedSharedPreferences());
+
+  
+  await configurationService.clearPreferences();
+  await configurationService.firstAccount("1");
+  await configurationService.addAccount("1");
+  List<Account> newList = await configurationService.getAllAccounts();
+  print(newList[0].id);
+  await Future.delayed(Duration(seconds: 3));
+  print(newList[1].id);
+
   final String abi = await rootBundle
       .loadString("assets/build/contracts/token-list-rinkeby.json");
   final json = await jsonDecode(
@@ -51,7 +70,7 @@ Future<String> loadTokenContract(String tokenName) async {
 Future<String> getTokenBalance(String from, String tokenName) async {
   Client httpClient = new Client();
   Web3Client ethClient = new Web3Client(
-      "https://rinkeby.infura.io/v3/f58b56df688c4bafba806114fb329aaa",
+      "https://eth-rinkeby.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
       httpClient);
 
   final decimals = 18;

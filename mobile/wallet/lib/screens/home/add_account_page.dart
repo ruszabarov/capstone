@@ -1,9 +1,13 @@
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wallet/configuration_service.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/screens/home/mnemonic_page.dart';
 import 'package:wallet/screens/shared/neumorphic_card.dart';
+import 'package:wallet/wallet_setup.dart';
 
 class AddAccountPage extends StatefulWidget {
   const AddAccountPage({Key? key}) : super(key: key);
