@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/providers/Market.dart';
-import 'package:wallet/screens/account/account.dart';
-import 'package:wallet/screens/home/add_wallet.dart';
+import 'package:wallet/providers/Navbar.dart';
+import 'package:wallet/screens/account/settings.dart';
 import 'package:wallet/screens/market/market.dart';
 import 'package:wallet/screens/shared/appBar.dart';
 import 'package:wallet/wallet_icons.dart';
@@ -27,7 +27,7 @@ enum TabItem { home, market, account }
 class _WrapperState extends State<Wrapper> {
   int _selectedIndex = 0;
   String _currentTitle = "Wallets";
-  ValueNotifier<bool> showNavigationBar = ValueNotifier<bool>(true);
+  bool isNavVisible = true;
   late PageController _pageController;
   late Widget home;
   late Widget market;
@@ -40,7 +40,7 @@ class _WrapperState extends State<Wrapper> {
     _pageController = PageController();
     home = Home();
     market = MarketPage();
-    account = AccountPage();
+    account = SettingsPage();
     super.initState();
   }
 
@@ -52,64 +52,79 @@ class _WrapperState extends State<Wrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blueGrey[50],
-      // appBar: PreferredSize(
-      //   preferredSize: Size.fromHeight(50),
-      //   child: appBar(
-      //     title: "$_currentTitle",
-      //   ),
-      // ),
-      body: MultiProvider(
-        providers: [
-          ChangeNotifierProvider<MarketList>(
-            create: (context) => MarketList(widget.initMarketData),
-          ),
-        ],
-        child: SafeArea(
-          child: PageView(
-            physics: NeverScrollableScrollPhysics(),
-            controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            children: <Widget>[
-              MultiProvider(
-                providers: [
-                  ChangeNotifierProvider<AccountList>(
-                    create: (context) => AccountList(widget.initAccountData),
-                  ),
-                ],
-                child: home,
-              ),
-              market,
-              account,
-            ],
+    return ChangeNotifierProvider(
+      create: (context) => Navbar(),
+      child: Scaffold(
+        backgroundColor: Colors.grey[200],
+        // appBar: PreferredSize(
+        //   preferredSize: Size.fromHeight(80),
+        //   child: appBar(
+        //     title: "$_currentTitle",
+        //   ),
+        // ),
+        body: MultiProvider(
+          providers: [
+            ChangeNotifierProvider<MarketList>(
+              create: (context) => MarketList(widget.initMarketData),
+            ),
+          ],
+          child: SafeArea(
+            child: PageView(
+              physics: NeverScrollableScrollPhysics(),
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              children: <Widget>[
+                MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider<AccountList>(
+                      create: (context) => AccountList(widget.initAccountData),
+                    ),
+                  ],
+                  child: home,
+                ),
+                market,
+                account,
+              ],
+            ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blueAccent,
-        showUnselectedLabels: false,
-        showSelectedLabels: false,
-        onTap: _onItemTapped,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet_rounded),
-            label: 'Wallets',
+        bottomNavigationBar: Consumer<Navbar>(
+          builder: (context, value, child) => AnimatedContainer(
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeOutCubic,
+            height: value.isVisible ? 55 : 0,
+            child: Wrap(
+              children: [
+                BottomNavigationBar(
+                  backgroundColor: Colors.grey[200],
+                  currentIndex: _selectedIndex,
+                  selectedItemColor: Colors.blueAccent,
+                  showUnselectedLabels: false,
+                  showSelectedLabels: false,
+                  onTap: _onItemTapped,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.account_balance_wallet_rounded),
+                      label: 'Wallets',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Wallet.chart_line),
+                      label: 'Market',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Wallet.user),
+                      label: 'Account',
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Wallet.chart_line),
-            label: 'Market',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Wallet.user),
-            label: 'Account',
-          ),
-        ],
+        ),
       ),
     );
   }

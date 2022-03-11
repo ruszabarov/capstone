@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet/logic.dart';
 import 'package:wallet/providers/Market.dart';
@@ -23,6 +24,76 @@ class _WalletCardState extends State<WalletCard> {
 
   @override
   Widget build(BuildContext context) {
+    return NeumorphicButton(
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => WalletDetailsPage(widget.cryptoWallet),
+          ),
+        );
+      },
+      duration: Duration(milliseconds: 100),
+      style: NeumorphicStyle(
+        color: Colors.grey[200],
+        shape: NeumorphicShape.flat,
+        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
+        depth: 8,
+      ),
+      padding: const EdgeInsets.all(3),
+      child: Consumer<MarketList>(
+        builder: (context, value, child) => card(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: ClipOval(
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: Image.asset(widget.cryptoWallet.iconURL),
+                  ),
+                ),
+              ),
+              Spacer(),
+              Text(
+                "${widget.cryptoWallet.balance} ${widget.cryptoWallet.shortName}",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black45,
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "\$${(widget.cryptoWallet.balance * value.markets[widget.cryptoWallet.name]!.currentPrice).toStringAsFixed(0)}",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    "${(value.markets[widget.cryptoWallet.name]!.priceChangePercent).toStringAsFixed(1)}%",
+                    style: TextStyle(
+                      color: value.markets[widget.cryptoWallet.name]!
+                                  .priceChangePercent >
+                              0
+                          ? Colors.green
+                          : Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -62,7 +133,7 @@ class _WalletCardState extends State<WalletCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "\$${(widget.cryptoWallet.balance * value.markets[widget.cryptoWallet.name]!.currentPrice).toStringAsFixed(1)}",
+                    "\$${(widget.cryptoWallet.balance * value.markets[widget.cryptoWallet.name]!.currentPrice).toStringAsFixed(0)}",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,

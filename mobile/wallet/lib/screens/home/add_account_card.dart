@@ -2,19 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:wallet/screens/shared/card.dart';
 import 'dart:math';
 
-class AccountCard extends StatefulWidget {
-  final String name;
-  final String address;
-  final double balance;
-  final List<Color> colorPair;
-
-  const AccountCard(this.name, this.address, this.balance, this.colorPair);
+class AddAccountCard extends StatefulWidget {
+  const AddAccountCard();
 
   @override
-  State<AccountCard> createState() => _AccountCardState();
+  State<AddAccountCard> createState() => _AddAccountCardState();
 }
 
-class _AccountCardState extends State<AccountCard> {
+class _AddAccountCardState extends State<AddAccountCard> {
   @override
   Widget build(BuildContext context) {
     return Ink(
@@ -26,8 +21,8 @@ class _AccountCardState extends State<AccountCard> {
           begin: Alignment.centerRight,
           end: Alignment.centerLeft,
           colors: [
-            widget.colorPair[0],
-            widget.colorPair[1],
+            Colors.blueGrey,
+            Colors.grey,
           ],
         ),
         boxShadow: [
@@ -47,23 +42,24 @@ class _AccountCardState extends State<AccountCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.name,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                "Add Account",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.white),
               ),
               SizedBox(
-                height: 10,
+                height: 30,
               ),
-              Text(
-                widget.address,
-                //TODO: show fist few and last few characters of the address
-                overflow: TextOverflow.ellipsis,
+              Center(
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 48,
+                ),
               ),
             ],
           ),
-          Text(
-            "\$ ${widget.balance.toString()}",
-            style: TextStyle(fontSize: 20),
-          )
         ],
       ),
     );

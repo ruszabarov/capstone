@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/src/provider.dart';
 import 'package:wallet/providers/Market.dart';
 import 'package:wallet/screens/market/api.dart';
+import 'package:wallet/screens/market/news_page.dart';
 import 'market_card.dart';
 
 class MarketPage extends StatefulWidget {
@@ -45,7 +47,7 @@ class _MarketPageState extends State<MarketPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(25),
+            padding: const EdgeInsets.fromLTRB(25, 15, 25, 20),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -99,41 +101,22 @@ class _MarketPageState extends State<MarketPage> {
                           ),
                         ),
                 ),
-                isSearchActive == false
-                    ? InkWell(
-                        onTap: () {
-                          setState(() {
-                            isSearchActive = !isSearchActive;
-                          });
-                        },
-                        borderRadius: BorderRadius.circular(30),
-                        child: Ink(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.search,
-                              size: 40,
-                            ),
-                          ),
-                        ),
-                      )
-                    : InkWell(
-                        onTap: () {
-                          setState(() {
-                            isSearchActive = !isSearchActive;
-                          });
-                        },
-                        borderRadius: BorderRadius.circular(30),
-                        child: Ink(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.arrow_right,
-                              size: 40,
-                            ),
-                          ),
-                        ),
-                      )
+                NeumorphicButton(
+                  onPressed: () {
+                    setState(() {
+                      isSearchActive = !isSearchActive;
+                    });
+                  },
+                  style: NeumorphicStyle(
+                    color: Colors.grey[200],
+                    shape: NeumorphicShape.flat,
+                    boxShape:
+                        NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
+                    depth: isSearchActive ? -4 : 8,
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: Icon(Icons.search),
+                ),
               ],
             ),
           ),
@@ -142,7 +125,7 @@ class _MarketPageState extends State<MarketPage> {
               padding: EdgeInsets.all(20),
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(
-                  height: 15,
+                  height: 20,
                 );
               },
               shrinkWrap: true,

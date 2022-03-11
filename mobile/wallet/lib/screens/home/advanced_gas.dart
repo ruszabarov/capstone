@@ -1,16 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:wallet/logic.dart';
-import 'package:wallet/providers/Account.dart';
-import 'package:web3dart/web3dart.dart';
 
-class AddWalletCard extends StatelessWidget {
-  final Function handleFunction;
-  const AddWalletCard(this.handleFunction);
+class AdvancedGas extends StatefulWidget {
+  final Function handleCloseButton;
+
+  const AdvancedGas(this.handleCloseButton);
+
+  @override
+  State<AdvancedGas> createState() => _AdvancedGasState();
+}
+
+class _AdvancedGasState extends State<AdvancedGas> {
+  bool isGasLimitFocused = false;
+  bool isMaxPriorityFeeFocused = false;
+  bool isMaxFeeFocused = false;
+
+  late FocusNode gasLimitFocusNode;
+  late FocusNode maxPriorityFeeFocusNode;
+  late FocusNode maxFeeFocusNode;
+
+  late TextEditingController _gasLimitTextController;
+  late TextEditingController _maxPriorityFeeController;
+  late TextEditingController _maxFeeController;
+
+  @override
+  void initState() {
+    super.initState();
+    setUpFocusNodes();
+  }
+
+  void setUpFocusNodes() {
+    _gasLimitTextController = TextEditingController(text: "");
+    _maxPriorityFeeController = TextEditingController(text: "");
+    _maxFeeController = TextEditingController(text: "");
+
+    gasLimitFocusNode = FocusNode();
+    maxPriorityFeeFocusNode = FocusNode();
+    maxFeeFocusNode = FocusNode();
+
+    gasLimitFocusNode.addListener(() {
+      setState(() {
+        isGasLimitFocused = gasLimitFocusNode.hasFocus;
+      });
+    });
+
+    maxPriorityFeeFocusNode.addListener(() {
+      setState(() {
+        isMaxPriorityFeeFocused = maxPriorityFeeFocusNode.hasFocus;
+      });
+    });
+
+    maxFeeFocusNode.addListener(() {
+      setState(() {
+        isMaxFeeFocused = maxFeeFocusNode.hasFocus;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 500,
       decoration: BoxDecoration(
         color: Colors.grey[900],
         borderRadius: BorderRadius.only(
@@ -21,21 +70,20 @@ class AddWalletCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Add wallet",
+                  "Advanced Gas Fees",
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
                 IconButton(
                   icon: Icon(Icons.close),
                   color: Colors.white,
                   onPressed: () {
-                    handleFunction();
+                    widget.handleCloseButton();
                   },
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
@@ -48,7 +96,7 @@ class AddWalletCard extends StatelessWidget {
               color: Colors.white,
             ),
             Text(
-              "Account Nickname",
+              "Receiver's Address",
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
             SizedBox(
@@ -60,46 +108,26 @@ class AddWalletCard extends StatelessWidget {
                 color: Colors.blue.shade900.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(
-                  color: Colors.blueAccent,
-                  width: 2,
-                ),
+                    color: isGasLimitFocused
+                        ? Colors.blueAccent
+                        : Colors.blue.shade900.withOpacity(0.2),
+                    width: 2),
               ),
               child: TextField(
+                controller: _gasLimitTextController,
+                focusNode: gasLimitFocusNode,
                 cursorColor: Colors.blueAccent,
                 style: TextStyle(
                   color: Colors.white,
                 ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: "Enter Name",
+                  hintText: "Enter Amount",
                   hintStyle: TextStyle(color: Colors.white, fontSize: 16),
                   fillColor: Colors.blue,
                 ),
               ),
             ),
-            SizedBox(
-              height: 60,
-            ),
-            Consumer<AccountList>(
-              builder: (context, value, child) {
-                return Container(
-                  width: double.maxFinite,
-                  height: 50,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blueAccent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5),
-                        ),
-                      ),
-                    ),
-                    onPressed: () async {},
-                    child: Text("CREATE WALLET"),
-                  ),
-                );
-              },
-            )
           ],
         ),
       ),

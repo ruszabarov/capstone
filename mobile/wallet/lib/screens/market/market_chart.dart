@@ -10,6 +10,7 @@ class MarketChart extends StatelessWidget {
   final int decimalPlaces;
   final double lastPrice;
   final ValueNotifier currentDate;
+  final Color color;
 
   MarketChart(
       this.trackballBehavior,
@@ -19,12 +20,16 @@ class MarketChart extends StatelessWidget {
       this.data,
       this.decimalPlaces,
       this.lastPrice,
-      this.currentDate);
+      this.currentDate,
+      this.color);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: SfCartesianChart(
+        borderColor: Colors.grey.shade200,
+        plotAreaBorderColor: Colors.grey.shade200,
+        palette: [color],
         trackballBehavior: trackballBehavior,
         onTrackballPositionChanging: (TrackballArgs args) {
           currentCoinPrice.value = args.chartPointInfo.chartDataPoint!.yValue

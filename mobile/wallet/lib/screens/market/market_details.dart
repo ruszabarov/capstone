@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:wallet/screens/market/api.dart';
 import 'package:wallet/screens/market/market_chart.dart';
+import 'package:wallet/screens/market/news_page.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +30,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
   bool displayMinutes = true;
   bool displayHours = false;
   bool chartLoaded = false;
+  int selectedInterval = 1;
 
   @override
   void initState() {
@@ -44,93 +47,240 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey[50],
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0),
-        child: appBar(
-          title: 'Coin',
+      backgroundColor: Colors.grey[200],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    NeumorphicButton(
+                      style: NeumorphicStyle(
+                        color: Colors.grey[200],
+                        shape: NeumorphicShape.flat,
+                        boxShape: NeumorphicBoxShape.roundRect(
+                            BorderRadius.circular(15)),
+                        depth: 4,
+                      ),
+                      padding: EdgeInsets.all(10),
+                      child: Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      widget.coinName,
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 25, right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    ValueListenableBuilder(
+                      valueListenable: currentCoinPrice,
+                      builder: (context, value, child) => Text(
+                        "\$ ${value.toString()}",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    ValueListenableBuilder(
+                        valueListenable: currentDate,
+                        builder: (context, DateTime value, child) {
+                          if (displayMinutes) {
+                            return Text(
+                              DateFormat().add_jm().format(value),
+                              style: TextStyle(fontSize: 20),
+                            );
+                          } else if (displayHours) {
+                            return Text(
+                              DateFormat('MMM d, yyyy h a').format(value),
+                              style: TextStyle(fontSize: 20),
+                            );
+                          } else {
+                            return Text(
+                              DateFormat('MMM d, yyyy').format(value),
+                              style: TextStyle(fontSize: 20),
+                            );
+                          }
+                        }),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 25, top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${priceChangeInRange.toStringAsFixed(2)} (${percentChangeInRange.toStringAsFixed(2)}%)',
+                      style: TextStyle(
+                          color: percentChangeInRange >= 0
+                              ? Colors.green
+                              : Colors.red),
+                    ),
+                  ],
+                ),
+              ),
+              chartLoaded == true
+                  ? MarketChart(
+                      _trackballBehavior,
+                      currentCoinPrice,
+                      minPrice,
+                      maxPrice,
+                      data,
+                      decimalPlaces,
+                      lastPrice,
+                      currentDate,
+                      (percentChangeInRange >= 0 ? Colors.green : Colors.red),
+                    )
+                  : Container(
+                      height: 300,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    NeumorphicRadio(
+                      style: NeumorphicRadioStyle(
+                        selectedColor: Colors.grey[200],
+                        unselectedColor: Colors.grey[200],
+                      ),
+                      value: 1,
+                      groupValue: selectedInterval,
+                      padding: const EdgeInsets.all(15),
+                      child: const Text("1D"),
+                      onChanged: (int? value) {
+                        setState(() {
+                          selectedInterval = value!;
+                        });
+                        _getCoinData(value!);
+                      },
+                    ),
+                    NeumorphicRadio(
+                      style: NeumorphicRadioStyle(
+                        selectedColor: Colors.grey[200],
+                        unselectedColor: Colors.grey[200],
+                      ),
+                      value: 7,
+                      groupValue: selectedInterval,
+                      padding: const EdgeInsets.all(15),
+                      child: const Text("1W"),
+                      onChanged: (int? value) {
+                        setState(() {
+                          selectedInterval = value!;
+                        });
+                        _getCoinData(value!);
+                      },
+                    ),
+                    NeumorphicRadio(
+                      style: NeumorphicRadioStyle(
+                        selectedColor: Colors.grey[200],
+                        unselectedColor: Colors.grey[200],
+                      ),
+                      value: 30,
+                      groupValue: selectedInterval,
+                      padding: const EdgeInsets.all(15),
+                      child: const Text("1M"),
+                      onChanged: (int? value) {
+                        setState(() {
+                          selectedInterval = value!;
+                        });
+                        _getCoinData(value!);
+                      },
+                    ),
+                    NeumorphicRadio(
+                      style: NeumorphicRadioStyle(
+                        selectedColor: Colors.grey[200],
+                        unselectedColor: Colors.grey[200],
+                      ),
+                      value: 90,
+                      groupValue: selectedInterval,
+                      padding: const EdgeInsets.all(15),
+                      child: const Text("3M"),
+                      onChanged: (int? value) {
+                        setState(() {
+                          selectedInterval = value!;
+                        });
+                        _getCoinData(value!);
+                      },
+                    ),
+                    NeumorphicRadio(
+                      style: NeumorphicRadioStyle(
+                        selectedColor: Colors.grey[200],
+                        unselectedColor: Colors.grey[200],
+                      ),
+                      value: 365,
+                      groupValue: selectedInterval,
+                      padding: const EdgeInsets.all(15),
+                      child: const Text("1Y"),
+                      onChanged: (int? value) {
+                        setState(() {
+                          selectedInterval = value!;
+                        });
+                        _getCoinData(value!);
+                      },
+                    ),
+                    NeumorphicRadio(
+                      style: NeumorphicRadioStyle(
+                        selectedColor: Colors.grey[200],
+                        unselectedColor: Colors.grey[200],
+                      ),
+                      value: -1,
+                      groupValue: selectedInterval,
+                      padding: const EdgeInsets.all(15),
+                      child: const Text("All"),
+                      onChanged: (int? value) {
+                        setState(() {
+                          selectedInterval = value!;
+                        });
+                        _getCoinData(value!);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.newspaper),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "Latest News",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Flexible(child: NewsPage()),
+            ],
+          ),
         ),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10, top: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                ValueListenableBuilder(
-                  valueListenable: currentCoinPrice,
-                  builder: (context, value, child) => Text(
-                    "\$ ${value.toString()}",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                ValueListenableBuilder(
-                    valueListenable: currentDate,
-                    builder: (context, DateTime value, child) {
-                      if (displayMinutes) {
-                        return Text(
-                          DateFormat().add_jm().format(value),
-                          style: TextStyle(fontSize: 20),
-                        );
-                      } else if (displayHours) {
-                        return Text(
-                          DateFormat('MMM d, yyyy h a').format(value),
-                          style: TextStyle(fontSize: 20),
-                        );
-                      } else {
-                        return Text(
-                          DateFormat('MMM d, yyyy').format(value),
-                          style: TextStyle(fontSize: 20),
-                        );
-                      }
-                    }),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, top: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                    '${priceChangeInRange.toStringAsFixed(2)} (${percentChangeInRange.toStringAsFixed(2)}%)'),
-              ],
-            ),
-          ),
-          chartLoaded == true
-              ? MarketChart(_trackballBehavior, currentCoinPrice, minPrice,
-                  maxPrice, data, decimalPlaces, lastPrice, currentDate)
-              : Container(
-                  height: 300,
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TimeRangeButton(
-                    days: 1, label: "1D", getCoinData: _getCoinData),
-                TimeRangeButton(
-                    days: 7, label: "1W", getCoinData: _getCoinData),
-                TimeRangeButton(
-                    days: 30, label: "1M", getCoinData: _getCoinData),
-                TimeRangeButton(
-                    days: 90, label: "3M", getCoinData: _getCoinData),
-                TimeRangeButton(
-                    days: 365, label: "1Y", getCoinData: _getCoinData),
-                TimeRangeButton(
-                    days: -1, label: "All", getCoinData: _getCoinData),
-              ],
-            ),
-          )
-        ],
       ),
     );
   }
@@ -138,12 +288,15 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
   @override
   void dispose() {
     currentCoinPrice.dispose();
+    currentDate.dispose();
     super.dispose();
   }
 
   _getCoinData(int days) async {
     chartLoaded = false;
     data = [];
+
+    setState(() {});
 
     if (days == 1) {
       displayMinutes = true;
@@ -159,6 +312,8 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
     List prices = await getMarketData(widget.coinName, days);
 
     _calculateBounds(prices);
+
+    setState(() {});
 
     lastPrice = await getSimpleTokenData(widget.coinName)
         .then((value) => value[widget.coinName]['usd']);
@@ -203,38 +358,5 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
 
     priceChangeInRange = lastPrice - firstPrice;
     percentChangeInRange = (lastPrice / firstPrice) * 100 - 100;
-  }
-}
-
-class TimeRangeButton extends StatelessWidget {
-  final int days;
-  final String label;
-  final Function getCoinData;
-  const TimeRangeButton(
-      {Key? key,
-      required this.days,
-      required this.label,
-      required this.getCoinData})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        getCoinData(days);
-      },
-      borderRadius: BorderRadius.circular(5),
-      child: Ink(
-        height: 30,
-        width: 40,
-        child: Align(
-          alignment: Alignment.center,
-          child: Text(
-            label,
-            style: TextStyle(color: Colors.blue[600]),
-          ),
-        ),
-      ),
-    );
   }
 }
