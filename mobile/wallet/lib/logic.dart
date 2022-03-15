@@ -38,9 +38,7 @@ Future<DeployedContract> loadContract(String from) async {
 }
 
 Future<String> loadTokenContract(String tokenName) async {
-  //getTokenList();
 
-  TokenManager tokenManager = new TokenManager();
   ConfigurationService configurationService = new ConfigurationService(
       await SharedPreferences.getInstance(),
       await EncryptedSharedPreferences());
