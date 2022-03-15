@@ -47,21 +47,14 @@ Future<String> loadTokenContract(String tokenName) async {
 
   
   await configurationService.clearPreferences();
-  await configurationService.firstAccount("1");
-  await configurationService.addAccount("1");
-  List<Account> newList = await configurationService.getAllAccounts();
-  print(newList[0].id);
-  await Future.delayed(Duration(seconds: 3));
-  print(newList[1].id);
+  await configurationService.addEther(1);
+  await configurationService.addToken(1, "ChainLink Token", "LINK", "0x01BE23585060835E02B77ef475b0Cc51aA1e0709", 18);
+  
 
-  final String abi = await rootBundle
-      .loadString("assets/build/contracts/token-list-rinkeby.json");
-  final json = await jsonDecode(
-    abi,
-  );
+  final json = await configurationService.getTokens();
   for (int i = 0; i < json.length; i++) {
-    if (json[i]["name"] == tokenName) {
-      return json[i]["address"] as String;
+    if (json[i].name == tokenName) {
+      return json[i].address;
     }
   }
   return "Null";

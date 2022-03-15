@@ -18,6 +18,8 @@ abstract class IConfigurationService {
   Future<void> importAccount(String privateKey, String name);
   Future<void> addToken(
       int id, String name, String symbol, String address, int decimals);
+  Future<List<Token>> getTokens();
+  Future<void> addEther(int id);
 }
 
 class ConfigurationService implements IConfigurationService {
@@ -132,8 +134,24 @@ class ConfigurationService implements IConfigurationService {
   }
 
   @override
+  Future<void> addEther(int id) async {
+    
+    List<Token> tokenList = [];
+    tokenList.add(Token(
+        id: id,
+        name: "Ether",
+        symbol: "ETH",
+        address: "0x0000000000000",
+        decimals: 18));
+
+    String encodedData = Token.encode(tokenList);
+    await _encryptedPreferences.setString('tokenList', encodedData);
+  }
+
+  @override
   Future<void> addToken(
       int id, String name, String symbol, String address, int decimals) async {
+    
     List<Token> tokenList =
         await Token.decode(await _encryptedPreferences.getString('tokenList'));
     tokenList.add(Token(
@@ -149,7 +167,7 @@ class ConfigurationService implements IConfigurationService {
 
   Future<List<Token>> getTokens() async {
     List<Token> tokens = await Token.decode(
-        await _encryptedPreferences.getString('accountList'));
+        await _encryptedPreferences.getString('tokenList'));
     return tokens;
   }
 }
