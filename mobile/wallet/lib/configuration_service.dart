@@ -146,6 +146,12 @@ class ConfigurationService implements IConfigurationService {
     String encodedData = Token.encode(tokenList);
     await _encryptedPreferences.setString('tokenList', encodedData);
   }
+
+  Future<List<Token>> getTokens() async {
+    List<Token> tokens = await Token.decode(
+        await _encryptedPreferences.getString('accountList'));
+    return tokens;
+  }
 }
 
 class Account {
