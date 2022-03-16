@@ -1,15 +1,18 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:wallet/wallet_setup.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final storage = new FlutterSecureStorage();
+
 
 abstract class IConfigurationService {
   Future<void> setMnemonic(String? value);
   Future<void> setupDone(bool value);
   Future<void> setPrivateKey(String? value);
-  String? getMnemonic();
-  String? getPrivateKey();
+  Future<String?> getMnemonic();
+  Future<String?> getPrivateKey();
   bool didSetupWallet();
   Future<List<Account>> getAllAccounts();
   Future<void> addAccount(String name);
@@ -23,19 +26,23 @@ abstract class IConfigurationService {
 }
 
 class ConfigurationService implements IConfigurationService {
-  ConfigurationService(this._preferences, this._encryptedPreferences);
+  ConfigurationService(this._preferences);
+
 
   final SharedPreferences _preferences;
-  final EncryptedSharedPreferences _encryptedPreferences;
 
   @override
   Future<void> setMnemonic(String? value) async {
-    await _preferences.setString('mnemonic', value ?? '');
+    if(await _preferences.getBool("isLoggedIn")!) {
+      await storage.write(key: 'mnemonic', value: value ?? '');
+    }
   }
 
   @override
   Future<void> setPrivateKey(String? value) async {
-    await _preferences.setString('privateKey', value ?? '');
+    if(await _preferences.getBool("isLoggedIn")!) {
+      await storage.write(key: 'privateKey', value: value ?? '');
+    }
   }
 
   @override
@@ -45,13 +52,27 @@ class ConfigurationService implements IConfigurationService {
 
   // gets
   @override
-  String? getMnemonic() {
-    return _preferences.getString('mnemonic');
+  Future<String?> getMnemonic() async {
+    try {
+      if(await _preferences.getBool("isLoggedIn")!) {
+        return storage.read(key: 'mnemonic');
+      }
+      return null;
+    } catch (e) {
+      return "error";
+    } 
   }
 
   @override
-  String? getPrivateKey() {
-    return _preferences.getString('privateKey');
+  Future<String?> getPrivateKey() async{
+    try {
+      if(await _preferences.getBool("isLoggedIn")!) {
+        return storage.read(key: 'privateKey');
+      }
+      return null;
+    } catch (e) {
+      return "error";
+    }
   }
 
   @override
@@ -62,7 +83,7 @@ class ConfigurationService implements IConfigurationService {
   @override
   Future<List<Account>> getAllAccounts() async {
     List<Account> accounts = await Account.decode(
-        await _encryptedPreferences.getString('accountList'));
+        await storage.read(key: 'accountList'));
     return accounts;
   }
 
@@ -75,23 +96,23 @@ class ConfigurationService implements IConfigurationService {
       Account(
           id: 1,
           name: name,
-          privateKey: await walletAddressService.getPrivateKey(getMnemonic()!),
+          privateKey: await walletAddressService.getPrivateKey(await getMnemonic() as String),
           publicKey: await walletAddressService
               .getPublicKey(
-                  await walletAddressService.getPrivateKey(getMnemonic()!))
+                  await walletAddressService.getPrivateKey(await getMnemonic() as String))
               .toString(),
-          mnemonic: await getMnemonic()!)
+          mnemonic: await getMnemonic() as String)
     ]);
-    await _encryptedPreferences.setString('accountList', encodedData);
+    await storage.write(key: 'accountList', value: encodedData);
   }
 
   @override
   Future<void> importAccount(String privateKey, String name) async {
     WalletAddress walletAddressService = new WalletAddress();
     List<Account> acc = [];
-    if ((await _encryptedPreferences.getString('accountList')).isNotEmpty) {
+    if ((await storage.read(key: 'accountList') != null)) {
       acc = await Account.decode(
-          await _encryptedPreferences.getString('accountList'));
+          await storage.read(key: 'accountList'));
     }
 
     acc.add(Account(
@@ -100,36 +121,35 @@ class ConfigurationService implements IConfigurationService {
         privateKey: privateKey,
         publicKey: await walletAddressService
             .getPublicKey(
-                await walletAddressService.getPrivateKey(getMnemonic()!))
+                await walletAddressService.getPrivateKey(getMnemonic() as String))
             .toString(),
-        mnemonic: await getMnemonic()!));
+        mnemonic: await getMnemonic() as String));
     String encodedData = Account.encode(acc);
-    await _encryptedPreferences.setString('accountList', encodedData);
+    await storage.write(key: 'accountList', value: encodedData);
   }
 
   @override
   Future<void> addAccount(String name) async {
     WalletAddress walletAddressService = new WalletAddress();
-    setPrivateKey(await walletAddressService.getPrivateKey(getMnemonic()!));
+    setPrivateKey(await walletAddressService.getPrivateKey(getMnemonic() as String));
 
     List<Account> acc = await Account.decode(
-        await _encryptedPreferences.getString('accountList'));
+        await storage.read(key: 'accountList'));
     acc.add(Account(
         id: acc.length + 1,
         name: name,
-        privateKey: await getPrivateKey()!,
+        privateKey: await getPrivateKey() as String,
         publicKey: await walletAddressService
-            .getPublicKey(getPrivateKey()!)
+            .getPublicKey(getPrivateKey() as String)
             .toString(),
-        mnemonic: await getMnemonic()!));
+        mnemonic: await getMnemonic() as String));
 
     String encodedData = Account.encode(acc);
 
-    await _encryptedPreferences.setString('accountList', encodedData);
+    await storage.write(key: 'accountList', value: encodedData);
   }
 
   Future<void> clearPreferences() async {
-    await _encryptedPreferences.clear();
     await _preferences.clear();
   }
 
@@ -145,7 +165,7 @@ class ConfigurationService implements IConfigurationService {
         decimals: 18));
 
     String encodedData = Token.encode(tokenList);
-    await _encryptedPreferences.setString('tokenList', encodedData);
+    await _preferences.setString('tokenList', encodedData);
   }
 
   @override
@@ -153,7 +173,7 @@ class ConfigurationService implements IConfigurationService {
       int id, String name, String symbol, String address, int decimals) async {
     
     List<Token> tokenList =
-        await Token.decode(await _encryptedPreferences.getString('tokenList'));
+        await Token.decode(await _preferences.getString('tokenList'));
     tokenList.add(Token(
         id: id,
         name: name,
@@ -162,12 +182,12 @@ class ConfigurationService implements IConfigurationService {
         decimals: decimals));
 
     String encodedData = Token.encode(tokenList);
-    await _encryptedPreferences.setString('tokenList', encodedData);
+    await _preferences.setString('tokenList', encodedData);
   }
 
   Future<List<Token>> getTokens() async {
     List<Token> tokens = await Token.decode(
-        await _encryptedPreferences.getString('tokenList'));
+        await _preferences.getString('tokenList'));
     return tokens;
   }
 }
