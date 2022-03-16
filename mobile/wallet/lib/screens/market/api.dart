@@ -59,10 +59,10 @@ Future<List> getMarketData(String id, dynamic days) async {
   }
 }
 
-Future getMarketNews(String id) async {
+Future getMarketNews(String query) async {
   try {
     Uri uri = Uri.parse(
-        "https://newsdata.io/api/1/news?apikey=${newsKey}&q=ethereum&language=en");
+        "https://newsdata.io/api/1/news?apikey=${newsKey}&q=${query}&language=en");
     dynamic response = await http.get(uri);
     dynamic json = jsonDecode(response.body);
     return json;

@@ -5,7 +5,9 @@ import 'api.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class NewsPage extends StatefulWidget {
-  NewsPage({Key? key}) : super(key: key);
+  final String query;
+
+  NewsPage(this.query);
   final InAppBrowser browser = new InAppBrowser();
 
   @override
@@ -80,7 +82,7 @@ class _NewsPageState extends State<NewsPage> {
   void _loadNewsData() async {
     newsList = [];
 
-    dynamic result = await getMarketNews('ETH');
+    dynamic result = await getMarketNews(widget.query);
     for (int i = 0; i < result['results'].length; i++) {
       newsList.add(NewsArticle(
           result['results'][i]['title'],
