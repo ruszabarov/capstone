@@ -13,6 +13,8 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
+  bool isActive = false;
+
   List<NewsArticle> newsList = [];
   var options = InAppBrowserClassOptions(
       crossPlatform: InAppBrowserOptions(hideUrlBar: false),
@@ -40,39 +42,7 @@ class _NewsPageState extends State<NewsPage> {
               );
             },
             itemBuilder: ((context, index) {
-              return NeumorphicButton(
-                style: NeumorphicStyle(
-                  color: Colors.grey[200],
-                  shape: NeumorphicShape.flat,
-                  boxShape:
-                      NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
-                  depth: 4,
-                ),
-                onPressed: () async {
-                  widget.browser.openUrlRequest(
-                      urlRequest:
-                          URLRequest(url: Uri.parse(newsList[index].url)),
-                      options: options);
-                },
-                padding: EdgeInsets.all(15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(newsList[index].source),
-                        Text(DateFormat('MMM d, yyyy')
-                            .format(newsList[index].date)),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(newsList[index].title),
-                  ],
-                ),
-              );
+              return NewsItem(newsList[index]);
             }),
           );
   }
@@ -100,4 +70,90 @@ class NewsArticle {
   final String source;
 
   NewsArticle(this.title, this.date, this.url, this.source);
+}
+
+class NewsItem extends StatefulWidget {
+  final NewsArticle article;
+  const NewsItem(this.article);
+
+  @override
+  State<NewsItem> createState() => _NewsItemState();
+}
+
+class _NewsItemState extends State<NewsItem> {
+  bool isActive = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return NeumorphicButton(
+      style: NeumorphicStyle(
+        color: Colors.grey[200],
+        shape: NeumorphicShape.flat,
+        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
+        depth: 4,
+      ),
+      onPressed: () async {
+        setState(() {
+          isActive = !isActive;
+        });
+        // widget.browser.openUrlRequest(
+        //     urlRequest:
+        //         URLRequest(url: Uri.parse(newsList[index].url)),
+        //     options: options);
+      },
+      padding: EdgeInsets.all(15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(widget.article.source),
+              Text(DateFormat('MMM d, yyyy').format(widget.article.date)),
+            ],
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Text(widget.article.title),
+          SizedBox(
+            height: 15,
+          ),
+          isActive
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          "Open in Browser",
+                          style: TextStyle(
+                            color: Colors.blueAccent,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          "Discuss on CryptoPanic",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              : Container()
+        ],
+      ),
+    );
+  }
 }
