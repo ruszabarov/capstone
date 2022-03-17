@@ -102,57 +102,61 @@ class _NewsItemState extends State<NewsItem> {
         //     options: options);
       },
       padding: EdgeInsets.all(15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(widget.article.source),
-              Text(DateFormat('MMM d, yyyy').format(widget.article.date)),
-            ],
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Text(widget.article.title),
-          SizedBox(
-            height: 15,
-          ),
-          isActive
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Text(
-                          "Open in Browser",
-                          style: TextStyle(
-                            color: Colors.blueAccent,
-                            fontWeight: FontWeight.bold,
+      child: AnimatedContainer(
+        height: isActive ? 118 : 80,
+        duration: Duration(milliseconds: 300),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(widget.article.source),
+                Text(DateFormat('MMM d, yyyy').format(widget.article.date)),
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(widget.article.title),
+            SizedBox(
+              height: 15,
+            ),
+            isActive
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {},
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Text(
+                            "Open in Browser",
+                            style: TextStyle(
+                              color: Colors.blueAccent,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Text(
-                          "Discuss on CryptoPanic",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        onTap: () {},
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Text(
+                            "Discuss on CryptoPanic",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  ],
-                )
-              : Container()
-        ],
+                      )
+                    ],
+                  )
+                : Container()
+          ],
+        ),
       ),
     );
   }
