@@ -23,6 +23,7 @@ abstract class IConfigurationService {
       int id, String name, String symbol, String address, int decimals);
   Future<List<Token>> getTokens();
   Future<void> addEther(int id);
+  Future<Account> getAccount(int id);
 }
 
 class ConfigurationService implements IConfigurationService {
@@ -87,6 +88,18 @@ class ConfigurationService implements IConfigurationService {
     return accounts;
   }
 
+   @override
+  Future<Account> getAccount(int id) async {
+    List<Account> accounts = await Account.decode(
+        await storage.read(key: 'accountList'));
+    for(int i = 0; i < accounts.length; i++) {
+      if(accounts[i].id == id) {
+        return accounts[i];
+      }
+    }
+    return accounts.first;
+  }
+
   @override
   Future<void> firstAccount(String name) async {
     WalletAddress walletAddressService = new WalletAddress();
@@ -99,8 +112,7 @@ class ConfigurationService implements IConfigurationService {
           privateKey: await walletAddressService.getPrivateKey(await getMnemonic() as String),
           publicKey: await walletAddressService
               .getPublicKey(
-                  await walletAddressService.getPrivateKey(await getMnemonic() as String))
-              .toString(),
+                  await walletAddressService.getPrivateKey(await getMnemonic() as String)),
           mnemonic: await getMnemonic() as String)
     ]);
     await storage.write(key: 'accountList', value: encodedData);
@@ -120,9 +132,7 @@ class ConfigurationService implements IConfigurationService {
         name: name,
         privateKey: privateKey,
         publicKey: await walletAddressService
-            .getPublicKey(
-                await walletAddressService.getPrivateKey(getMnemonic() as String))
-            .toString(),
+              .getPublicKey(privateKey),
         mnemonic: await getMnemonic() as String));
     String encodedData = Account.encode(acc);
     await storage.write(key: 'accountList', value: encodedData);
@@ -140,8 +150,8 @@ class ConfigurationService implements IConfigurationService {
         name: name,
         privateKey: await getPrivateKey() as String,
         publicKey: await walletAddressService
-            .getPublicKey(getPrivateKey() as String)
-            .toString(),
+              .getPublicKey(
+                  await walletAddressService.getPrivateKey(await getMnemonic() as String)),
         mnemonic: await getMnemonic() as String));
 
     String encodedData = Account.encode(acc);
@@ -151,6 +161,7 @@ class ConfigurationService implements IConfigurationService {
 
   Future<void> clearPreferences() async {
     await _preferences.clear();
+    await storage.deleteAll();
   }
 
   @override

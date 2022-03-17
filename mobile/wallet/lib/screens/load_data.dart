@@ -33,7 +33,7 @@ class _LoadDataPageState extends State<LoadDataPage> {
 
     for (int i = 0; i < initAccountData[0].tokens.tokenList.length; i++) {
       initAccountData[0].tokens.tokenList[i].balance = double.parse(
-          await getTokenBalance(initAccountData[0].address, "ChainLink Token"));
+          await getTokenBalance(2, "ChainLink Token"));
     }
 
     // load Market data
