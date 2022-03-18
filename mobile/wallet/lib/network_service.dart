@@ -1,19 +1,49 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// Future<void> addNetwork 
-
-Future<String> changeNetwork(int id) async{
-  final String abi = await rootBundle.loadString("assets/build/contracts/networks.json");
-  final json = await jsonDecode(abi);
-  for (int i = 0; i < json.length; i++) {
-    if (json[i]["id"] == id) {
-      return json[i];
-    }
-  }
-  return "Null";
+abstract class INetworkService {
+  Future<void> addNetwork(String name, String node, int id);
+  Future<List<Network>> getNetworks();
 }
+
+class NetworkService implements INetworkService {
+  NetworkService(this._preferences);
+  final SharedPreferences _preferences;
+
+  Future<void> addNetwork(String name, String node, int id) async {
+     List<Network> networkList = [];
+    if(await _preferences.getString('networkList') == null) {
+      print("Network list is empty");
+      networkList.add(Network(ChainID: 1, name: "mainnet", node: "https://eth-mainnet.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2"));
+      // String encodedData = Network.encode([Network(ChainID: 1, name: "1", node: "https://eth-mainnet.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2")]);
+      String encodedData = await Network.encode(networkList);
+      await _preferences.setString("networkList", encodedData);
+    }
+    networkList =
+        await Network.decode(await _preferences.getString('networkList'));
+    networkList.add(Network(
+        ChainID: id,
+        name: name,
+        node: node,
+        )
+      );
+
+    String encodedData = Network.encode(networkList);
+    await _preferences.setString('networkList', encodedData);
+  }
+
+  Future<List<Network>> getNetworks() async{
+    List<Network> networks = await Network.decode(
+        await _preferences.getString('tokenList'));
+    return networks;
+  }
+}
+
+
+
+
 
 class Network {
   String name;
