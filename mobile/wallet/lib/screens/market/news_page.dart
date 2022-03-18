@@ -13,13 +13,7 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
-  bool isActive = false;
-
   List<NewsArticle> newsList = [];
-  var options = InAppBrowserClassOptions(
-      crossPlatform: InAppBrowserOptions(hideUrlBar: false),
-      inAppWebViewGroupOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(javaScriptEnabled: true)));
 
   @override
   void initState() {
@@ -42,7 +36,7 @@ class _NewsPageState extends State<NewsPage> {
               );
             },
             itemBuilder: ((context, index) {
-              return NewsItem(newsList[index]);
+              return NewsItem(newsList[index], widget.browser);
             }),
           );
   }
@@ -54,9 +48,9 @@ class _NewsPageState extends State<NewsPage> {
     for (int i = 0; i < result['results'].length; i++) {
       newsList.add(NewsArticle(
           result['results'][i]['title'],
-          DateTime.parse(result['results'][i]['pubDate']),
-          result['results'][i]['link'],
-          result['results'][i]['source_id']));
+          DateTime.parse(result['results'][i]['published_at']),
+          result['results'][i]['url'],
+          result['results'][i]['source']['title']));
     }
 
     setState(() {});
@@ -74,14 +68,18 @@ class NewsArticle {
 
 class NewsItem extends StatefulWidget {
   final NewsArticle article;
-  const NewsItem(this.article);
+  final InAppBrowser browser;
+  const NewsItem(this.article, this.browser);
 
   @override
   State<NewsItem> createState() => _NewsItemState();
 }
 
 class _NewsItemState extends State<NewsItem> {
-  bool isActive = false;
+  var options = InAppBrowserClassOptions(
+      crossPlatform: InAppBrowserOptions(hideUrlBar: false),
+      inAppWebViewGroupOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(javaScriptEnabled: true)));
 
   @override
   Widget build(BuildContext context) {
@@ -93,70 +91,29 @@ class _NewsItemState extends State<NewsItem> {
         depth: 4,
       ),
       onPressed: () async {
-        setState(() {
-          isActive = !isActive;
-        });
-        // widget.browser.openUrlRequest(
-        //     urlRequest:
-        //         URLRequest(url: Uri.parse(newsList[index].url)),
-        //     options: options);
+        widget.browser.openUrlRequest(
+            urlRequest: URLRequest(url: Uri.parse(widget.article.url)),
+            options: options);
       },
       padding: EdgeInsets.all(15),
-      child: AnimatedContainer(
-        height: isActive ? 118 : 80,
-        duration: Duration(milliseconds: 300),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(widget.article.source),
-                Text(DateFormat('MMM d, yyyy').format(widget.article.date)),
-              ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Text(widget.article.title),
-            SizedBox(
-              height: 15,
-            ),
-            isActive
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Text(
-                            "Open in Browser",
-                            style: TextStyle(
-                              color: Colors.blueAccent,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Text(
-                            "Discuss on CryptoPanic",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  )
-                : Container()
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(widget.article.source),
+              Text(DateFormat('MMM d, yyyy').format(widget.article.date)),
+            ],
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Text(widget.article.title),
+          SizedBox(
+            height: 15,
+          ),
+        ],
       ),
     );
   }
