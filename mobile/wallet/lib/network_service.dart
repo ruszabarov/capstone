@@ -13,10 +13,14 @@ class NetworkService implements INetworkService {
   final SharedPreferences _preferences;
 
   Future<void> addNetwork(String name, String node, int id) async {
-     List<Network> networkList = [];
-    if(await _preferences.getString('networkList') == null) {
+    List<Network> networkList = [];
+    if (await _preferences.getString('networkList') == null) {
       print("Network list is empty");
-      networkList.add(Network(ChainID: 1, name: "mainnet", node: "https://eth-mainnet.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2"));
+      networkList.add(Network(
+          ChainID: 1,
+          name: "mainnet",
+          node:
+              "https://eth-mainnet.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2"));
       // String encodedData = Network.encode([Network(ChainID: 1, name: "1", node: "https://eth-mainnet.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2")]);
       String encodedData = await Network.encode(networkList);
       await _preferences.setString("networkList", encodedData);
@@ -24,26 +28,21 @@ class NetworkService implements INetworkService {
     networkList =
         await Network.decode(await _preferences.getString('networkList'));
     networkList.add(Network(
-        ChainID: id,
-        name: name,
-        node: node,
-        )
-      );
+      ChainID: id,
+      name: name,
+      node: node,
+    ));
 
     String encodedData = Network.encode(networkList);
     await _preferences.setString('networkList', encodedData);
   }
 
-  Future<List<Network>> getNetworks() async{
-    List<Network> networks = await Network.decode(
-        await _preferences.getString('tokenList'));
+  Future<List<Network>> getNetworks() async {
+    List<Network> networks =
+        await Network.decode(await _preferences.getString('networkList'));
     return networks;
   }
 }
-
-
-
-
 
 class Network {
   String name;

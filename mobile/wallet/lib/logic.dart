@@ -16,7 +16,6 @@ import 'tokenBalanceAPI.dart';
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
 
-
 Client httpClient = new Client();
 Web3Client ethClient = new Web3Client(
     "https://eth-rinkeby.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
@@ -42,20 +41,25 @@ Future<DeployedContract> loadContract(String from) async {
 }
 
 Future<Token> loadTokenContract(String tokenName) async {
-  ConfigurationService configurationService = new ConfigurationService(
-      await SharedPreferences.getInstance());
-  
-  NetworkService networkService = new NetworkService(await SharedPreferences.getInstance());
+  ConfigurationService configurationService =
+      new ConfigurationService(await SharedPreferences.getInstance());
 
+  NetworkService networkService =
+      new NetworkService(await SharedPreferences.getInstance());
 
   await configurationService.clearPreferences();
 
-  await networkService.addNetwork("ropsten", "https://eth-ropsten.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2", 3);
-  print(await networkService.getNetworks());
+  // await networkService.addMainnet();
+  await networkService.addNetwork(
+      "ropsten",
+      "https://eth-ropsten.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
+      3);
+  List<Network> networkList = await networkService.getNetworks();
+  print(networkList[1].name);
 
   await configurationService.addEther(1);
-  await configurationService.addToken(1, "ChainLink Token", "LINK", "0x01BE23585060835E02B77ef475b0Cc51aA1e0709", 18);
-  
+  await configurationService.addToken(1, "ChainLink Token", "LINK",
+      "0x01BE23585060835E02B77ef475b0Cc51aA1e0709", 18);
 
   final json = await configurationService.getTokens();
   for (int i = 0; i < json.length; i++) {
@@ -66,11 +70,9 @@ Future<Token> loadTokenContract(String tokenName) async {
   return json.first;
 }
 
-
-
 Future<String> getTokenBalance(int id, String tokenName) async {
-  ConfigurationService configurationService = new ConfigurationService(
-      await SharedPreferences.getInstance());
+  ConfigurationService configurationService =
+      new ConfigurationService(await SharedPreferences.getInstance());
 
   await configurationService.firstAccount("1");
   await configurationService.importAccount(privateKey, "2");

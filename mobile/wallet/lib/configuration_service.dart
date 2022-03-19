@@ -6,7 +6,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final storage = new FlutterSecureStorage();
 
-
 abstract class IConfigurationService {
   Future<void> setMnemonic(String? value);
   Future<void> setupDone(bool value);
@@ -29,19 +28,18 @@ abstract class IConfigurationService {
 class ConfigurationService implements IConfigurationService {
   ConfigurationService(this._preferences);
 
-
   final SharedPreferences _preferences;
 
   @override
   Future<void> setMnemonic(String? value) async {
-    if(await _preferences.getBool("isLoggedIn")!) {
+    if (await _preferences.getBool("isLoggedIn")!) {
       await storage.write(key: 'mnemonic', value: value ?? '');
     }
   }
 
   @override
   Future<void> setPrivateKey(String? value) async {
-    if(await _preferences.getBool("isLoggedIn")!) {
+    if (await _preferences.getBool("isLoggedIn")!) {
       await storage.write(key: 'privateKey', value: value ?? '');
     }
   }
@@ -55,19 +53,19 @@ class ConfigurationService implements IConfigurationService {
   @override
   Future<String?> getMnemonic() async {
     try {
-      if(await _preferences.getBool("isLoggedIn")!) {
+      if (await _preferences.getBool("isLoggedIn")!) {
         return storage.read(key: 'mnemonic');
       }
       return null;
     } catch (e) {
       return "error";
-    } 
+    }
   }
 
   @override
-  Future<String?> getPrivateKey() async{
+  Future<String?> getPrivateKey() async {
     try {
-      if(await _preferences.getBool("isLoggedIn")!) {
+      if (await _preferences.getBool("isLoggedIn")!) {
         return storage.read(key: 'privateKey');
       }
       return null;
@@ -83,17 +81,17 @@ class ConfigurationService implements IConfigurationService {
 
   @override
   Future<List<Account>> getAllAccounts() async {
-    List<Account> accounts = await Account.decode(
-        await storage.read(key: 'accountList'));
+    List<Account> accounts =
+        await Account.decode(await storage.read(key: 'accountList'));
     return accounts;
   }
 
-   @override
+  @override
   Future<Account> getAccount(int id) async {
-    List<Account> accounts = await Account.decode(
-        await storage.read(key: 'accountList'));
-    for(int i = 0; i < accounts.length; i++) {
-      if(accounts[i].id == id) {
+    List<Account> accounts =
+        await Account.decode(await storage.read(key: 'accountList'));
+    for (int i = 0; i < accounts.length; i++) {
+      if (accounts[i].id == id) {
         return accounts[i];
       }
     }
@@ -109,10 +107,11 @@ class ConfigurationService implements IConfigurationService {
       Account(
           id: 1,
           name: name,
-          privateKey: await walletAddressService.getPrivateKey(await getMnemonic() as String),
-          publicKey: await walletAddressService
-              .getPublicKey(
-                  await walletAddressService.getPrivateKey(await getMnemonic() as String)),
+          privateKey: await walletAddressService
+              .getPrivateKey(await getMnemonic() as String),
+          publicKey: await walletAddressService.getPublicKey(
+              await walletAddressService
+                  .getPrivateKey(await getMnemonic() as String)),
           mnemonic: await getMnemonic() as String)
     ]);
     await storage.write(key: 'accountList', value: encodedData);
@@ -123,16 +122,14 @@ class ConfigurationService implements IConfigurationService {
     WalletAddress walletAddressService = new WalletAddress();
     List<Account> acc = [];
     if ((await storage.read(key: 'accountList') != null)) {
-      acc = await Account.decode(
-          await storage.read(key: 'accountList'));
+      acc = await Account.decode(await storage.read(key: 'accountList'));
     }
 
     acc.add(Account(
         id: acc.length + 1,
         name: name,
         privateKey: privateKey,
-        publicKey: await walletAddressService
-              .getPublicKey(privateKey),
+        publicKey: await walletAddressService.getPublicKey(privateKey),
         mnemonic: await getMnemonic() as String));
     String encodedData = Account.encode(acc);
     await storage.write(key: 'accountList', value: encodedData);
@@ -141,17 +138,22 @@ class ConfigurationService implements IConfigurationService {
   @override
   Future<void> addAccount(String name) async {
     WalletAddress walletAddressService = new WalletAddress();
-    setPrivateKey(await walletAddressService.getPrivateKey(getMnemonic() as String));
+    setPrivateKey(
+        await walletAddressService.getPrivateKey(getMnemonic() as String));
 
-    List<Account> acc = await Account.decode(
-        await storage.read(key: 'accountList'));
+    if (await storage.read(key: 'accountList') == null) {
+      firstAccount(name);
+    }
+
+    List<Account> acc =
+        await Account.decode(await storage.read(key: 'accountList'));
     acc.add(Account(
         id: acc.length + 1,
         name: name,
         privateKey: await getPrivateKey() as String,
-        publicKey: await walletAddressService
-              .getPublicKey(
-                  await walletAddressService.getPrivateKey(await getMnemonic() as String)),
+        publicKey: await walletAddressService.getPublicKey(
+            await walletAddressService
+                .getPrivateKey(await getMnemonic() as String)),
         mnemonic: await getMnemonic() as String));
 
     String encodedData = Account.encode(acc);
@@ -166,7 +168,6 @@ class ConfigurationService implements IConfigurationService {
 
   @override
   Future<void> addEther(int id) async {
-    
     List<Token> tokenList = [];
     tokenList.add(Token(
         id: id,
@@ -182,7 +183,6 @@ class ConfigurationService implements IConfigurationService {
   @override
   Future<void> addToken(
       int id, String name, String symbol, String address, int decimals) async {
-    
     List<Token> tokenList =
         await Token.decode(await _preferences.getString('tokenList'));
     tokenList.add(Token(
@@ -197,8 +197,8 @@ class ConfigurationService implements IConfigurationService {
   }
 
   Future<List<Token>> getTokens() async {
-    List<Token> tokens = await Token.decode(
-        await _preferences.getString('tokenList'));
+    List<Token> tokens =
+        await Token.decode(await _preferences.getString('tokenList'));
     return tokens;
   }
 }
