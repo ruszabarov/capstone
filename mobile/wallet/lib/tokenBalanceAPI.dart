@@ -15,3 +15,4 @@ final etherscan =
     EtherscanAPI(apiKey: apiKey, chain: EthChain.rinkeby, enableLogs: false);
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 
+void getReceipt(String txhash) async {}

@@ -11,7 +11,7 @@ import 'package:wallet/private.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'tokenBalanceAPI.dart';
 
-// TODO: Gas, networks, receipts.
+// TODO: Gas, receipts.
 
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
@@ -40,6 +40,17 @@ Future<DeployedContract> loadContract(String from) async {
   return contract;
 }
 
+Future<dynamic> getReceipt(String txHash) async {
+  var receipt = await ethClient.getTransactionReceipt(txHash);
+  if (receipt == null) {
+    return "Transaction is null";
+  }
+
+  ethClient.gas;
+
+  return receipt;
+}
+
 Future<Token> loadTokenContract(String tokenName) async {
   ConfigurationService configurationService =
       new ConfigurationService(await SharedPreferences.getInstance());
@@ -54,7 +65,7 @@ Future<Token> loadTokenContract(String tokenName) async {
       "ropsten",
       "https://eth-ropsten.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
       3);
-  List<Network> networkList = await networkService.getNetworks();
+  List<Network> networkList = await networkService.getNetworkList();
   print(networkList[1].name);
 
   await configurationService.addEther(1);

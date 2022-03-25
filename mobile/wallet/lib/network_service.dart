@@ -5,7 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class INetworkService {
   Future<void> addNetwork(String name, String node, int id);
-  Future<List<Network>> getNetworks();
+  Future<List<Network>> getNetworkList();
+  Future<Network?> getNetwork(int ChainID);
 }
 
 class NetworkService implements INetworkService {
@@ -37,10 +38,24 @@ class NetworkService implements INetworkService {
     await _preferences.setString('networkList', encodedData);
   }
 
-  Future<List<Network>> getNetworks() async {
+  Future<List<Network>> getNetworkList() async {
     List<Network> networks =
         await Network.decode(await _preferences.getString('networkList'));
     return networks;
+  }
+
+  Future<Network?> getNetwork(int ChainID) async {
+    if (await _preferences.getString('networkList') != null) {
+      List<Network> networkList =
+          Network.decode(await _preferences.getString('networkList'));
+      for (int i = 0; i < networkList.length; i++) {
+        if (networkList[i].ChainID == ChainID) {
+          return networkList[i];
+        }
+      }
+    }
+
+    return null;
   }
 }
 
