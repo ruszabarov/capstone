@@ -15,4 +15,9 @@ final etherscan =
     EtherscanAPI(apiKey: apiKey, chain: EthChain.rinkeby, enableLogs: false);
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 
-void getReceipt(String txhash) async {}
+void getReceipt(String txhash) async {
+  // await next block and make a call for the receipt if status is 1 then transaction succeeded
+
+  dynamic abc = etherscan.getStatus(txhash: txhash);
+  dynamic abcc = etherscan.tx;
+}

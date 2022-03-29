@@ -11,7 +11,7 @@ import 'package:wallet/private.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'tokenBalanceAPI.dart';
 
-// TODO: Gas, receipts.
+// TODO: Gas, receipts, functions adjusted for accounts.
 
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
@@ -46,7 +46,8 @@ Future<dynamic> getReceipt(String txHash) async {
     return "Transaction is null";
   }
 
-  ethClient.gas;
+  dynamic abc;
+  dynamic abccc = ethClient.estimateGas();
 
   return receipt;
 }
