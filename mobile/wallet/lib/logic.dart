@@ -68,6 +68,7 @@ Future<Token> loadTokenContract(String tokenName) async {
       3);
   List<Network> networkList = await networkService.getNetworkList();
   print(networkList[1].name);
+  print(await estimateGas());
 
   await configurationService.addEther(1);
   await configurationService.addToken(1, "ChainLink Token", "LINK",

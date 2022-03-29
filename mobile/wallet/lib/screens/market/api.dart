@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:wallet/private.dart';
 
+
 Future<Map<String, dynamic>> getCoinData(String id) async {
   try {
     Uri uri = Uri.parse("https://api.coingecko.com/api/v3/coins/${id}");
