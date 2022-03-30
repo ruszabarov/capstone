@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:wallet/logic.dart';
+
 import 'private.dart';
 import 'package:etherscan_api/etherscan_api.dart';
 import 'package:http/http.dart' as http;
@@ -32,8 +34,17 @@ Future<List<Gas>> estimateGas() async {
 void getReceipt(String txhash) async {
   // await next block and make a call for the receipt if status is 1 then transaction succeeded
 
+  dynamic c = ethClient.getBlockInformation();
   dynamic abc = etherscan.getStatus(txhash: txhash);
-  // dynamic abcc = etherscan.tx;
+}
+
+void ethTxHistory(String address) {
+  dynamic c = etherscan.txList(address: address);
+}
+
+void tokenTxHistory(String address, String tokenAddress) {
+  dynamic c =
+      etherscan.tokenTx(address: address, contractAddress: tokenAddress);
 }
 
 class Gas {
