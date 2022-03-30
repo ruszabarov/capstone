@@ -3,6 +3,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wallet/screens/auth/password_page.dart';
 import 'package:wallet/screens/load_data.dart';
 import 'package:wallet/screens/shared/appBar.dart';
 import 'package:wallet/screens/shared/card.dart';
@@ -60,6 +61,16 @@ class _AuthPageState extends State<AuthPage> {
   Future<void> _cancelAuthentication() async {
     await auth.stopAuthentication();
     setState(() => _isAuthenticating = false);
+  }
+
+  Future<void> _usePassword() async {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return PasswordPage();
+        },
+      ),
+    );
   }
 
   @override
@@ -158,7 +169,37 @@ class _AuthPageState extends State<AuthPage> {
                               ),
                             ],
                           ),
-                        )
+                        ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      NeumorphicButton(
+                        style: NeumorphicStyle(
+                          color: Colors.grey[200],
+                          shadowLightColor: Colors.white.withOpacity(0.7),
+                          shape: NeumorphicShape.flat,
+                          boxShape: NeumorphicBoxShape.roundRect(
+                              BorderRadius.circular(15)),
+                          depth: 4,
+                        ),
+                        padding: EdgeInsets.all(20),
+                        onPressed: () {
+                          _usePassword();
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Use Password",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blueAccent,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),
