@@ -6,27 +6,71 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 
-
 final etherscan =
     EtherscanAPI(apiKey: apiKey, chain: EthChain.rinkeby, enableLogs: false);
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 // Client httpClient = new Client();
-  Uri url = Uri.parse("https://api.blocknative.com/gasprices/blockprices");
+Uri url = Uri.parse("https://api.blocknative.com/gasprices/blockprices");
 
-
-dynamic estimateGas() async {
-  var response = await http.get(url, headers: {HttpHeaders.authorizationHeader: gasKey});
+Future<List<Gas>> estimateGas() async {
+  var response =
+      await http.get(url, headers: {HttpHeaders.authorizationHeader: gasKey});
   dynamic json = jsonDecode(response.body);
-  List<int> estimates = [];
-  for(int i = 0; i < json["blockPrices"][0]["estimatedPrices"]);
-  // estimates.add(json["blockPrices"]["estimatedPrices"][0].confidence);
-  return json["blockPrices"][0]["estimatedPrices"][0]["confidence"];
+  List<Gas> estimates = [];
+  for (int i = 0; i < 3; i++) {
+    estimates.add(new Gas(
+        confidence: json["blockPrices"][0]["estimatedPrices"][i]["confidence"],
+        price: json["blockPrices"][0]["estimatedPrices"][i]["price"],
+        maxPriorityFeePerGas: json["blockPrices"][0]["estimatedPrices"][i]
+            ["maxPriorityFeePerGas"],
+        maxFeePerGas: json["blockPrices"][0]["estimatedPrices"][i]
+            ["maxFeePerGas"]));
+  }
+  return estimates;
 }
-
 
 void getReceipt(String txhash) async {
   // await next block and make a call for the receipt if status is 1 then transaction succeeded
 
   dynamic abc = etherscan.getStatus(txhash: txhash);
   // dynamic abcc = etherscan.tx;
+}
+
+class Gas {
+  int confidence;
+  int price;
+  double maxPriorityFeePerGas;
+  double maxFeePerGas;
+
+  Gas({
+    required this.confidence,
+    required this.price,
+    required this.maxPriorityFeePerGas,
+    required this.maxFeePerGas,
+  });
+
+  factory Gas.fromJson(Map<String, dynamic> jsonData) {
+    return Gas(
+      confidence: jsonData['confidence'],
+      price: jsonData['price'],
+      maxPriorityFeePerGas: jsonData['maxPriorityFeePerGas'],
+      maxFeePerGas: jsonData['maxFeePerGas'],
+    );
+  }
+
+  static Map<String, dynamic> toMap(Gas gas) => {
+        'confidence': gas.confidence,
+        'price': gas.price,
+        'maxPriorityFeePerGas': gas.maxPriorityFeePerGas,
+        'maxFeePerGas': gas.maxFeePerGas,
+      };
+
+  static String encode(List<Gas> gases) => json.encode(
+        gases.map<Map<String, dynamic>>((gas) => Gas.toMap(gas)).toList(),
+      );
+
+  static List<Gas> decode(String? gases) =>
+      (json.decode(gases!) as List<dynamic>)
+          .map<Gas>((item) => Gas.fromJson(item))
+          .toList();
 }
