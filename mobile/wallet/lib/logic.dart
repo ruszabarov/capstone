@@ -70,6 +70,8 @@ Future<Token> loadTokenContract(String tokenName) async {
   print(networkList[1].name);
   List<Gas> gaz = await estimateGas();
   print(gaz[0].price);
+  TransactionReceipt receipt = await getReceipt("0xa1eec124ff34d65dc38ec27ea6d5575e049ad5d787fb04c3c7abb54dc8d584a1");
+ // print(receipt);
 
   await configurationService.addEther(1);
   await configurationService.addToken(1, "ChainLink Token", "LINK",

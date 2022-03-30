@@ -31,20 +31,33 @@ Future<List<Gas>> estimateGas() async {
   return estimates;
 }
 
-void getReceipt(String txhash) async {
+Future<dynamic> getReceipt(String txHash) async {
   // await next block and make a call for the receipt if status is 1 then transaction succeeded
 
-  dynamic c = ethClient.getBlockInformation();
-  dynamic abc = etherscan.getStatus(txhash: txhash);
+  dynamic status = await etherscan.getStatus(txhash: txHash);
+  
+  // while(status.status != 0){
+  //   await Future.delayed(Duration(seconds: 10));
+  //   status = await etherscan.getStatus(txhash: txHash);
+  //   print(status);
+  // }
+  
+  dynamic receipt = await ethClient.getTransactionReceipt(txHash);
+  dynamic receiptt = jsonDecode(receipt);
+  print(receiptt["status"]);
+  // dynamic acc = ethClient.addedBlocks().listen((event) { abc = etherscan.getStatus(txhash: txHash);});
+  // return receipt;
 }
 
 void ethTxHistory(String address) {
-  dynamic c = etherscan.txList(address: address);
+  dynamic ethTx = etherscan.txList(address: address);
+  return ethTx;
 }
 
 void tokenTxHistory(String address, String tokenAddress) {
-  dynamic c =
+  dynamic tokenTx =
       etherscan.tokenTx(address: address, contractAddress: tokenAddress);
+  return tokenTx;
 }
 
 class Gas {
