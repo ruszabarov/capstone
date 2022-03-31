@@ -112,7 +112,7 @@ class ConfigurationService implements IConfigurationService {
 
     String encodedData = Account.encode([
       Account(
-          id: 1,
+          id: 0,
           name: name,
           privateKey: await walletAddressService
               .getPrivateKey(await getMnemonic() as String),
@@ -168,6 +168,19 @@ class ConfigurationService implements IConfigurationService {
     await storage.write(key: 'accountList', value: encodedData);
   }
 
+  @override
+  Future<void> removeAccount(int id) async {
+    List<Account> acc =
+        await Account.decode(await storage.read(key: 'accountList'));
+    acc.removeAt(id);
+    for(int i = 0; id <= i && i < acc.length; i++) {
+      acc[i].id -= 1;
+    }
+    String encodedData = Account.encode(acc);
+
+    await storage.write(key: 'accountList', value: encodedData);
+  }
+
   Future<void> clearPreferences() async {
     await _preferences.clear();
     await storage.deleteAll();
@@ -211,7 +224,7 @@ class ConfigurationService implements IConfigurationService {
 }
 
 class Account {
-  final int id;
+  int id;
   final String privateKey, publicKey, mnemonic, name;
 
   Account({
