@@ -23,6 +23,7 @@ abstract class IConfigurationService {
   Future<List<Token>> getTokens();
   Future<void> addEther(int id);
   Future<Account> getAccount(int id);
+  Future<String> getAccountPrivateKey(int id);
 }
 
 class ConfigurationService implements IConfigurationService {
@@ -96,6 +97,12 @@ class ConfigurationService implements IConfigurationService {
       }
     }
     return accounts.first;
+  }
+
+  @override
+  Future<String> getAccountPrivateKey(int id) async{
+    Account account = await getAccount(id);
+    return account.privateKey;
   }
 
   @override
