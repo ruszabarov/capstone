@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:wallet/logic.dart';
+import 'package:web3dart/web3dart.dart';
 
 import 'private.dart';
 import 'package:etherscan_api/etherscan_api.dart';
@@ -24,39 +25,37 @@ Future<List<Gas>> estimateGas() async {
         confidence: json["blockPrices"][0]["estimatedPrices"][i]["confidence"],
         price: json["blockPrices"][0]["estimatedPrices"][i]["price"],
         maxPriorityFeePerGas: json["blockPrices"][0]["estimatedPrices"][i]
-            ["maxPriorityFeePerGas"],
+                ["maxPriorityFeePerGas"]
+            .toDouble(),
         maxFeePerGas: json["blockPrices"][0]["estimatedPrices"][i]
             ["maxFeePerGas"]));
   }
   return estimates;
 }
 
-Future<dynamic> getReceipt(String txHash) async {
-  // await next block and make a call for the receipt if status is 1 then transaction succeeded
-
+Future<TransactionReceipt> getTransactionReceipt(String txHash) async {
   dynamic status = await etherscan.getStatus(txhash: txHash);
-  
-  // while(status.status != 0){
-  //   await Future.delayed(Duration(seconds: 10));
-  //   status = await etherscan.getStatus(txhash: txHash);
-  //   print(status);
-  // }
-  
-  dynamic receipt = await ethClient.getTransactionReceipt(txHash);
-  dynamic receiptt = jsonDecode(receipt);
-  print(receiptt["status"]);
+
+  while (status.status == 0) {
+    await Future.delayed(Duration(seconds: 10));
+    status = await etherscan.getStatus(txhash: txHash);
+    print(status.status);
+  }
+
+  TransactionReceipt? receipt = await ethClient.getTransactionReceipt(txHash);
+
   // dynamic acc = ethClient.addedBlocks().listen((event) { abc = etherscan.getStatus(txhash: txHash);});
-  // return receipt;
+  return receipt!;
 }
 
-void ethTxHistory(String address) {
-  dynamic ethTx = etherscan.txList(address: address);
+Future<dynamic> ethTxHistory(String address) async {
+  dynamic ethTx = await etherscan.txList(address: address);
   return ethTx;
 }
 
-void tokenTxHistory(String address, String tokenAddress) {
+Future<String> tokenTxHistory(String address, String tokenAddress) async {
   dynamic tokenTx =
-      etherscan.tokenTx(address: address, contractAddress: tokenAddress);
+      await etherscan.tokenTx(address: address, contractAddress: tokenAddress);
   return tokenTx;
 }
 
