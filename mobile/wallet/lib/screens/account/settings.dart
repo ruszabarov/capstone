@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/screens/account/general.dart';
+import 'package:wallet/screens/account/network.dart';
 import 'package:wallet/screens/auth/auth_page.dart';
 import 'package:wallet/screens/shared/neumorphic_card.dart';
 
@@ -142,6 +143,48 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
               () {},
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            NeumorphicCard(
+              Row(
+                children: [
+                  Icon(
+                    Icons.ads_click,
+                    color: Colors.pink,
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        "Network",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "Mainnet · Ropsten · Rinkeby",
+                        style: TextStyle(color: Colors.grey[800]),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => NetworkPage(),
+                  ),
+                );
+              },
             ),
             SizedBox(
               height: 20,

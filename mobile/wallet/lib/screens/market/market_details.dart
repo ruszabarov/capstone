@@ -277,7 +277,7 @@ class _MarketDetailsPageState extends State<MarketDetailsPage> {
                   ],
                 ),
               ),
-              Flexible(child: NewsPage()),
+              Flexible(child: NewsPage(widget.coinName)),
             ],
           ),
         ),

@@ -70,6 +70,7 @@ class _AdvancedGasState extends State<AdvancedGas> {
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +97,7 @@ class _AdvancedGasState extends State<AdvancedGas> {
               color: Colors.white,
             ),
             Text(
-              "Receiver's Address",
+              "Gas Limit",
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
             SizedBox(
@@ -128,6 +129,98 @@ class _AdvancedGasState extends State<AdvancedGas> {
                 ),
               ),
             ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              "Max Priority Fee (GWEI)",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade900.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                    color: isMaxPriorityFeeFocused
+                        ? Colors.blueAccent
+                        : Colors.blue.shade900.withOpacity(0.2),
+                    width: 2),
+              ),
+              child: TextField(
+                controller: _maxPriorityFeeController,
+                focusNode: maxPriorityFeeFocusNode,
+                cursorColor: Colors.blueAccent,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "Enter Amount",
+                  hintStyle: TextStyle(color: Colors.white, fontSize: 16),
+                  fillColor: Colors.blue,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              "Max Fee (GWEI)",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade900.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                    color: isMaxFeeFocused
+                        ? Colors.blueAccent
+                        : Colors.blue.shade900.withOpacity(0.2),
+                    width: 2),
+              ),
+              child: TextField(
+                controller: _maxFeeController,
+                focusNode: maxFeeFocusNode,
+                cursorColor: Colors.blueAccent,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "Enter Amount",
+                  hintStyle: TextStyle(color: Colors.white, fontSize: 16),
+                  fillColor: Colors.blue,
+                ),
+              ),
+            ),
+            Spacer(),
+            Container(
+              width: double.maxFinite,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blueAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  widget.handleCloseButton();
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                child: Text("SAVE"),
+              ),
+            )
           ],
         ),
       ),
