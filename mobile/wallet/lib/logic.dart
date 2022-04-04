@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:wallet/configuration_service.dart';
+import 'package:wallet/network_service.dart';
 import 'package:wallet/tokenBalanceAPI.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:flutter/services.dart';
@@ -11,8 +11,11 @@ import 'package:wallet/private.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'tokenBalanceAPI.dart';
 
+// TODO: Gas, receipts, functions adjusted for accounts.
+
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
+
 
 Client httpClient = new Client();
 Web3Client ethClient = new Web3Client(
@@ -29,45 +32,68 @@ Future<String> getEthBalance(EthereumAddress from) async {
 Future<DeployedContract> loadContract(String from) async {
   String abi =
       await rootBundle.loadString("assets/build/contracts/abi-erc20.json");
+  final Token token = await loadTokenContract(from);
   final EthereumAddress contractAddress =
-      await EthereumAddress.fromHex(await loadTokenContract(from));
+      await EthereumAddress.fromHex(token.address);
   final contract =
       DeployedContract(ContractAbi.fromJson(abi, from), contractAddress);
 
   return contract;
 }
 
-Future<String> loadTokenContract(String tokenName) async {
-  //getTokenList();
-
-  TokenManager tokenManager = new TokenManager();
-  ConfigurationService configurationService = new ConfigurationService(
-      await SharedPreferences.getInstance(),
-      await EncryptedSharedPreferences());
-
-  
-  await configurationService.clearPreferences();
-  await configurationService.firstAccount("1");
-  await configurationService.addAccount("1");
-  List<Account> newList = await configurationService.getAllAccounts();
-  print(newList[0].id);
-  await Future.delayed(Duration(seconds: 3));
-  print(newList[1].id);
-
-  final String abi = await rootBundle
-      .loadString("assets/build/contracts/token-list-rinkeby.json");
-  final json = await jsonDecode(
-    abi,
-  );
-  for (int i = 0; i < json.length; i++) {
-    if (json[i]["name"] == tokenName) {
-      return json[i]["address"] as String;
-    }
+Future<dynamic> getReceipt(String txHash) async {
+  var receipt = await ethClient.getTransactionReceipt(txHash);
+  if (receipt == null) {
+    return "Transaction is null";
   }
-  return "Null";
+
+  return receipt;
 }
 
-Future<String> getTokenBalance(String from, String tokenName) async {
+Future<Token> loadTokenContract(String tokenName) async {
+  ConfigurationService configurationService =
+      new ConfigurationService(await SharedPreferences.getInstance());
+
+  NetworkService networkService =
+      new NetworkService(await SharedPreferences.getInstance());
+
+  await configurationService.clearPreferences();
+
+  // await networkService.addMainnet();
+  await networkService.addNetwork(
+      "ropsten",
+      "https://eth-ropsten.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
+      3);
+  List<Network> networkList = await networkService.getNetworkList();
+  print(networkList[1].name);
+  List<Gas> gaz = await estimateGas();
+  print(gaz[0].price);
+  // TransactionReceipt receipt =
+  print(await getTransactionReceipt(
+      "0xa1eec124ff34d65dc38ec27ea6d5575e049ad5d787fb04c3c7abb54dc8d584a1"));
+  print(await ethTxHistory(myAddress));
+
+  await configurationService.addEther(1);
+  await configurationService.addToken(1, "ChainLink Token", "LINK",
+      "0x01BE23585060835E02B77ef475b0Cc51aA1e0709", 18);
+
+  final json = await configurationService.getTokens();
+  for (int i = 0; i < json.length; i++) {
+    if (json[i].name == tokenName) {
+      return json[i];
+    }
+  }
+  return json.first;
+}
+
+Future<String> getTokenBalance(int id, String tokenName) async {
+  ConfigurationService configurationService =
+      new ConfigurationService(await SharedPreferences.getInstance());
+
+  await configurationService.firstAccount("1");
+  await configurationService.importAccount(privateKey, "2");
+  Account from = await configurationService.getAccount(id);
+
   Client httpClient = new Client();
   Web3Client ethClient = new Web3Client(
       "https://eth-rinkeby.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
@@ -79,14 +105,16 @@ Future<String> getTokenBalance(String from, String tokenName) async {
       contract: contract,
       function: contract.function("balanceOf"),
       params: [
-        EthereumAddress.fromHex(from)
+        EthereumAddress.fromHex(from.publicKey)
       ]).then((value) =>
       EtherAmount.fromUnitAndValue(EtherUnit.wei, value[0]).getInWei);
-  return (balance.toDouble() / pow(10, decimals)).toStringAsFixed(3);
+  return (balance.toDouble() / pow(10, decimals)).toStringAsFixed(4);
 }
 
-void sendERC20(String targetAddress, String tokenName, int value) async {
-  var credentials = EthPrivateKey.fromHex(privateKey);
+void sendERC20(String targetAddress, String tokenName, int value, int id) async {
+  ConfigurationService configurationService =
+      new ConfigurationService(await SharedPreferences.getInstance());
+  var credentials = EthPrivateKey.fromHex(await configurationService.getAccountPrivateKey(id));
   final contract = await loadContract(tokenName);
   List<dynamic> args = [myAddress1, targetAddress, value];
 
@@ -119,8 +147,10 @@ void multisendETH(List<String> targetAddresses, List<int> values) async {
       chainId: 4);
 }
 
-void sendEth(String targetAddress, int value) async {
-  var credentials = EthPrivateKey.fromHex(privateKey);
+void sendEth(String targetAddress, int value, int id) async {
+  ConfigurationService configurationService =
+      new ConfigurationService(await SharedPreferences.getInstance());
+  var credentials = EthPrivateKey.fromHex(await configurationService.getAccountPrivateKey(id));
 
   var txHash = await ethClient.sendTransaction(
     credentials,

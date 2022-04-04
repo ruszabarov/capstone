@@ -38,6 +38,8 @@ class _AuthPageState extends State<AuthPage> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool("isLoggedIn", true);
 
+        
+
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) {

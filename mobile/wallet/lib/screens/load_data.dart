@@ -1,4 +1,3 @@
-import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/configuration_service.dart';
@@ -26,15 +25,15 @@ class _LoadDataPageState extends State<LoadDataPage> {
     // load Account data
     WalletAddress walletAddressService = WalletAddress();
     ConfigurationService configurationService = ConfigurationService(
-        await SharedPreferences.getInstance(),
-        await EncryptedSharedPreferences());
+        await SharedPreferences.getInstance());
+    
     //EthereumAddress test = await walletAddressService
     //    .getPublicKey(configurationService.getPrivateKey()!);
     //print(test.toString());
 
     for (int i = 0; i < initAccountData[0].tokens.tokenList.length; i++) {
       initAccountData[0].tokens.tokenList[i].balance = double.parse(
-          await getTokenBalance(initAccountData[0].address, "ChainLink Token"));
+          await getTokenBalance(2, "ChainLink Token"));
     }
 
     // load Market data

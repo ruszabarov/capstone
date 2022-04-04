@@ -8,7 +8,7 @@ import "package:hex/hex.dart";
 abstract class WalletAddressService {
   String generateMnemonic();
   Future<String> getPrivateKey(String mnemonic);
-  Future<EthereumAddress> getPublicKey(String privateKey);
+  Future<String> getPublicKey(String privateKey);
 }
 
 class WalletAddress implements WalletAddressService {
@@ -23,9 +23,10 @@ class WalletAddress implements WalletAddressService {
     return privateKey;
   }
 
-  Future<EthereumAddress> getPublicKey(String privateKey) async {
+  Future<String> getPublicKey(String privateKey) async {
     final private = EthPrivateKey.fromHex(privateKey);
     final address = await private.extractAddress();
-    return address;
+
+    return address.hex.toString();
   }
 }
