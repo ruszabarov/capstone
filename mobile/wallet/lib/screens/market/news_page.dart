@@ -16,10 +16,6 @@ class NewsPage extends StatefulWidget {
 
 class _NewsPageState extends State<NewsPage> {
   List<NewsArticle> newsList = [];
-  var options = InAppBrowserClassOptions(
-      crossPlatform: InAppBrowserOptions(hideUrlBar: false),
-      inAppWebViewGroupOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(javaScriptEnabled: true)));
 
   @override
   void initState() {
@@ -42,39 +38,7 @@ class _NewsPageState extends State<NewsPage> {
               );
             },
             itemBuilder: ((context, index) {
-              return NeumorphicButton(
-                style: NeumorphicStyle(
-                  color: Colors.grey[200],
-                  shape: NeumorphicShape.flat,
-                  boxShape:
-                      NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
-                  depth: 4,
-                ),
-                onPressed: () async {
-                  widget.browser.openUrlRequest(
-                      urlRequest:
-                          URLRequest(url: Uri.parse(newsList[index].url)),
-                      options: options);
-                },
-                padding: EdgeInsets.all(15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(newsList[index].source),
-                        Text(DateFormat('MMM d, yyyy')
-                            .format(newsList[index].date)),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(newsList[index].title),
-                  ],
-                ),
-              );
+              return NewsItem(newsList[index], widget.browser);
             }),
           );
   }
@@ -86,9 +50,9 @@ class _NewsPageState extends State<NewsPage> {
     for (int i = 0; i < result['results'].length; i++) {
       newsList.add(NewsArticle(
           result['results'][i]['title'],
-          DateTime.parse(result['results'][i]['pubDate']),
-          result['results'][i]['link'],
-          result['results'][i]['source_id']));
+          DateTime.parse(result['results'][i]['published_at']),
+          result['results'][i]['url'],
+          result['results'][i]['source']['title']));
     }
 
     setState(() {});
@@ -102,4 +66,57 @@ class NewsArticle {
   final String source;
 
   NewsArticle(this.title, this.date, this.url, this.source);
+}
+
+class NewsItem extends StatefulWidget {
+  final NewsArticle article;
+  final InAppBrowser browser;
+  const NewsItem(this.article, this.browser);
+
+  @override
+  State<NewsItem> createState() => _NewsItemState();
+}
+
+class _NewsItemState extends State<NewsItem> {
+  var options = InAppBrowserClassOptions(
+      crossPlatform: InAppBrowserOptions(hideUrlBar: false),
+      inAppWebViewGroupOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(javaScriptEnabled: true)));
+
+  @override
+  Widget build(BuildContext context) {
+    return NeumorphicButton(
+      style: NeumorphicStyle(
+        color: Colors.grey[200],
+        shape: NeumorphicShape.flat,
+        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
+        depth: 4,
+      ),
+      onPressed: () async {
+        widget.browser.openUrlRequest(
+            urlRequest: URLRequest(url: Uri.parse(widget.article.url)),
+            options: options);
+      },
+      padding: EdgeInsets.all(15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(widget.article.source),
+              Text(DateFormat('MMM d, yyyy').format(widget.article.date)),
+            ],
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Text(widget.article.title),
+          SizedBox(
+            height: 15,
+          ),
+        ],
+      ),
+    );
+  }
 }
