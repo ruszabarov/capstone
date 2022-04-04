@@ -359,7 +359,7 @@ class _SendCardState extends State<SendCard> {
                   FocusManager.instance.primaryFocus?.unfocus();
                   showOverLay(context);
                   sendEth(_addressTextController.text,
-                      int.parse(_amountTextController.text));
+                      int.parse(_amountTextController.text), 1);
                 },
                 child: Text("SEND"),
               ),
