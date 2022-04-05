@@ -2,16 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'Token.dart';
-
-class Account {
-  String name;
-  final String address;
-  final double balance;
-  final TokenList tokens;
-  final List<Color> colorPair = colorPairs[Random().nextInt(colorPairs.length)];
-
-  Account(this.name, this.address, this.balance, this.tokens) {}
-}
+import 'package:wallet/configuration_service.dart';
 
 class AccountList extends ChangeNotifier {
   List<Account> _accounts;
@@ -25,11 +16,11 @@ class AccountList extends ChangeNotifier {
 
   void editName(String name) {
     //TODO: change the right account name instead of the first one
-    _accounts[0].name = name;
+    // _accounts[0].name = name;
   }
 
   void updateTokenBalance(int index, double newBalance) {
-    _accounts[0].tokens.tokenList[index].balance = newBalance;
+    // _accounts[0].tokens.tokenList[index].balance = newBalance;
     notifyListeners();
   }
 

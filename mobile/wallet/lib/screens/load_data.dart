@@ -24,17 +24,10 @@ class _LoadDataPageState extends State<LoadDataPage> {
   void loadData() async {
     // load Account data
     WalletAddress walletAddressService = WalletAddress();
-    ConfigurationService configurationService = ConfigurationService(
-        await SharedPreferences.getInstance());
-    
-    //EthereumAddress test = await walletAddressService
-    //    .getPublicKey(configurationService.getPrivateKey()!);
-    //print(test.toString());
+    ConfigurationService configurationService =
+        ConfigurationService(await SharedPreferences.getInstance());
 
-    for (int i = 0; i < initAccountData[0].tokens.tokenList.length; i++) {
-      initAccountData[0].tokens.tokenList[i].balance = double.parse(
-          await getTokenBalance(2, "ChainLink Token"));
-    }
+    List<Account> initAccountData = await configurationService.getAllAccounts();
 
     // load Market data
     String request = "";

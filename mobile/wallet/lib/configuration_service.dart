@@ -100,7 +100,7 @@ class ConfigurationService implements IConfigurationService {
   }
 
   @override
-  Future<String> getAccountPrivateKey(int id) async{
+  Future<String> getAccountPrivateKey(int id) async {
     Account account = await getAccount(id);
     return account.privateKey;
   }
@@ -173,7 +173,7 @@ class ConfigurationService implements IConfigurationService {
     List<Account> acc =
         await Account.decode(await storage.read(key: 'accountList'));
     acc.removeAt(id);
-    for(int i = 0; id <= i && i < acc.length; i++) {
+    for (int i = 0; id <= i && i < acc.length; i++) {
       acc[i].id -= 1;
     }
     String encodedData = Account.encode(acc);

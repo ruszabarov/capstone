@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:wallet/configuration_service.dart';
 import 'package:wallet/providers/Account.dart';
 
 class AccountDetailsCard extends StatelessWidget {
@@ -75,7 +76,7 @@ class AccountDetailsCard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Text(
-                        account.address,
+                        account.publicKey,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -119,7 +120,7 @@ class AccountDetailsCard extends StatelessWidget {
                   color: Colors.white,
                 ),
                 child: QrImage(
-                  data: account.address,
+                  data: account.publicKey,
                   version: QrVersions.auto,
                   size: 200,
                   foregroundColor: Colors.black,

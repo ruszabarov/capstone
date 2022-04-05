@@ -16,7 +16,6 @@ import 'tokenBalanceAPI.dart';
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 EthereumAddress myAddress1 = EthereumAddress.fromHex(myAddress);
 
-
 Client httpClient = new Client();
 Web3Client ethClient = new Web3Client(
     "https://eth-rinkeby.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
@@ -56,8 +55,6 @@ Future<Token> loadTokenContract(String tokenName) async {
 
   NetworkService networkService =
       new NetworkService(await SharedPreferences.getInstance());
-
-  await configurationService.clearPreferences();
 
   // await networkService.addMainnet();
   await networkService.addNetwork(
@@ -111,10 +108,12 @@ Future<String> getTokenBalance(int id, String tokenName) async {
   return (balance.toDouble() / pow(10, decimals)).toStringAsFixed(4);
 }
 
-void sendERC20(String targetAddress, String tokenName, int value, int id) async {
+void sendERC20(
+    String targetAddress, String tokenName, int value, int id) async {
   ConfigurationService configurationService =
       new ConfigurationService(await SharedPreferences.getInstance());
-  var credentials = EthPrivateKey.fromHex(await configurationService.getAccountPrivateKey(id));
+  var credentials = EthPrivateKey.fromHex(
+      await configurationService.getAccountPrivateKey(id));
   final contract = await loadContract(tokenName);
   List<dynamic> args = [myAddress1, targetAddress, value];
 
@@ -150,7 +149,8 @@ void multisendETH(List<String> targetAddresses, List<int> values) async {
 void sendEth(String targetAddress, int value, int id) async {
   ConfigurationService configurationService =
       new ConfigurationService(await SharedPreferences.getInstance());
-  var credentials = EthPrivateKey.fromHex(await configurationService.getAccountPrivateKey(id));
+  var credentials = EthPrivateKey.fromHex(
+      await configurationService.getAccountPrivateKey(id));
 
   var txHash = await ethClient.sendTransaction(
     credentials,

@@ -38,19 +38,3 @@ var accountTwoWallets = [
   polygon,
   chainlink,
 ];
-
-Account testAccount = Account(
-  "asd",
-  "0x127Ff1D9560F7992911389BA181f695b38EE9399",
-  2250.12,
-  TokenList(cryptoWallets),
-);
-
-Account accountTwo = Account(
-  "testAccount",
-  "0x14l1k4jlkvjasf987asdahddk2e2987yakjfasfa",
-  1050.1,
-  TokenList(accountTwoWallets),
-);
-
-List<Account> initAccountData = [testAccount, accountTwo];

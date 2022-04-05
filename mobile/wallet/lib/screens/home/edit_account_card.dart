@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet/configuration_service.dart';
 import 'package:wallet/providers/Account.dart';
 
 class EditAccountCard extends StatefulWidget {

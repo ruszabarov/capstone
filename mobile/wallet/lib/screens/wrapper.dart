@@ -9,6 +9,7 @@ import 'package:wallet/screens/market/market.dart';
 import 'package:wallet/screens/shared/appBar.dart';
 import 'package:wallet/wallet_icons.dart';
 import 'package:wallet/screens/home/home.dart';
+import 'package:wallet/configuration_service.dart';
 
 class Wrapper extends StatefulWidget {
   final List<Account> initAccountData;

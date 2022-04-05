@@ -104,9 +104,12 @@ class _HomeState extends State<Home> {
                                     },
                                     child: AccountCard(
                                       value.accounts[i].name,
-                                      value.accounts[i].address,
-                                      value.accounts[i].balance,
-                                      value.accounts[i].colorPair,
+                                      value.accounts[i].publicKey,
+                                      1000,
+                                      [
+                                        Colors.pink.shade200,
+                                        Colors.pink.shade400
+                                      ],
                                     ),
                                   )
                                 : AddAccountCard(),
@@ -117,51 +120,51 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-              Flexible(
-                child: Consumer<AccountList>(
-                  builder: (context, value, child) => accountSelectedIndex !=
-                          value.accounts.length
-                      ? Column(
-                          children: [
-                            GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 25,
-                                      mainAxisSpacing: 25),
-                              padding: EdgeInsets.all(25),
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: value.accounts[accountSelectedIndex]
-                                  .tokens.tokenList.length,
-                              itemBuilder: (BuildContext ctxt, int index) {
-                                return WalletCard(value
-                                    .accounts[accountSelectedIndex]
-                                    .tokens
-                                    .tokenList[index]);
-                              },
-                            ),
-                            Center(
-                              child: TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => AddTokenPage(),
-                                    ),
-                                  );
-                                },
-                                child: Text("Add Token"),
-                              ),
-                            ),
-                          ],
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: AddAccountPage(),
-                        ),
-                ),
-              ),
+              // Flexible(
+              //   child: Consumer<AccountList>(
+              //     builder: (context, value, child) => accountSelectedIndex !=
+              //             value.accounts.length
+              //         ? Column(
+              //             children: [
+              //               GridView.builder(
+              //                 gridDelegate:
+              //                     SliverGridDelegateWithFixedCrossAxisCount(
+              //                         crossAxisCount: 2,
+              //                         crossAxisSpacing: 25,
+              //                         mainAxisSpacing: 25),
+              //                 padding: EdgeInsets.all(25),
+              //                 physics: NeverScrollableScrollPhysics(),
+              //                 shrinkWrap: true,
+              //                 scrollDirection: Axis.vertical,
+              //                 itemCount: value.accounts[accountSelectedIndex]
+              //                     .tokens.tokenList.length,
+              //                 itemBuilder: (BuildContext ctxt, int index) {
+              //                   return WalletCard(value
+              //                       .accounts[accountSelectedIndex]
+              //                       .tokens
+              //                       .tokenList[index]);
+              //                 },
+              //               ),
+              //               Center(
+              //                 child: TextButton(
+              //                   onPressed: () {
+              //                     Navigator.of(context).push(
+              //                       MaterialPageRoute(
+              //                         builder: (context) => AddTokenPage(),
+              //                       ),
+              //                     );
+              //                   },
+              //                   child: Text("Add Token"),
+              //                 ),
+              //               ),
+              //             ],
+              //           )
+              //         : Padding(
+              //             padding: const EdgeInsets.symmetric(horizontal: 20),
+              //             child: AddAccountPage(),
+              //           ),
+              //   ),
+              // ),
             ],
           ),
         ),
