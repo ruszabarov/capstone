@@ -24,6 +24,7 @@ abstract class IConfigurationService {
   Future<void> addEther(int id);
   Future<Account> getAccount(int id);
   Future<String> getAccountPrivateKey(int id);
+  Future<void> removeAccount(int id);
 }
 
 class ConfigurationService implements IConfigurationService {
@@ -193,7 +194,7 @@ class ConfigurationService implements IConfigurationService {
         id: id,
         name: "Ether",
         symbol: "ETH",
-        address: "0x0000000000000",
+        address: "0x0000000000000000000000000000000000000000",
         decimals: 18));
 
     String encodedData = Token.encode(tokenList);
