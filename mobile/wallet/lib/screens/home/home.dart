@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/providers/Navbar.dart';
+import 'package:wallet/configuration_service.dart';
 import 'package:wallet/screens/home/account_card.dart';
 import 'package:wallet/screens/home/add_account_card.dart';
 import 'package:wallet/screens/home/add_account_page.dart';
@@ -54,9 +56,18 @@ class _HomeState extends State<Home> {
     }
   }
 
+  List<Token> tokenList = [];
+
   @override
   void initState() {
     super.initState();
+    loadTokens();
+  }
+
+  void loadTokens() async {
+    ConfigurationService configurationService =
+        ConfigurationService(await SharedPreferences.getInstance());
+    tokenList = await configurationService.getTokens();
   }
 
   @override
@@ -120,51 +131,47 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-              // Flexible(
-              //   child: Consumer<AccountList>(
-              //     builder: (context, value, child) => accountSelectedIndex !=
-              //             value.accounts.length
-              //         ? Column(
-              //             children: [
-              //               GridView.builder(
-              //                 gridDelegate:
-              //                     SliverGridDelegateWithFixedCrossAxisCount(
-              //                         crossAxisCount: 2,
-              //                         crossAxisSpacing: 25,
-              //                         mainAxisSpacing: 25),
-              //                 padding: EdgeInsets.all(25),
-              //                 physics: NeverScrollableScrollPhysics(),
-              //                 shrinkWrap: true,
-              //                 scrollDirection: Axis.vertical,
-              //                 itemCount: value.accounts[accountSelectedIndex]
-              //                     .tokens.tokenList.length,
-              //                 itemBuilder: (BuildContext ctxt, int index) {
-              //                   return WalletCard(value
-              //                       .accounts[accountSelectedIndex]
-              //                       .tokens
-              //                       .tokenList[index]);
-              //                 },
-              //               ),
-              //               Center(
-              //                 child: TextButton(
-              //                   onPressed: () {
-              //                     Navigator.of(context).push(
-              //                       MaterialPageRoute(
-              //                         builder: (context) => AddTokenPage(),
-              //                       ),
-              //                     );
-              //                   },
-              //                   child: Text("Add Token"),
-              //                 ),
-              //               ),
-              //             ],
-              //           )
-              //         : Padding(
-              //             padding: const EdgeInsets.symmetric(horizontal: 20),
-              //             child: AddAccountPage(),
-              //           ),
-              //   ),
-              // ),
+              Flexible(
+                child: Consumer<AccountList>(
+                  builder: (context, value, child) => accountSelectedIndex !=
+                          value.accounts.length
+                      ? Column(
+                          children: [
+                            GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 25,
+                                      mainAxisSpacing: 25),
+                              padding: EdgeInsets.all(25),
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: tokenList.length,
+                              itemBuilder: (BuildContext ctxt, int index) {
+                                return WalletCard(tokenList[index]);
+                              },
+                            ),
+                            Center(
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => AddTokenPage(),
+                                    ),
+                                  );
+                                },
+                                child: Text("Add Token"),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: AddAccountPage(),
+                        ),
+                ),
+              ),
             ],
           ),
         ),

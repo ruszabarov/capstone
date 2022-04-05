@@ -7,6 +7,7 @@ import 'package:wallet/screens/home/send.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/home/transaction_list.dart';
 import 'package:wallet/screens/shared/shared.dart';
+import 'package:wallet/configuration_service.dart';
 
 class WalletDetailsPage extends StatefulWidget {
   final Token cryptoWallet;
@@ -129,13 +130,13 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                                 child: SizedBox(
                                   width: 50,
                                   height: 50,
-                                  child:
-                                      Image.asset(widget.cryptoWallet.iconURL),
+                                  child: Image.asset(
+                                      "assets/images/coin_logos/ethereum.webp"),
                                 ),
                               ),
                               SizedBox(width: 10),
                               Text(
-                                "${widget.cryptoWallet.balance} ${widget.cryptoWallet.shortName}",
+                                "1000 ${widget.cryptoWallet.symbol}",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 30,

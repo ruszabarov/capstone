@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:wallet/providers/Token.dart';
+import 'package:wallet/configuration_service.dart';
 
 class ReceiveCard extends StatelessWidget {
   final Token cryptoWallet;
@@ -33,7 +33,7 @@ class ReceiveCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Deposit ${cryptoWallet.shortName}",
+                  "Deposit ${cryptoWallet.symbol}",
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
                 IconButton(
@@ -74,7 +74,7 @@ class ReceiveCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
                     child: Text(
-                      cryptoWallet.adress,
+                      cryptoWallet.address,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -117,7 +117,7 @@ class ReceiveCard extends StatelessWidget {
                   color: Colors.white,
                 ),
                 child: QrImage(
-                  data: cryptoWallet.adress,
+                  data: cryptoWallet.address,
                   version: QrVersions.auto,
                   size: 200,
                   foregroundColor: Colors.black,

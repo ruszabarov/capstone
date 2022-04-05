@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wallet/configuration_service.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:provider/provider.dart';
@@ -152,8 +154,15 @@ class _AddTokenPageState extends State<AddTokenPage> {
                     child: NeumorphicCard(
                         Center(
                           child: Text("ADD TOKEN"),
-                        ),
-                        () {}),
+                        ), () async {
+                      ConfigurationService configurationService =
+                          ConfigurationService(
+                              await SharedPreferences.getInstance());
+
+                      await configurationService
+                          .getTokens()
+                          .then((value) => {print(value[1])});
+                    }),
                   ),
                 ],
               ),

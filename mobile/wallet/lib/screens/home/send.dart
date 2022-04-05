@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:wallet/logic.dart';
 import 'package:wallet/providers/Token.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:wallet/configuration_service.dart';
 
 class SendCard extends StatefulWidget {
   final Token cryptoWallet;
@@ -92,7 +93,7 @@ class _SendCardState extends State<SendCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Send ${widget.cryptoWallet.shortName}",
+                      "Send ${widget.cryptoWallet.symbol}",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     IconButton(

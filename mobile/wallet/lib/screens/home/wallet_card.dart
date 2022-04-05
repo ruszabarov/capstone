@@ -7,6 +7,7 @@ import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/home/wallet_details.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:web3dart/web3dart.dart';
+import 'package:wallet/configuration_service.dart';
 
 class WalletCard extends StatefulWidget {
   final Token cryptoWallet;
@@ -40,120 +41,58 @@ class _WalletCardState extends State<WalletCard> {
         depth: 8,
       ),
       padding: const EdgeInsets.all(3),
-      child: Consumer<MarketList>(
-        builder: (context, value, child) => card(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: ClipOval(
-                  child: SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: Image.asset(widget.cryptoWallet.iconURL),
-                  ),
+      child: card(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: ClipOval(
+                child: SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Image.asset("assets/images/coin_logos/ethereum.webp"),
                 ),
               ),
-              Spacer(),
-              Text(
-                "${widget.cryptoWallet.balance} ${widget.cryptoWallet.shortName}",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black45,
-                ),
+            ),
+            Spacer(),
+            Text(
+              "1000 ${widget.cryptoWallet.symbol}",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black45,
               ),
-              SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "\$${(widget.cryptoWallet.balance * value.markets[widget.cryptoWallet.name]!.currentPrice).toStringAsFixed(0)}",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    "${(value.markets[widget.cryptoWallet.name]!.priceChangePercent).toStringAsFixed(1)}%",
-                    style: TextStyle(
-                      color: value.markets[widget.cryptoWallet.name]!
-                                  .priceChangePercent >
-                              0
-                          ? Colors.green
-                          : Colors.red,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => WalletDetailsPage(widget.cryptoWallet)),
-        );
-      },
-      borderRadius: BorderRadius.circular(15),
-      child: Consumer<MarketList>(
-        builder: (context, value, child) => card(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: ClipOval(
-                  child: SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: Image.asset(widget.cryptoWallet.iconURL),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  // "\$${(1 * value.markets[widget.cryptoWallet.name]!.currentPrice).toStringAsFixed(0)}",
+                  "\$2000",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-              Spacer(),
-              Text(
-                "${widget.cryptoWallet.balance} ${widget.cryptoWallet.shortName}",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black45,
+                Text(
+                  // "${(value.markets[widget.cryptoWallet.name]!.priceChangePercent).toStringAsFixed(1)}%",
+                  "10%",
+                  style: TextStyle(
+                    color: Colors.green,
+                    // color: value.markets[widget.cryptoWallet.name]!
+                    //             .priceChangePercent >
+                    //         0
+                    //     ? Colors.green
+                    //     : Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "\$${(widget.cryptoWallet.balance * value.markets[widget.cryptoWallet.name]!.currentPrice).toStringAsFixed(0)}",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    "${(value.markets[widget.cryptoWallet.name]!.priceChangePercent).toStringAsFixed(1)}%",
-                    style: TextStyle(
-                      color: value.markets[widget.cryptoWallet.name]!
-                                  .priceChangePercent >
-                              0
-                          ? Colors.green
-                          : Colors.red,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         ),
       ),
     );

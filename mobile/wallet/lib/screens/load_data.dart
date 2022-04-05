@@ -18,7 +18,6 @@ class LoadDataPage extends StatefulWidget {
 }
 
 class _LoadDataPageState extends State<LoadDataPage> {
-  //! initAccountData is in Token.dart with dummy data
   //! initMarketData is in Market.dart with dummy data
 
   void loadData() async {
@@ -28,6 +27,8 @@ class _LoadDataPageState extends State<LoadDataPage> {
         ConfigurationService(await SharedPreferences.getInstance());
 
     List<Account> initAccountData = await configurationService.getAllAccounts();
+
+    await configurationService.addEther(0);
 
     // load Market data
     String request = "";
