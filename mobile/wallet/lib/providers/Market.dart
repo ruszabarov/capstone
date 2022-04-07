@@ -18,7 +18,7 @@ class MarketList extends ChangeNotifier {
 }
 
 Map<String, Market> initMarketData = {
-  "ethereum": Market("ethereum", 'assets/images/coin_logos/ethereum.webp'),
+  "Ether": Market("ethereum", 'assets/images/coin_logos/ethereum.webp'),
   "tether": Market("tether", 'assets/images/coin_logos/tether.webp'),
   "usd-coin": Market("usd-coin", 'assets/images/coin_logos/usd-coin.webp'),
   "binancecoin":

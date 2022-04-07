@@ -32,13 +32,13 @@ class _LoadDataPageState extends State<LoadDataPage> {
 
     // load Market data
     String request = "";
-    initMarketData.keys.forEach((key) {
-      request += "$key,";
+    initMarketData.forEach((key, value) {
+      request += "${value.name},";
     });
 
     Map<String, dynamic> response = await getSimpleTokenData(request);
 
-    initMarketData.values.forEach((value) {
+    initMarketData.forEach((key, value) {
       value.currentPrice = response[value.name]['usd'];
       value.priceChangePercent = response[value.name]['usd_24h_change'];
     });

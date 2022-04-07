@@ -18,9 +18,16 @@ class WalletCard extends StatefulWidget {
 }
 
 class _WalletCardState extends State<WalletCard> {
+  double balance = 0;
+
   @override
   void initState() {
     super.initState();
+    getBalance();
+  }
+
+  void getBalance() async {
+    await getEthBalance(widget.cryptoWallet.address);
   }
 
   @override
@@ -57,7 +64,7 @@ class _WalletCardState extends State<WalletCard> {
             ),
             Spacer(),
             Text(
-              "1000 ${widget.cryptoWallet.symbol}",
+              "${balance} ${widget.cryptoWallet.symbol}",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black45,
@@ -66,31 +73,32 @@ class _WalletCardState extends State<WalletCard> {
             SizedBox(
               height: 5,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  // "\$${(1 * value.markets[widget.cryptoWallet.name]!.currentPrice).toStringAsFixed(0)}",
-                  "\$2000",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
+            Consumer<MarketList>(
+              builder: (context, value, child) => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "\$${(value.markets[widget.cryptoWallet.name]!.currentPrice).toStringAsFixed(0)}",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Text(
-                  // "${(value.markets[widget.cryptoWallet.name]!.priceChangePercent).toStringAsFixed(1)}%",
-                  "10%",
-                  style: TextStyle(
-                    color: Colors.green,
-                    // color: value.markets[widget.cryptoWallet.name]!
-                    //             .priceChangePercent >
-                    //         0
-                    //     ? Colors.green
-                    //     : Colors.red,
-                    fontWeight: FontWeight.bold,
+                  Text(
+                    // "${(value.markets[widget.cryptoWallet.name]!.priceChangePercent).toStringAsFixed(1)}%",
+                    "asda",
+                    style: TextStyle(
+                      color: Colors.green,
+                      // color: value.markets[widget.cryptoWallet.name]!
+                      //             .priceChangePercent >
+                      //         0
+                      //     ? Colors.green
+                      //     : Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
