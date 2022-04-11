@@ -2,7 +2,9 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wallet/configuration_service.dart';
 import 'package:wallet/screens/auth/password_page.dart';
 import 'package:wallet/screens/load_data.dart';
 import 'package:wallet/screens/shared/appBar.dart';
@@ -38,12 +40,19 @@ class _AuthPageState extends State<AuthPage> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool("isLoggedIn", true);
 
-        
+        SharedPreferences spInstance = await SharedPreferences.getInstance();
 
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) {
-              return LoadDataPage();
+              return MultiProvider(
+                providers: [
+                  Provider<ConfigurationService>(
+                    create: (_) => ConfigurationService(spInstance),
+                  ),
+                ],
+                child: LoadDataPage(),
+              );
             },
           ),
         );

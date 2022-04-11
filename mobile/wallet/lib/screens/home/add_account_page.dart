@@ -141,8 +141,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
                     () async {
                       if (!addAccount) {
                         ConfigurationService configurationService =
-                            ConfigurationService(
-                                await SharedPreferences.getInstance());
+                            context.read<ConfigurationService>();
 
                         await configurationService
                             .addAccount(nameController.text);

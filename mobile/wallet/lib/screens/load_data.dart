@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/configuration_service.dart';
-import 'package:wallet/logic.dart';
-import 'package:wallet/providers/Account.dart';
-import 'package:wallet/providers/Token.dart';
 import 'package:wallet/providers/Market.dart';
 import 'package:wallet/screens/market/api.dart';
 import 'package:wallet/screens/wrapper.dart';
 import 'package:wallet/wallet_setup.dart';
-import 'package:web3dart/credentials.dart';
+import 'package:provider/provider.dart';
 
 class LoadDataPage extends StatefulWidget {
   LoadDataPage({Key? key}) : super(key: key);
@@ -18,13 +14,11 @@ class LoadDataPage extends StatefulWidget {
 }
 
 class _LoadDataPageState extends State<LoadDataPage> {
-  //! initMarketData is in Market.dart with dummy data
-
   void loadData() async {
     // load Account data
     WalletAddress walletAddressService = WalletAddress();
     ConfigurationService configurationService =
-        ConfigurationService(await SharedPreferences.getInstance());
+        context.read<ConfigurationService>();
 
     List<Account> initAccountData = await configurationService.getAllAccounts();
 
