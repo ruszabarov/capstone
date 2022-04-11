@@ -17,6 +17,15 @@ class AddAccountPage extends StatefulWidget {
 
 class _AddAccountPageState extends State<AddAccountPage> {
   bool addAccount = false;
+  late TextEditingController nameController;
+  late TextEditingController keyController;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController();
+    keyController = TextEditingController();
+  }
 
   void handleButton(String value) {
     if (value != '') {
@@ -48,6 +57,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TextField(
+              controller: nameController,
               style: TextStyle(
                 decoration: TextDecoration.none,
               ),
@@ -61,7 +71,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
         SizedBox(
           height: 30,
         ),
-        Text("Mnemonic / private key (optional)"),
+        Text("Private key (optional)"),
         SizedBox(
           height: 10,
         ),
@@ -75,6 +85,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TextField(
               onChanged: handleButton,
+              controller: keyController,
               style: TextStyle(
                 decoration: TextDecoration.none,
               ),
@@ -127,12 +138,15 @@ class _AddAccountPageState extends State<AddAccountPage> {
                               ),
                             ),
                     ),
-                    () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => MnemonicPage(),
-                        ),
-                      );
+                    () async {
+                      if (!addAccount) {
+                        ConfigurationService configurationService =
+                            ConfigurationService(
+                                await SharedPreferences.getInstance());
+
+                        await configurationService
+                            .addAccount(nameController.text);
+                      }
                     },
                   );
                 },

@@ -146,8 +146,8 @@ class ConfigurationService implements IConfigurationService {
   @override
   Future<void> addAccount(String name) async {
     WalletAddress walletAddressService = new WalletAddress();
-    setPrivateKey(
-        await walletAddressService.getPrivateKey(getMnemonic() as String));
+    setPrivateKey(await walletAddressService
+        .getPrivateKey(await getMnemonic() as String));
 
     if (await storage.read(key: 'accountList') == null) {
       firstAccount(name);

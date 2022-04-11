@@ -208,16 +208,13 @@ class _AddTokenPageState extends State<AddTokenPage> {
                             ConfigurationService(
                                 await SharedPreferences.getInstance());
 
-                        await configurationService.getTokens().then((value) {
-                          print(value[1].name);
-                        });
-                        // configurationService.addToken(
-                        //   widget.accountId,
-                        //   nameController.text,
-                        //   symbolController.text,
-                        //   addressController.text,
-                        //   int.parse(decimalsController.text),
-                        // );
+                        configurationService.addToken(
+                          widget.accountId,
+                          nameController.text,
+                          symbolController.text,
+                          addressController.text,
+                          int.parse(decimalsController.text),
+                        );
                       }),
                     ),
                   ],
