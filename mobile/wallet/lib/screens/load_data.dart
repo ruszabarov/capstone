@@ -28,7 +28,7 @@ class _LoadDataPageState extends State<LoadDataPage> {
 
     List<Account> initAccountData = await configurationService.getAllAccounts();
 
-    await configurationService.addEther(0);
+    // await configurationService.addEther(0);
 
     // load Market data
     String request = "";

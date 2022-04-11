@@ -112,9 +112,6 @@ class _NewsItemState extends State<NewsItem> {
             height: 15,
           ),
           Text(widget.article.title),
-          SizedBox(
-            height: 15,
-          ),
         ],
       ),
     );

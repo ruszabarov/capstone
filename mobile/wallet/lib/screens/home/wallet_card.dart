@@ -78,22 +78,26 @@ class _WalletCardState extends State<WalletCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "\$${(value.markets[widget.cryptoWallet.name]!.currentPrice).toStringAsFixed(0)}",
+                    value.markets[widget.cryptoWallet.name] != null
+                        ? "\$${(value.markets[widget.cryptoWallet.name]!.currentPrice).toStringAsFixed(0)}"
+                        : "unkown",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    // "${(value.markets[widget.cryptoWallet.name]!.priceChangePercent).toStringAsFixed(1)}%",
-                    "asda",
+                    value.markets[widget.cryptoWallet.name] != null
+                        ? "${(value.markets[widget.cryptoWallet.name]!.priceChangePercent).toStringAsFixed(1)}%"
+                        : "",
                     style: TextStyle(
-                      color: Colors.green,
-                      // color: value.markets[widget.cryptoWallet.name]!
-                      //             .priceChangePercent >
-                      //         0
-                      //     ? Colors.green
-                      //     : Colors.red,
+                      color: value.markets[widget.cryptoWallet.name] != null
+                          ? value.markets[widget.cryptoWallet.name]!
+                                      .priceChangePercent >
+                                  0
+                              ? Colors.green
+                              : Colors.red
+                          : Colors.yellow,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

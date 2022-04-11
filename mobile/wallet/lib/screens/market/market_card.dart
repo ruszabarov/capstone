@@ -24,26 +24,27 @@ class _MarketCardState extends State<MarketCard> {
 
   @override
   Widget build(BuildContext context) {
-    return NeumorphicButton(
-      onPressed: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MarketDetailsPage(widget.name),
-          ),
-        );
-      },
-      duration: Duration(milliseconds: 100),
-      style: NeumorphicStyle(
-        color: Colors.grey[200],
-        shape: NeumorphicShape.flat,
-        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
-        depth: 4,
-      ),
-      padding: const EdgeInsets.all(20),
-      child: Consumer<MarketList>(
-        builder: (context, value, child) => Column(
+    return Consumer<MarketList>(
+      builder: (context, value, child) => NeumorphicButton(
+        onPressed: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  MarketDetailsPage(value.markets[widget.name]!.name),
+            ),
+          );
+        },
+        duration: Duration(milliseconds: 100),
+        style: NeumorphicStyle(
+          color: Colors.grey[200],
+          shape: NeumorphicShape.flat,
+          boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
+          depth: 4,
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
