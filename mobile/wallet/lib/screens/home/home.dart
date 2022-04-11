@@ -66,7 +66,7 @@ class _HomeState extends State<Home> {
 
   void loadTokens() async {
     ConfigurationService configurationService =
-        ConfigurationService(await SharedPreferences.getInstance());
+        context.read<ConfigurationService>();
     tokenList = await configurationService.getTokens();
   }
 
