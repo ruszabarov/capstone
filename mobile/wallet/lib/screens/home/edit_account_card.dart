@@ -5,9 +5,10 @@ import 'package:wallet/providers/Account.dart';
 
 class EditAccountCard extends StatefulWidget {
   final Account account;
+  final int accountId;
   final Function handleCloseButton;
 
-  const EditAccountCard(this.account, this.handleCloseButton);
+  const EditAccountCard(this.account, this.handleCloseButton, this.accountId);
 
   @override
   State<EditAccountCard> createState() => _EditAccountCardState();
@@ -127,12 +128,36 @@ class _EditAccountCardState extends State<EditAccountCard> {
                 ),
                 onPressed: () {
                   FocusManager.instance.primaryFocus?.unfocus();
-                  AccountList accountList = context.read<AccountList>();
-                  accountList.editName(nameTextController.text);
-                  widget.handleCloseButton();
+                  // AccountList accountList = context.read<AccountList>();
+                  // accountList.editName(nameTextController.text);
                   nameTextController.text = "";
+                  widget.handleCloseButton();
                 },
                 child: Text("SAVE"),
+              ),
+            ),
+            Spacer(),
+            Container(
+              width: double.maxFinite,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  context
+                      .read<ConfigurationService>()
+                      .removeAccount(widget.accountId);
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  nameTextController.text = "";
+                  widget.handleCloseButton();
+                },
+                child: Text("DELETE ACCOUNT"),
               ),
             )
           ],

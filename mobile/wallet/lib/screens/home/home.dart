@@ -204,7 +204,7 @@ class _HomeState extends State<Home> {
             builder: (context, value, child) {
               if (accountSelectedIndex != value.accounts.length) {
                 return EditAccountCard(value.accounts[accountSelectedIndex],
-                    handleEditAccountButton);
+                    handleEditAccountButton, accountSelectedIndex);
               }
               return Container();
             },

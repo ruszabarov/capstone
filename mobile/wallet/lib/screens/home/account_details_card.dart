@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:wallet/configuration_service.dart';
 import 'package:wallet/providers/Account.dart';
@@ -92,15 +93,15 @@ class AccountDetailsCard extends StatelessWidget {
                       ),
                       child: IconButton(
                         onPressed: () {
-                          // Clipboard.setData(
-                          //   ClipboardData(text: cryptoWallet.adress),
-                          // ).then((_) => {
-                          //       ScaffoldMessenger.of(context).showSnackBar(
-                          //         SnackBar(
-                          //           content: Text('Address copied'),
-                          //         ),
-                          //       )
-                          //     });
+                          Clipboard.setData(
+                            ClipboardData(text: account.publicKey),
+                          ).then((_) => {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Address copied'),
+                                  ),
+                                )
+                              });
                         },
                         icon: Icon(Icons.copy),
                         color: Colors.white,
