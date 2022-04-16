@@ -49,7 +49,9 @@ class _LoadDataPageState extends State<LoadDataPage> {
                 value: configurationService,
               ),
             ],
-            child: Wrapper(initAccountData, initMarketData),
+            builder: (context, _) {
+              return Wrapper(initAccountData, initMarketData);
+            },
           );
         },
       ),

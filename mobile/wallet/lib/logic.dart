@@ -58,18 +58,18 @@ Future<Token> loadTokenContract(String tokenName) async {
       new NetworkService(await SharedPreferences.getInstance());
 
   // await networkService.addMainnet();
-  await networkService.addNetwork(
-      "ropsten",
-      "https://eth-ropsten.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
-      3);
-  List<Network> networkList = await networkService.getNetworkList();
-  print(networkList[1].name);
-  List<Gas> gaz = await estimateGas();
-  print(gaz[0].price);
-  // TransactionReceipt receipt =
-  print(await getTransactionReceipt(
-      "0xa1eec124ff34d65dc38ec27ea6d5575e049ad5d787fb04c3c7abb54dc8d584a1"));
-  print(await ethTxHistory(myAddress));
+  // await networkService.addNetwork(
+  //     "ropsten",
+  //     "https://eth-ropsten.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
+  //     3);
+  // List<Network> networkList = await networkService.getNetworkList();
+  // print(networkList[1].name);
+  // List<Gas> gaz = await estimateGas();
+  // print(gaz[0].price);
+  // // TransactionReceipt receipt =
+  // print(await getTransactionReceipt(
+  //     "0xa1eec124ff34d65dc38ec27ea6d5575e049ad5d787fb04c3c7abb54dc8d584a1"));
+  // print(await ethTxHistory(myAddress));
 
   final json = await configurationService.getTokens();
   for (int i = 0; i < json.length; i++) {

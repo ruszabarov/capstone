@@ -149,7 +149,10 @@ class _HomeState extends State<Home> {
                               scrollDirection: Axis.vertical,
                               itemCount: tokenList.length,
                               itemBuilder: (BuildContext ctxt, int index) {
-                                return WalletCard(tokenList[index]);
+                                return WalletCard(
+                                    tokenList[index],
+                                    accountSelectedIndex,
+                                    value.accounts[accountSelectedIndex]);
                               },
                             ),
                             Center(

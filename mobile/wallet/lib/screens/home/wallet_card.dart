@@ -10,8 +10,10 @@ import 'package:web3dart/web3dart.dart';
 import 'package:wallet/configuration_service.dart';
 
 class WalletCard extends StatefulWidget {
-  final Token cryptoWallet;
-  WalletCard(this.cryptoWallet);
+  final Token token;
+  final int accountId;
+  final Account account;
+  WalletCard(this.token, this.accountId, this.account);
 
   @override
   State<WalletCard> createState() => _WalletCardState();
@@ -27,7 +29,21 @@ class _WalletCardState extends State<WalletCard> {
   }
 
   void getBalance() async {
-    await getEthBalance(widget.cryptoWallet.address);
+    if (widget.token.symbol == 'ETH') {
+      double ethBalance =
+          await double.parse(await getEthBalance(widget.account.publicKey));
+
+      setState(() {
+        balance = ethBalance;
+      });
+    } else {
+      double tokenBalance = await double.parse(
+          await getTokenBalance(widget.accountId, widget.token.name));
+
+      setState(() {
+        balance = tokenBalance;
+      });
+    }
   }
 
   @override
@@ -36,7 +52,7 @@ class _WalletCardState extends State<WalletCard> {
       onPressed: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => WalletDetailsPage(widget.cryptoWallet),
+            builder: (context) => WalletDetailsPage(widget.token),
           ),
         );
       },
@@ -64,7 +80,7 @@ class _WalletCardState extends State<WalletCard> {
             ),
             Spacer(),
             Text(
-              "${balance} ${widget.cryptoWallet.symbol}",
+              "${balance} ${widget.token.symbol}",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black45,
@@ -78,21 +94,21 @@ class _WalletCardState extends State<WalletCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    value.markets[widget.cryptoWallet.name] != null
-                        ? "\$${(value.markets[widget.cryptoWallet.name]!.currentPrice).toStringAsFixed(0)}"
-                        : "unkown",
+                    value.markets[widget.token.name] != null
+                        ? "\$${(value.markets[widget.token.name]!.currentPrice).toStringAsFixed(0)}"
+                        : "unknown",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    value.markets[widget.cryptoWallet.name] != null
-                        ? "${(value.markets[widget.cryptoWallet.name]!.priceChangePercent).toStringAsFixed(1)}%"
+                    value.markets[widget.token.name] != null
+                        ? "${(value.markets[widget.token.name]!.priceChangePercent).toStringAsFixed(1)}%"
                         : "",
                     style: TextStyle(
-                      color: value.markets[widget.cryptoWallet.name] != null
-                          ? value.markets[widget.cryptoWallet.name]!
+                      color: value.markets[widget.token.name] != null
+                          ? value.markets[widget.token.name]!
                                       .priceChangePercent >
                                   0
                               ? Colors.green

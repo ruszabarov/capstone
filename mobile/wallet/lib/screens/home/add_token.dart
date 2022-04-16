@@ -205,7 +205,8 @@ class _AddTokenPageState extends State<AddTokenPage> {
                             child: Text("ADD TOKEN"),
                           ), () async {
                         ConfigurationService configurationService =
-                            context.read<ConfigurationService>();
+                            ConfigurationService(
+                                await SharedPreferences.getInstance());
 
                         configurationService.addToken(
                           widget.accountId,
