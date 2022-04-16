@@ -40,19 +40,10 @@ class _AuthPageState extends State<AuthPage> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool("isLoggedIn", true);
 
-        SharedPreferences spInstance = await SharedPreferences.getInstance();
-
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) {
-              return MultiProvider(
-                providers: [
-                  Provider<ConfigurationService>(
-                    create: (_) => ConfigurationService(spInstance),
-                  ),
-                ],
-                child: LoadDataPage(),
-              );
+              return LoadDataPage();
             },
           ),
         );
