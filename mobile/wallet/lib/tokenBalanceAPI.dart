@@ -28,7 +28,7 @@ Future<List<Gas>> estimateGas() async {
                 ["maxPriorityFeePerGas"]
             .toDouble(),
         maxFeePerGas: json["blockPrices"][0]["estimatedPrices"][i]
-            ["maxFeePerGas"].toDouble()));
+            ["maxFeePerGas"]));
   }
   return estimates;
 }
@@ -37,7 +37,7 @@ Future<TransactionReceipt> getTransactionReceipt(String txHash) async {
   dynamic status = await etherscan.getStatus(txhash: txHash);
 
   while (status.status == 0) {
-    await Future.delayed(Duration(seconds: 10));
+    await Future.delayed(Duration(seconds: 15));
     status = await etherscan.getStatus(txhash: txHash);
     print(status.status);
   }
