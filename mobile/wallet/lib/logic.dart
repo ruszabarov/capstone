@@ -19,10 +19,12 @@ Web3Client ethClient = new Web3Client(
     "https://eth-rinkeby.gateway.pokt.network/v1/lb/6212b3749c8d48003a41d3b2",
     httpClient);
 
-Future<String> getEthBalance(EthereumAddress from) async {
+Future<String> getEthBalance(String from) async {
   const decimals = 18;
-  dynamic balance =
-      await ethClient.getBalance(from).then((value) => value.getInWei);
+
+  dynamic balance = await ethClient
+      .getBalance(EthereumAddress.fromHex(from))
+      .then((value) => value.getInWei);
   return (balance.toDouble() / pow(10, decimals)).toStringAsFixed(4);
 }
 
