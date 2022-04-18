@@ -103,8 +103,11 @@ void multisendETH(List<String> targetAddresses, List<int> values) async {
       chainId: 4);
 }
 
-void sendEth(String targetAddress, int value) async {
-  var credentials = EthPrivateKey.fromHex(privateKey);
+void sendEth(String targetAddress, int value, int id) async {
+  ConfigurationService configurationService =
+      new ConfigurationService(await SharedPreferences.getInstance());
+  Account account = await configurationService.getAccount(id);
+  var credentials = EthPrivateKey.fromHex(account.privateKey);
 
   var txHash = await ethClient.sendTransaction(
     credentials,
@@ -116,8 +119,4 @@ void sendEth(String targetAddress, int value) async {
     ),
     chainId: 4,
   );
-
-  await Future.delayed(Duration(seconds: 30));
-  var receipt = await ethClient.getTransactionReceipt(txHash);
-  print("receipt: " + receipt.toString());
 }
