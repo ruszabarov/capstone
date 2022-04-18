@@ -25,6 +25,7 @@ abstract class IConfigurationService {
   Future<Account> getAccount(int id);
   Future<String> getAccountPrivateKey(int id);
   Future<void> removeAccount(int id);
+  Future<void> removeToken(String contract);
 }
 
 class ConfigurationService implements IConfigurationService {
@@ -213,6 +214,19 @@ class ConfigurationService implements IConfigurationService {
         address: address,
         decimals: decimals));
 
+    String encodedData = Token.encode(tokenList);
+    await _preferences.setString('tokenList', encodedData);
+  }
+
+  @override
+  Future<void> removeToken(String contract) async{
+    List<Token> tokenList =
+        await Token.decode(await _preferences.getString('tokenList'));
+    for(int i = 0; i < tokenList.length; i++) {
+      if(tokenList[i].address == contract) {
+        tokenList.removeAt(i);
+      }
+    }
     String encodedData = Token.encode(tokenList);
     await _preferences.setString('tokenList', encodedData);
   }
