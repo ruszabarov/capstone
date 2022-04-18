@@ -103,6 +103,22 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                             style: TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.bold),
                           ),
+                          Spacer(),
+                          NeumorphicButton(
+                            style: NeumorphicStyle(
+                              color: Colors.grey[200],
+                              shape: NeumorphicShape.flat,
+                              boxShape: NeumorphicBoxShape.roundRect(
+                                  BorderRadius.circular(15)),
+                              depth: 4,
+                            ),
+                            padding: EdgeInsets.all(10),
+                            child: Icon(
+                              Icons.delete,
+                              color: Colors.red.shade400,
+                            ),
+                            onPressed: () {},
+                          )
                         ],
                       ),
                     ),
