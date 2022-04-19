@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:wallet/providers/Token.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/screens/home/advanced_gas.dart';
 import 'package:wallet/screens/home/receive.dart';
 import 'package:wallet/screens/home/send.dart';
@@ -8,6 +8,7 @@ import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/home/transaction_list.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:wallet/configuration_service.dart';
+import 'package:provider/provider.dart';
 
 class WalletDetailsPage extends StatefulWidget {
   final Token cryptoWallet;
@@ -117,7 +118,13 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                               Icons.delete,
                               color: Colors.red.shade400,
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              ConfigurationService configurationService =
+                                  ConfigurationService(
+                                      await SharedPreferences.getInstance());
+                              configurationService
+                                  .removeToken(widget.cryptoWallet.address);
+                            },
                           )
                         ],
                       ),

@@ -3,7 +3,6 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet/logic.dart';
 import 'package:wallet/providers/Market.dart';
-import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/home/wallet_details.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:web3dart/web3dart.dart';
@@ -37,8 +36,8 @@ class _WalletCardState extends State<WalletCard> {
         balance = ethBalance;
       });
     } else {
-      double tokenBalance = await double.parse(
-          await getTokenBalance(widget.accountId, widget.token.name));
+      double tokenBalance = await double.parse(await getTokenBalance(
+          widget.account.publicKey, widget.token.address));
 
       setState(() {
         balance = tokenBalance;

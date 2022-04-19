@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/providers/Market.dart';
 import 'package:wallet/providers/Navbar.dart';
@@ -38,11 +39,11 @@ class _WrapperState extends State<Wrapper> {
 
   @override
   void initState() {
+    super.initState();
     _pageController = PageController();
     home = Home();
     market = MarketPage();
     account = SettingsPage();
-    super.initState();
   }
 
   @override
@@ -84,6 +85,10 @@ class _WrapperState extends State<Wrapper> {
                     ChangeNotifierProvider<AccountList>(
                       create: (context) => AccountList(widget.initAccountData),
                     ),
+                    FutureProvider<List<Token>>(
+                        create: (context) =>
+                            context.read<ConfigurationService>().getTokens(),
+                        initialData: [])
                   ],
                   child: home,
                 ),

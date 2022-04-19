@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'Token.dart';
 import 'package:wallet/configuration_service.dart';
 
 class AccountList extends ChangeNotifier {

@@ -56,19 +56,20 @@ class _HomeState extends State<Home> {
     }
   }
 
-  List<Token> tokenList = [];
+  // List<Token> tokenList = [];
 
   @override
   void initState() {
     super.initState();
-    loadTokens();
+    // loadTokens();
   }
 
-  void loadTokens() async {
-    ConfigurationService configurationService =
-        context.read<ConfigurationService>();
-    tokenList = await configurationService.getTokens();
-  }
+  // void loadTokens() async {
+  //   ConfigurationService configurationService =
+  //       context.read<ConfigurationService>();
+  //   tokenList = await configurationService.getTokens();
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -137,23 +138,26 @@ class _HomeState extends State<Home> {
                           value.accounts.length
                       ? Column(
                           children: [
-                            GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 25,
-                                      mainAxisSpacing: 25),
-                              padding: EdgeInsets.all(25),
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: tokenList.length,
-                              itemBuilder: (BuildContext ctxt, int index) {
-                                return WalletCard(
-                                    tokenList[index],
-                                    accountSelectedIndex,
-                                    value.accounts[accountSelectedIndex]);
-                              },
+                            Consumer<List<Token>>(
+                              builder: (context, tokenList, child) =>
+                                  GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 25,
+                                        mainAxisSpacing: 25),
+                                padding: EdgeInsets.all(25),
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: tokenList.length,
+                                itemBuilder: (BuildContext ctxt, int index) {
+                                  return WalletCard(
+                                      tokenList[index],
+                                      accountSelectedIndex,
+                                      value.accounts[accountSelectedIndex]);
+                                },
+                              ),
                             ),
                             Center(
                               child: TextButton(
