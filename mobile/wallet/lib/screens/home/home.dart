@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/providers/Navbar.dart';
 import 'package:wallet/configuration_service.dart';
+import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/home/account_card.dart';
 import 'package:wallet/screens/home/add_account_card.dart';
 import 'package:wallet/screens/home/add_account_page.dart';
@@ -138,7 +139,7 @@ class _HomeState extends State<Home> {
                           value.accounts.length
                       ? Column(
                           children: [
-                            Consumer<List<Token>>(
+                            Consumer<TokenList>(
                               builder: (context, tokenList, child) =>
                                   GridView.builder(
                                 gridDelegate:
@@ -150,10 +151,10 @@ class _HomeState extends State<Home> {
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
-                                itemCount: tokenList.length,
+                                itemCount: tokenList.tokens.length,
                                 itemBuilder: (BuildContext ctxt, int index) {
                                   return WalletCard(
-                                      tokenList[index],
+                                      tokenList.tokens[index],
                                       accountSelectedIndex,
                                       value.accounts[accountSelectedIndex]);
                                 },
