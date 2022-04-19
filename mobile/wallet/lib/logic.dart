@@ -44,7 +44,7 @@ Future<Token> loadTokenContract(String tokenAddress) async {
   ConfigurationService configurationService =
       new ConfigurationService(await SharedPreferences.getInstance());
 
-  final json = await configurationService.getTokens();
+  final json = await configurationService.getAllTokens();
   for (int i = 0; i < json.length; i++) {
     if (json[i].address == tokenAddress) {
       return json[i];
