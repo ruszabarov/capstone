@@ -13,7 +13,7 @@ final etherscan =
     EtherscanAPI(apiKey: apiKey, chain: EthChain.rinkeby, enableLogs: false);
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 // Client httpClient = new Client();
-Uri url = Uri.parse("https://api.blocknative.com/gasprices/blockprices");
+Uri url = Uri.parse("https://api.blocknative.com/gasprices/blockprices?confidenceLevels=90&confidenceLevels=75&confidenceLevels=60");
 
 Future<List<Gas>> estimateGas() async {
   var response =

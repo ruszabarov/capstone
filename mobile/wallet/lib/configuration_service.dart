@@ -20,7 +20,8 @@ abstract class IConfigurationService {
   Future<void> importAccount(String privateKey, String name);
   Future<void> addToken(
       int id, String name, String symbol, String address, int decimals);
-  Future<List<Token>> getTokens();
+  Future<List<Token>> getTokens(int id);
+  Future<List<Token>> getAllTokens();
   Future<void> addEther(int id);
   Future<Account> getAccount(int id);
   Future<String> getAccountPrivateKey(int id);
@@ -219,11 +220,11 @@ class ConfigurationService implements IConfigurationService {
   }
 
   @override
-  Future<void> removeToken(String contract) async{
+  Future<void> removeToken(String contract) async {
     List<Token> tokenList =
         await Token.decode(await _preferences.getString('tokenList'));
-    for(int i = 0; i < tokenList.length; i++) {
-      if(tokenList[i].address == contract) {
+    for (int i = 0; i < tokenList.length; i++) {
+      if (tokenList[i].address == contract) {
         tokenList.removeAt(i);
       }
     }
@@ -232,12 +233,25 @@ class ConfigurationService implements IConfigurationService {
   }
 
   @override
-  Future<List<Token>> getTokens() async {
+  Future<List<Token>> getTokens(int id) async {
+    List<Token> tokens =
+        await Token.decode(await _preferences.getString('tokenList'));
+    for (int i = 0; i < tokens.length; i++) {
+      if (tokens[i].id != id) {
+        tokens.removeAt(i);
+      }
+    }
+    return tokens;
+  }
+
+   @override
+  Future<List<Token>> getAllTokens() async {
     List<Token> tokens =
         await Token.decode(await _preferences.getString('tokenList'));
     return tokens;
   }
 }
+
 
 class Account {
   int id;
