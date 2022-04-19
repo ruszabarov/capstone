@@ -231,6 +231,7 @@ class ConfigurationService implements IConfigurationService {
     await _preferences.setString('tokenList', encodedData);
   }
 
+  @override
   Future<List<Token>> getTokens() async {
     List<Token> tokens =
         await Token.decode(await _preferences.getString('tokenList'));
