@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/configuration_service.dart';
 import 'package:wallet/providers/Account.dart';
 
@@ -149,13 +150,12 @@ class _EditAccountCardState extends State<EditAccountCard> {
                     ),
                   ),
                 ),
-                onPressed: () {
-                  context
-                      .read<ConfigurationService>()
-                      .removeAccount(widget.accountId);
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  nameTextController.text = "";
-                  widget.handleCloseButton();
+                onPressed: () async {
+                  ConfigurationService configurationService =
+                      ConfigurationService(
+                          await SharedPreferences.getInstance());
+
+                  configurationService.removeAccount(widget.accountId);
                 },
                 child: Text("DELETE ACCOUNT"),
               ),

@@ -62,15 +62,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    // loadTokens();
   }
-
-  // void loadTokens() async {
-  //   ConfigurationService configurationService =
-  //       context.read<ConfigurationService>();
-  //   tokenList = await configurationService.getTokens();
-  //   setState(() {});
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -151,10 +143,13 @@ class _HomeState extends State<Home> {
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
-                                itemCount: tokenList.tokens.length,
+                                //! load tokens in load_data to avoid error
+                                itemCount: tokenList
+                                    .tokens[accountSelectedIndex].length,
                                 itemBuilder: (BuildContext ctxt, int index) {
                                   return WalletCard(
-                                      tokenList.tokens[index],
+                                      tokenList.tokens[accountSelectedIndex]
+                                          [index],
                                       accountSelectedIndex,
                                       value.accounts[accountSelectedIndex]);
                                 },

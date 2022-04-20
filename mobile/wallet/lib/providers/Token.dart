@@ -3,9 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/configuration_service.dart';
 
 class TokenList extends ChangeNotifier {
-  late List<Token> _tokens;
+  late List<List<Token>> _tokens;
 
-  List<Token> get tokens => _tokens;
+  List<List<Token>> get tokens => _tokens;
 
   TokenList(this._tokens) {
     loadTokens();
