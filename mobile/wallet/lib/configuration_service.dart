@@ -21,7 +21,7 @@ abstract class IConfigurationService {
   Future<void> addToken(
       int id, String name, String symbol, String address, int decimals);
   Future<List<Token>> getTokens(int id);
-  Future<List<Token>> getAllTokens();
+  Future<List<List<Token>>> getAllTokens();
   Future<void> addEther(int id);
   Future<Account> getAccount(int id);
   Future<String> getAccountPrivateKey(int id);
@@ -244,14 +244,18 @@ class ConfigurationService implements IConfigurationService {
     return tokens;
   }
 
-   @override
-  Future<List<Token>> getAllTokens() async {
-    List<Token> tokens =
-        await Token.decode(await _preferences.getString('tokenList'));
-    return tokens;
+  @override
+  Future<List<List<Token>>> getAllTokens() async {
+    int accounts = await getAllAccounts().then((value) => value.length);
+    List<List<Token>> allTokens = [];
+
+    for (int i = 0; i < accounts; i++) {
+      allTokens.add(await getTokens(i));
+    }
+
+    return allTokens;
   }
 }
-
 
 class Account {
   int id;
