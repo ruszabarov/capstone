@@ -51,7 +51,8 @@ class _WalletCardState extends State<WalletCard> {
       onPressed: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => WalletDetailsPage(widget.token),
+            builder: (context) =>
+                WalletDetailsPage(widget.token, widget.account),
           ),
         );
       },

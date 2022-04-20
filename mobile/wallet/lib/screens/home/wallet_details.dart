@@ -10,11 +10,13 @@ import 'package:wallet/screens/home/transaction_list.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:wallet/configuration_service.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet/tokenBalanceAPI.dart';
 
 class WalletDetailsPage extends StatefulWidget {
-  final Token cryptoWallet;
+  final Token token;
+  final Account account;
 
-  WalletDetailsPage(this.cryptoWallet);
+  WalletDetailsPage(this.token, this.account);
 
   @override
   State<WalletDetailsPage> createState() => _WalletDetailsPageState();
@@ -24,6 +26,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
   bool isSendVisible = false;
   bool isReceiveVisible = false;
   bool isAdvancedVisible = false;
+  List<dynamic> transactions = [];
 
   void handleSendButton() {
     setState(() {
@@ -64,6 +67,23 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    loadTransactionHistory();
+  }
+
+  void loadTransactionHistory() async {
+    if (widget.token.name == "Ether") {
+      transactions = await ethTxHistory(widget.account.publicKey);
+      setState(() {});
+    } else {
+      transactions =
+          await tokenTxHistory(widget.account.publicKey, widget.token.address);
+      setState(() {});
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -101,7 +121,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                             width: 20,
                           ),
                           Text(
-                            widget.cryptoWallet.name,
+                            widget.token.name,
                             style: TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.bold),
                           ),
@@ -124,7 +144,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                                   ConfigurationService(
                                       await SharedPreferences.getInstance());
                               configurationService
-                                  .removeToken(widget.cryptoWallet.address);
+                                  .removeToken(widget.token.address);
 
                               context.read<TokenList>().loadTokens();
                               Navigator.of(context).pop();
@@ -163,7 +183,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                               ),
                               SizedBox(width: 10),
                               Text(
-                                "1000 ${widget.cryptoWallet.symbol}",
+                                "1000 ${widget.token.symbol}",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 30,
@@ -245,8 +265,10 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                       height: 20,
                     ),
                     Flexible(
-                      child: TransactionList(transactions, handleReceiptButton),
-                    ),
+                        child: transactions.isNotEmpty
+                            ? TransactionList(transactions, handleReceiptButton,
+                                widget.account.publicKey, widget.token)
+                            : CircularProgressIndicator()),
                   ],
                 ),
               ),
@@ -266,7 +288,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
               duration: Duration(milliseconds: 400),
               curve: Curves.easeOutCubic,
               child: SendCard(
-                cryptoWallet: widget.cryptoWallet,
+                cryptoWallet: widget.token,
                 handleCloseButton: handleSendButton,
                 handleAdvancedButton: handleAdvancedButton,
               ),
@@ -279,7 +301,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
               duration: Duration(milliseconds: 400),
               curve: Curves.easeOutCubic,
               child: ReceiveCard(
-                cryptoWallet: widget.cryptoWallet,
+                cryptoWallet: widget.token,
                 handleReceiveButton: handleReceiveButton,
               ),
             ),
