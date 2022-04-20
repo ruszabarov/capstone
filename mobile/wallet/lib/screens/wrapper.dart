@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/providers/Market.dart';
 import 'package:wallet/providers/Navbar.dart';
+import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/account/settings.dart';
 import 'package:wallet/screens/market/market.dart';
 import 'package:wallet/screens/shared/appBar.dart';
@@ -69,6 +70,9 @@ class _WrapperState extends State<Wrapper> {
             ChangeNotifierProvider<MarketList>(
               create: (context) => MarketList(widget.initMarketData),
             ),
+            ChangeNotifierProvider<TokenList>(
+              create: (context) => TokenList([]),
+            ),
           ],
           child: SafeArea(
             child: PageView(
@@ -85,10 +89,6 @@ class _WrapperState extends State<Wrapper> {
                     ChangeNotifierProvider<AccountList>(
                       create: (context) => AccountList(widget.initAccountData),
                     ),
-                    FutureProvider<List<Token>>(
-                        create: (context) =>
-                            context.read<ConfigurationService>().getTokens(),
-                        initialData: [])
                   ],
                   child: home,
                 ),
