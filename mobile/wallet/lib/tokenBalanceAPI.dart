@@ -28,7 +28,7 @@ Future<List<Gas>> estimateGas() async {
                 ["maxPriorityFeePerGas"]
             .toDouble(),
         maxFeePerGas: json["blockPrices"][0]["estimatedPrices"][i]
-            ["maxFeePerGas"]));
+            ["maxFeePerGas"].toDouble()));
   }
   return estimates;
 }
