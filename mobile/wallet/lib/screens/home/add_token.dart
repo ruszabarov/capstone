@@ -220,6 +220,7 @@ class _AddTokenPageState extends State<AddTokenPage> {
                             );
 
                             tokenList.loadTokens();
+                            Navigator.of(context).pop();
                           },
                         ),
                       ),

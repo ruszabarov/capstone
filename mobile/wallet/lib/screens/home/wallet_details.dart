@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/home/advanced_gas.dart';
 import 'package:wallet/screens/home/receive.dart';
 import 'package:wallet/screens/home/send.dart';
@@ -124,6 +125,9 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                                       await SharedPreferences.getInstance());
                               configurationService
                                   .removeToken(widget.cryptoWallet.address);
+
+                              context.read<TokenList>().loadTokens();
+                              Navigator.of(context).pop();
                             },
                           )
                         ],

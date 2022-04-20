@@ -70,9 +70,6 @@ class _WrapperState extends State<Wrapper> {
             ChangeNotifierProvider<MarketList>(
               create: (context) => MarketList(widget.initMarketData),
             ),
-            ChangeNotifierProvider<TokenList>(
-              create: (context) => TokenList([]),
-            ),
           ],
           child: SafeArea(
             child: PageView(
