@@ -64,7 +64,7 @@ Future<List<dynamic>> tokenTxHistory(
 
 class Gas {
   int confidence;
-  int price;
+  double price;
   double maxPriorityFeePerGas;
   double maxFeePerGas;
 
