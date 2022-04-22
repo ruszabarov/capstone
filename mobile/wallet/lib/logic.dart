@@ -105,7 +105,7 @@ void multisendETH(List<String> targetAddresses, List<int> values) async {
       chainId: 4);
 }
 
-void sendEth(String targetAddress, int value, int id) async {
+void sendEth(String targetAddress, int value, int id, double gasPrice) async {
   ConfigurationService configurationService =
       new ConfigurationService(await SharedPreferences.getInstance());
   Account account = await configurationService.getAccount(id);
@@ -115,7 +115,7 @@ void sendEth(String targetAddress, int value, int id) async {
     credentials,
     Transaction(
       to: EthereumAddress.fromHex(targetAddress),
-      // gasPrice: EtherAmount.inWei(BigInt.one),
+      gasPrice: EtherAmount.inWei(BigInt.from(gasPrice * pow(10, 9))),
       maxGas: 10000000,
       value: EtherAmount.fromUnitAndValue(EtherUnit.finney, value),
     ),
