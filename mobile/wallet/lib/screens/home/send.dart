@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/logic.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:wallet/configuration_service.dart';
+import 'package:wallet/tokenBalanceAPI.dart';
 
 class SendCard extends StatefulWidget {
   final Token cryptoWallet;
@@ -354,12 +356,18 @@ class _SendCardState extends State<SendCard> {
                     ),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
+                  ConfigurationService configurationService =
+                      ConfigurationService(
+                          await SharedPreferences.getInstance());
                   widget.handleCloseButton();
                   FocusManager.instance.primaryFocus?.unfocus();
                   showOverLay(context);
-                  sendEth(_addressTextController.text,
-                      int.parse(_amountTextController.text), 1);
+                  sendEth(
+                      _addressTextController.text,
+                      int.parse(_amountTextController.text),
+                      0,
+                      await estimateGas().then((value) => value[0].price));
                 },
                 child: Text("SEND"),
               ),
