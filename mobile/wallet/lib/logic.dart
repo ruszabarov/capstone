@@ -46,11 +46,13 @@ Future<Token> loadTokenContract(String tokenAddress) async {
 
   final json = await configurationService.getAllTokens();
   for (int i = 0; i < json.length; i++) {
-    if (json[i].address == tokenAddress) {
-      return json[i];
+    for (int j = 0; i < json[i].length; j++) {
+      if (json[i][j].address == tokenAddress) {
+        return json[i][j];
+      }
     }
   }
-  return json.first;
+  return json[0].first;
 }
 
 Future<String> getTokenBalance(String from, String tokenAddress) async {

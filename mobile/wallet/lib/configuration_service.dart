@@ -244,30 +244,18 @@ class ConfigurationService implements IConfigurationService {
     return tokens;
   }
 
-   @override
+  @override
   Future<List<List<Token>>> getAllTokens() async {
-    List<Token> tokens =
-        await Token.decode(await _preferences.getString('tokenList'));
     int accounts = await getAllAccounts().then((value) => value.length);
+    List<List<Token>> allTokens = [];
 
-    List<List<Token>> allTokens = List.generate(accounts, (i) => null, growable: true);
-    
-
-    for(int i = 0; i < accounts; i++) {
-      for(int i = 0; i < tokens.length; i++) {
-        if(tokens[i].id == i) {
-
-        }
-      }
+    for (int i = 0; i < accounts; i++) {
+      allTokens.add(await getTokens(i));
     }
 
-  
-    tokens.sort((a, b) => a.id.compareTo(b.id));
-
-    return tokens;
+    return allTokens;
   }
 }
-
 
 class Account {
   int id;
