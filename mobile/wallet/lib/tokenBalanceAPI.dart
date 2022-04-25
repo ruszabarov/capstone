@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:wallet/logic.dart';
 import 'package:web3dart/web3dart.dart';
-
 import 'private.dart';
 import 'package:etherscan_api/etherscan_api.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +12,8 @@ final etherscan =
     EtherscanAPI(apiKey: apiKey, chain: EthChain.rinkeby, enableLogs: false);
 final myAddress = "0x127Ff1D9560F7992911389BA181f695b38EE9399";
 // Client httpClient = new Client();
-Uri url = Uri.parse("https://api.blocknative.com/gasprices/blockprices?confidenceLevels=90&confidenceLevels=75&confidenceLevels=60");
+Uri url = Uri.parse(
+    "https://api.blocknative.com/gasprices/blockprices?confidenceLevels=90&confidenceLevels=75&confidenceLevels=60");
 
 Future<List<Gas>> estimateGas() async {
   var response =
@@ -28,7 +28,8 @@ Future<List<Gas>> estimateGas() async {
                 ["maxPriorityFeePerGas"]
             .toDouble(),
         maxFeePerGas: json["blockPrices"][0]["estimatedPrices"][i]
-            ["maxFeePerGas"].toDouble()));
+                ["maxFeePerGas"]
+            .toDouble()));
   }
   return estimates;
 }
@@ -44,19 +45,19 @@ Future<TransactionReceipt> getTransactionReceipt(String txHash) async {
 
   TransactionReceipt? receipt = await ethClient.getTransactionReceipt(txHash);
 
-  // dynamic acc = ethClient.addedBlocks().listen((event) { abc = etherscan.getStatus(txhash: txHash);});
   return receipt!;
 }
 
-Future<dynamic> ethTxHistory(String address) async {
+Future<List<dynamic>> ethTxHistory(String address) async {
   dynamic ethTx = await etherscan.txList(address: address);
-  return ethTx;
+  return ethTx.result;
 }
 
-Future<String> tokenTxHistory(String address, String tokenAddress) async {
+Future<List<dynamic>> tokenTxHistory(String address, String tokenAddress) async {
   dynamic tokenTx =
       await etherscan.tokenTx(address: address, contractAddress: tokenAddress);
-  return tokenTx;
+
+  return tokenTx.result;
 }
 
 class Gas {
