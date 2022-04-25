@@ -61,7 +61,7 @@ Future<List<dynamic>> tokenTxHistory(String address, String tokenAddress) async 
 
 class Gas {
   int confidence;
-  int price;
+  double price;
   double maxPriorityFeePerGas;
   double maxFeePerGas;
 
