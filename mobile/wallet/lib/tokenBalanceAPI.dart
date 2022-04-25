@@ -40,7 +40,6 @@ Future<TransactionReceipt> getTransactionReceipt(String txHash) async {
   while (status.status == 0) {
     await Future.delayed(Duration(seconds: 15));
     status = await etherscan.getStatus(txhash: txHash);
-    print(status.status);
   }
 
   TransactionReceipt? receipt = await ethClient.getTransactionReceipt(txHash);
