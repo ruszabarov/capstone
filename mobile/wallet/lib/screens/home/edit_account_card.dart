@@ -156,6 +156,8 @@ class _EditAccountCardState extends State<EditAccountCard> {
                           await SharedPreferences.getInstance());
 
                   configurationService.removeAccount(widget.accountId);
+
+                  context.read<AccountList>().loadAccounts();
                 },
                 child: Text("DELETE ACCOUNT"),
               ),

@@ -149,6 +149,8 @@ class _AddAccountPageState extends State<AddAccountPage> {
                             .addAccount(nameController.text);
 
                         await configurationService.addEther(widget.accountId);
+
+                        context.read<AccountList>().loadAccounts();
                       }
                     },
                   );
