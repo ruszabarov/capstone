@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet/providers/Account.dart';
 import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/auth/auth_page.dart';
 import 'package:wallet/screens/load_data.dart';
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<TokenList>(
           create: (context) => TokenList([]),
         ),
+        ChangeNotifierProvider<AccountList>(
+          create: (context) => AccountList([]),
+        )
       ],
       child: MaterialApp(
         title: "Crypto Wallet",

@@ -81,14 +81,7 @@ class _WrapperState extends State<Wrapper> {
                 });
               },
               children: <Widget>[
-                MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider<AccountList>(
-                      create: (context) => AccountList(widget.initAccountData),
-                    ),
-                  ],
-                  child: home,
-                ),
+                home,
                 market,
                 account,
               ],
