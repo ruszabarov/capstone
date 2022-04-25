@@ -12,7 +12,13 @@ class WalletCard extends StatefulWidget {
   final Token token;
   final int accountId;
   final Account account;
-  WalletCard(this.token, this.accountId, this.account);
+
+  WalletCard(
+      {required this.token,
+      required this.accountId,
+      required this.account,
+      required Key key})
+      : super(key: key);
 
   @override
   State<WalletCard> createState() => _WalletCardState();

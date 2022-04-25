@@ -9,7 +9,8 @@ import 'package:wallet/screens/shared/neumorphic_card.dart';
 import 'package:wallet/wallet_setup.dart';
 
 class AddAccountPage extends StatefulWidget {
-  const AddAccountPage({Key? key}) : super(key: key);
+  final int accountId;
+  const AddAccountPage(this.accountId);
 
   @override
   _AddAccountPageState createState() => _AddAccountPageState();
@@ -141,10 +142,13 @@ class _AddAccountPageState extends State<AddAccountPage> {
                     () async {
                       if (!addAccount) {
                         ConfigurationService configurationService =
-                            context.read<ConfigurationService>();
+                            ConfigurationService(
+                                await SharedPreferences.getInstance());
 
                         await configurationService
                             .addAccount(nameController.text);
+
+                        await configurationService.addEther(widget.accountId);
                       }
                     },
                   );

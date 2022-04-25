@@ -22,15 +22,13 @@ Future<List<Gas>> estimateGas() async {
   dynamic json = jsonDecode(response.body);
   List<Gas> estimates = [];
   for (int i = 0; i < 3; i++) {
-    estimates.add(new Gas(
+    estimates.add(Gas(
         confidence: json["blockPrices"][0]["estimatedPrices"][i]["confidence"],
         price: json["blockPrices"][0]["estimatedPrices"][i]["price"],
         maxPriorityFeePerGas: json["blockPrices"][0]["estimatedPrices"][i]
-                ["maxPriorityFeePerGas"]
-            .toDouble(),
+            ["maxPriorityFeePerGas"],
         maxFeePerGas: json["blockPrices"][0]["estimatedPrices"][i]
-                ["maxFeePerGas"]
-            .toDouble()));
+            ["maxFeePerGas"]));
   }
   return estimates;
 }
@@ -64,7 +62,7 @@ Future<List<dynamic>> tokenTxHistory(
 
 class Gas {
   int confidence;
-  double price;
+  int price;
   double maxPriorityFeePerGas;
   double maxFeePerGas;
 

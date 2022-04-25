@@ -148,10 +148,13 @@ class _HomeState extends State<Home> {
                                     .tokens[accountSelectedIndex].length,
                                 itemBuilder: (BuildContext ctxt, int index) {
                                   return WalletCard(
-                                      tokenList.tokens[accountSelectedIndex]
-                                          [index],
-                                      accountSelectedIndex,
-                                      value.accounts[accountSelectedIndex]);
+                                    token: tokenList
+                                        .tokens[accountSelectedIndex][index],
+                                    accountId: accountSelectedIndex,
+                                    account:
+                                        value.accounts[accountSelectedIndex],
+                                    key: UniqueKey(),
+                                  );
                                 },
                               ),
                             ),
@@ -172,7 +175,7 @@ class _HomeState extends State<Home> {
                         )
                       : Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: AddAccountPage(),
+                          child: AddAccountPage(value.accounts.length),
                         ),
                 ),
               ),
@@ -182,7 +185,7 @@ class _HomeState extends State<Home> {
         AnimatedPositioned(
           left: 0,
           right: 0,
-          bottom: isAccountDetailsVisible ? 0 : -400,
+          bottom: isAccountDetailsVisible ? 0 : -401,
           height: 400,
           duration: Duration(milliseconds: 200),
           curve: Curves.easeOutCubic,
@@ -199,7 +202,7 @@ class _HomeState extends State<Home> {
         AnimatedPositioned(
           left: 0,
           right: 0,
-          bottom: isEditAccountVisible ? 0 : -400,
+          bottom: isEditAccountVisible ? 0 : -401,
           height: 400,
           duration: Duration(milliseconds: 200),
           curve: Curves.easeOutCubic,

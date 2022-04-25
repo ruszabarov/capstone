@@ -46,7 +46,7 @@ Future<Token> loadTokenContract(String tokenAddress) async {
 
   final json = await configurationService.getAllTokens();
   for (int i = 0; i < json.length; i++) {
-    for (int j = 0; i < json[i].length; j++) {
+    for (int j = 0; j < json[i].length; j++) {
       if (json[i][j].address == tokenAddress) {
         return json[i][j];
       }
@@ -73,7 +73,8 @@ Future<String> getTokenBalance(String from, String tokenAddress) async {
   return (balance.toDouble() / pow(10, decimals)).toStringAsFixed(4);
 }
 
-void sendERC20(String targetAddress, String tokenAddress, int value, double gasPrice) async {
+void sendERC20(String targetAddress, String tokenAddress, int value,
+    double gasPrice) async {
   var credentials = EthPrivateKey.fromHex(privateKey);
   final contract = await loadContract(tokenAddress);
   List<dynamic> args = [myAddress1, targetAddress, value];
@@ -108,7 +109,9 @@ void multisendETH(List<String> targetAddresses, List<int> values) async {
       chainId: 4);
 }
 
-void sendEth(String targetAddress, int value, int id, double gasPrice) async {
+void sendEth(
+    String targetAddress, double value, int id, double gasPrice) async {
+  value = value * pow(10, 18);
   ConfigurationService configurationService =
       new ConfigurationService(await SharedPreferences.getInstance());
   Account account = await configurationService.getAccount(id);
@@ -119,8 +122,8 @@ void sendEth(String targetAddress, int value, int id, double gasPrice) async {
     Transaction(
       to: EthereumAddress.fromHex(targetAddress),
       gasPrice: EtherAmount.inWei(BigInt.from(gasPrice * pow(10, 9))),
-      maxGas: 10000000,
-      value: EtherAmount.fromUnitAndValue(EtherUnit.finney, value),
+      maxGas: 100000,
+      value: EtherAmount.fromUnitAndValue(EtherUnit.wei, value.toInt()),
     ),
     chainId: 4,
   );

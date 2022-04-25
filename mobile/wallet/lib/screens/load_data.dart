@@ -23,8 +23,9 @@ class _LoadDataPageState extends State<LoadDataPage> {
         ConfigurationService(await SharedPreferences.getInstance());
 
     List<Account> initAccountData = await configurationService.getAllAccounts();
+    await configurationService.getAllTokens().then((value) => print(value));
 
-    await configurationService.addEther(0);
+    // await configurationService.addEther(0);
 
     // load Market data
     String request = "";

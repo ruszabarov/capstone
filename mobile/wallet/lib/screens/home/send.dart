@@ -357,17 +357,15 @@ class _SendCardState extends State<SendCard> {
                   ),
                 ),
                 onPressed: () async {
-                  ConfigurationService configurationService =
-                      ConfigurationService(
-                          await SharedPreferences.getInstance());
                   widget.handleCloseButton();
                   FocusManager.instance.primaryFocus?.unfocus();
                   showOverLay(context);
                   sendEth(
                       _addressTextController.text,
-                      int.parse(_amountTextController.text),
+                      double.parse(_amountTextController.text),
                       0,
-                      await estimateGas().then((value) => value[0].price));
+                      await estimateGas().then((value) =>
+                          (value[selectedPriority].price).toDouble()));
                 },
                 child: Text("SEND"),
               ),
