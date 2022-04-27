@@ -189,23 +189,13 @@ class ConfigurationService implements IConfigurationService {
     await storage.deleteAll();
   }
 
+
+
   @override
   Future<void> addEther(int id) async {
     
-    if (await _preferences.getString('tokenList') == null) {
-      List<Token> ether = [];
-      ether.add(Token(
-        id: 0,
-        name: "Ether",
-        symbol: "ETH",
-        address: "0x0000000000000000000000000000000000000000",
-        decimals: 18));
-
-    String encodedData = Token.encode(ether);
-    await _preferences.setString('tokenList', encodedData);
-    }
-
-    List<Token> tokenList = await Token.decode(await _preferences.getString('tokenList'));;
+    if ((await _preferences.getString('tokenList'))!.isNotEmpty) {
+      List<Token> tokenList = await Token.decode(await _preferences.getString('tokenList'));;
 
     tokenList.add(Token(
         id: id,
@@ -216,6 +206,19 @@ class ConfigurationService implements IConfigurationService {
 
     String encodedData = Token.encode(tokenList);
     await _preferences.setString('tokenList', encodedData);
+    } else {
+
+    List<Token> ether = [];
+      ether.add(Token(
+        id: 0,
+        name: "Ether",
+        symbol: "ETH",
+        address: "0x0000000000000000000000000000000000000000",
+        decimals: 18));
+
+    String encodedData = Token.encode(ether);
+    await _preferences.setString('tokenList', encodedData);
+    }
   }
 
   @override
