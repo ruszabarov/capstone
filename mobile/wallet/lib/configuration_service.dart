@@ -194,14 +194,14 @@ class ConfigurationService implements IConfigurationService {
     if (await _preferences.getString('tokenList') == null) {
       List<Token> ether = [];
       ether.add(Token(
-        id: 0,
-        name: "Ether",
-        symbol: "ETH",
-        address: "0x0000000000000000000000000000000000000000",
-        decimals: 18));
+          id: 0,
+          name: "Ether",
+          symbol: "ETH",
+          address: "0x0000000000000000000000000000000000000000",
+          decimals: 18));
 
-    String encodedData = Token.encode(ether);
-    await _preferences.setString('tokenList', encodedData);
+      String encodedData = Token.encode(ether);
+      await _preferences.setString('tokenList', encodedData);
     }
 
     List<Token> tokenList =

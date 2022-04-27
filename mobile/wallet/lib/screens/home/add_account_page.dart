@@ -149,7 +149,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
                         await configurationService
                             .addAccount(nameController.text);
 
-                        await configurationService.addEther(2);
+                        await configurationService.addEther(widget.accountId);
 
                         context.read<AccountList>().loadAccounts();
                         context.read<TokenList>().loadTokens();
