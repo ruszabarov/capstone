@@ -4,6 +4,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/configuration_service.dart';
 import 'package:wallet/providers/Account.dart';
+import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/home/mnemonic_page.dart';
 import 'package:wallet/screens/shared/neumorphic_card.dart';
 import 'package:wallet/wallet_setup.dart';
@@ -148,9 +149,10 @@ class _AddAccountPageState extends State<AddAccountPage> {
                         await configurationService
                             .addAccount(nameController.text);
 
-                        await configurationService.addEther(widget.accountId);
+                        await configurationService.addEther(2);
 
                         context.read<AccountList>().loadAccounts();
+                        context.read<TokenList>().loadTokens();
                       }
                     },
                   );
