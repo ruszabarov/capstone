@@ -193,7 +193,16 @@ class ConfigurationService implements IConfigurationService {
   Future<void> addEther(int id) async {
     
     if (await _preferences.getString('tokenList') == null) {
-      addEther(0);
+      List<Token> ether = [];
+      ether.add(Token(
+        id: 0,
+        name: "Ether",
+        symbol: "ETH",
+        address: "0x0000000000000000000000000000000000000000",
+        decimals: 18));
+
+    String encodedData = Token.encode(ether);
+    await _preferences.setString('tokenList', encodedData);
     }
 
     List<Token> tokenList = await Token.decode(await _preferences.getString('tokenList'));;
