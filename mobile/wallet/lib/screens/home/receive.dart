@@ -4,11 +4,13 @@ import 'package:wallet/configuration_service.dart';
 
 class ReceiveCard extends StatelessWidget {
   final Token cryptoWallet;
+  final String address;
   final Function handleReceiveButton;
 
   const ReceiveCard(
       {Key? key,
       required this.cryptoWallet,
+      required this.address,
       required Function this.handleReceiveButton})
       : super(key: key);
 
@@ -71,14 +73,17 @@ class ReceiveCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Text(
-                      "asdasd",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        overflow: TextOverflow.clip,
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        address,
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                   ),

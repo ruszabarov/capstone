@@ -62,6 +62,8 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    print("hello");
+    context.read<TokenList>().loadTokens();
   }
 
   @override

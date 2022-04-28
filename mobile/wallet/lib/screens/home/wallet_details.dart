@@ -302,6 +302,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
               curve: Curves.easeOutCubic,
               child: ReceiveCard(
                 cryptoWallet: widget.token,
+                address: widget.account.publicKey,
                 handleReceiveButton: handleReceiveButton,
               ),
             ),
