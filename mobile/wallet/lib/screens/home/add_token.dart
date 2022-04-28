@@ -208,10 +208,9 @@ class _AddTokenPageState extends State<AddTokenPage> {
                           ),
                           () async {
                             ConfigurationService configurationService =
-                                ConfigurationService(
-                                    await SharedPreferences.getInstance());
+                                context.read<ConfigurationService>();
 
-                            configurationService.addToken(
+                            await configurationService.addToken(
                               widget.accountId,
                               nameController.text,
                               symbolController.text,

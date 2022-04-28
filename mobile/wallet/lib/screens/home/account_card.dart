@@ -5,11 +5,14 @@ import 'dart:math';
 class AccountCard extends StatefulWidget {
   final String name;
   final String address;
-  final double balance;
   final List<Color> colorPair;
 
-  const AccountCard(this.name, this.address, this.balance, this.colorPair);
-
+  const AccountCard(
+      {required this.name,
+      required this.address,
+      required this.colorPair,
+      required Key key})
+      : super(key: key);
   @override
   State<AccountCard> createState() => _AccountCardState();
 }
@@ -60,10 +63,10 @@ class _AccountCardState extends State<AccountCard> {
               ),
             ],
           ),
-          Text(
-            "\$ ${widget.balance.toString()}",
-            style: TextStyle(fontSize: 20),
-          )
+          // Text(
+          //   "\$ ${widget.balance.toString()}",
+          //   style: TextStyle(fontSize: 20),
+          // )
         ],
       ),
     );

@@ -141,9 +141,9 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                             ),
                             onPressed: () async {
                               ConfigurationService configurationService =
-                                  ConfigurationService(
-                                      await SharedPreferences.getInstance());
-                              configurationService
+                                  context.read<ConfigurationService>();
+
+                              await configurationService
                                   .removeToken(widget.token.address);
 
                               context.read<TokenList>().loadTokens();

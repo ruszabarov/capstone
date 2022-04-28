@@ -152,10 +152,10 @@ class _EditAccountCardState extends State<EditAccountCard> {
                 ),
                 onPressed: () async {
                   ConfigurationService configurationService =
-                      ConfigurationService(
-                          await SharedPreferences.getInstance());
+                      context.read<ConfigurationService>();
 
-                  configurationService.removeAccount(widget.accountId);
+                  widget.handleCloseButton();
+                  await configurationService.removeAccount(widget.accountId);
 
                   context.read<AccountList>().loadAccounts();
                 },

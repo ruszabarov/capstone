@@ -108,13 +108,10 @@ class _HomeState extends State<Home> {
                                       handleEditAccountButton();
                                     },
                                     child: AccountCard(
-                                      value.accounts[i].name,
-                                      value.accounts[i].publicKey,
-                                      1000,
-                                      [
-                                        Colors.pink.shade200,
-                                        Colors.pink.shade400
-                                      ],
+                                      name: value.accounts[i].name,
+                                      address: value.accounts[i].publicKey,
+                                      colorPair: colorPairs[i],
+                                      key: UniqueKey(),
                                     ),
                                   )
                                 : AddAccountCard(),
@@ -132,31 +129,36 @@ class _HomeState extends State<Home> {
                       ? Column(
                           children: [
                             Consumer<TokenList>(
-                              builder: (context, tokenList, child) =>
-                                  GridView.builder(
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        crossAxisSpacing: 25,
-                                        mainAxisSpacing: 25),
-                                padding: EdgeInsets.all(25),
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                //! load tokens in load_data to avoid error
-                                itemCount: tokenList
-                                    .tokens[accountSelectedIndex].length,
-                                itemBuilder: (BuildContext ctxt, int index) {
-                                  return WalletCard(
-                                    token: tokenList
-                                        .tokens[accountSelectedIndex][index],
-                                    accountId: accountSelectedIndex,
-                                    account:
-                                        value.accounts[accountSelectedIndex],
-                                    key: UniqueKey(),
-                                  );
-                                },
-                              ),
+                              builder: (context, tokenList, child) => tokenList
+                                          .tokens.length !=
+                                      0
+                                  ? GridView.builder(
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              crossAxisSpacing: 25,
+                                              mainAxisSpacing: 25),
+                                      padding: EdgeInsets.all(25),
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      //! load tokens in load_data to avoid error
+                                      itemCount: tokenList
+                                          .tokens[accountSelectedIndex].length,
+                                      itemBuilder:
+                                          (BuildContext ctxt, int index) {
+                                        return WalletCard(
+                                          token: tokenList
+                                                  .tokens[accountSelectedIndex]
+                                              [index],
+                                          accountId: accountSelectedIndex,
+                                          account: value
+                                              .accounts[accountSelectedIndex],
+                                          key: UniqueKey(),
+                                        );
+                                      },
+                                    )
+                                  : CircularProgressIndicator(),
                             ),
                             Center(
                               child: TextButton(

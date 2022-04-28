@@ -143,8 +143,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
                     () async {
                       if (!addAccount) {
                         ConfigurationService configurationService =
-                            ConfigurationService(
-                                await SharedPreferences.getInstance());
+                            context.read<ConfigurationService>();
 
                         await configurationService
                             .addAccount(nameController.text);
@@ -152,7 +151,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
                         await configurationService.addEther(widget.accountId);
 
                         context.read<AccountList>().loadAccounts();
-                        context.read<TokenList>().loadTokens();
+                        // context.read<TokenList>().loadTokens();
                       }
                     },
                   );

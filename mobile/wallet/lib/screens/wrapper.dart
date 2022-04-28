@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wallet/providers/Account.dart';
 import 'package:wallet/providers/Market.dart';
 import 'package:wallet/providers/Navbar.dart';
-import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/account/settings.dart';
 import 'package:wallet/screens/market/market.dart';
-import 'package:wallet/screens/shared/appBar.dart';
 import 'package:wallet/wallet_icons.dart';
 import 'package:wallet/screens/home/home.dart';
-import 'package:wallet/configuration_service.dart';
 
 class Wrapper extends StatefulWidget {
-  final List<Account> initAccountData;
   final Map<String, Market> initMarketData;
 
-  Wrapper(this.initAccountData, this.initMarketData);
+  Wrapper(this.initMarketData);
 
   @override
   State createState() {

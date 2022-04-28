@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/auth/auth_page.dart';
@@ -10,9 +13,17 @@ import 'configuration_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  ConfigurationService configurationService =
+      await ConfigurationService(await SharedPreferences.getInstance());
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
     (value) {
-      runApp(MyApp());
+      runApp(
+        Provider.value(
+          value: configurationService,
+          child: MyApp(),
+        ),
+      );
     },
   );
 }
@@ -27,7 +38,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<AccountList>(
           create: (context) => AccountList([]),
-        )
+        ),
       ],
       child: MaterialApp(
         title: "Crypto Wallet",

@@ -18,13 +18,14 @@ class LoadDataPage extends StatefulWidget {
 class _LoadDataPageState extends State<LoadDataPage> {
   void loadData() async {
     // load Account data
-    WalletAddress walletAddressService = WalletAddress();
     ConfigurationService configurationService =
-        ConfigurationService(await SharedPreferences.getInstance());
+        context.read<ConfigurationService>();
 
-    List<Account> initAccountData = await configurationService.getAllAccounts();
-    await configurationService.addEther(0);
+    // await configurationService.addEther(0);
     await configurationService.getAllTokens().then((value) => print(value));
+    await configurationService.getAllAccounts().then((value) {
+      print(value[0].privateKey);
+    });
 
     // load Market data
     String request = "";
@@ -44,7 +45,7 @@ class _LoadDataPageState extends State<LoadDataPage> {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) {
-          return Wrapper(initAccountData, initMarketData);
+          return Wrapper(initMarketData);
         },
       ),
     );
