@@ -125,6 +125,18 @@ class ConfigurationService implements IConfigurationService {
           mnemonic: await getMnemonic() as String)
     ]);
     await storage.write(key: 'accountList', value: encodedData);
+
+    List<Token> tokenList = [];
+
+    tokenList.add(Token(
+        id: 0,
+        name: "Ether",
+        symbol: "ETH",
+        address: "0x0000000000000000000000000000000000000000",
+        decimals: 18));
+
+    String encodedToken = Token.encode(tokenList);
+    await _preferences.setString('tokenList', encodedToken);
   }
 
   @override
@@ -194,8 +206,8 @@ class ConfigurationService implements IConfigurationService {
   @override
   Future<void> addEther(int id) async {
     
-    if ((await _preferences.getString('tokenList'))!.isNotEmpty) {
-      List<Token> tokenList = await Token.decode(await _preferences.getString('tokenList'));;
+
+   List<Token> tokenList = await Token.decode(await _preferences.getString('tokenList'));;
 
     tokenList.add(Token(
         id: id,
@@ -206,19 +218,7 @@ class ConfigurationService implements IConfigurationService {
 
     String encodedData = Token.encode(tokenList);
     await _preferences.setString('tokenList', encodedData);
-    } else {
 
-    List<Token> ether = [];
-      ether.add(Token(
-        id: 0,
-        name: "Ether",
-        symbol: "ETH",
-        address: "0x0000000000000000000000000000000000000000",
-        decimals: 18));
-
-    String encodedData = Token.encode(ether);
-    await _preferences.setString('tokenList', encodedData);
-    }
   }
 
   @override
