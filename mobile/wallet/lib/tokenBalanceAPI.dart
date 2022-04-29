@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:wallet/logic.dart';
 import 'package:web3dart/web3dart.dart';
-
 import 'private.dart';
 import 'package:etherscan_api/etherscan_api.dart';
 import 'package:http/http.dart' as http;
@@ -39,32 +38,34 @@ Future<TransactionReceipt> getTransactionReceipt(String txHash) async {
   while (status.status == 0) {
     await Future.delayed(Duration(seconds: 15));
     status = await etherscan.getStatus(txhash: txHash);
-    print(status.status);
   }
 
   TransactionReceipt? receipt = await ethClient.getTransactionReceipt(txHash);
 
-  // dynamic acc = ethClient.addedBlocks().listen((event) { abc = etherscan.getStatus(txhash: txHash);});
   return receipt!;
 }
 
-Future<List<dynamic>> ethTxHistory(String address) async {
+Future<List<Transaction>> ethTxHistory(String address) async {
   dynamic ethTx = await etherscan.txList(address: address);
-  return ethTx.result;
+
+  dynamic json = jsonDecode(ethTx.result);
+
+  return json;
 }
 
 Future<List<dynamic>> tokenTxHistory(
     String address, String tokenAddress) async {
   dynamic tokenTx =
       await etherscan.tokenTx(address: address, contractAddress: tokenAddress);
+
   return tokenTx.result;
 }
 
 class Gas {
-  int confidence;
-  int price;
   double maxPriorityFeePerGas;
   double maxFeePerGas;
+  int confidence;
+  int price;
 
   Gas({
     required this.confidence,

@@ -20,9 +20,7 @@ Web3Client ethClient = new Web3Client(
     httpClient);
 
 Future<String> getEthBalance(String from) async {
-  
   const decimals = 18;
-
 
   dynamic balance = await ethClient
       .getBalance(EthereumAddress.fromHex(from))

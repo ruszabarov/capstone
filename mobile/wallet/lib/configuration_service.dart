@@ -160,13 +160,18 @@ class ConfigurationService implements IConfigurationService {
   @override
   Future<void> addAccount(String name) async {
     WalletAddress walletAddressService = new WalletAddress();
-    setPrivateKey(await walletAddressService
-        .getPrivateKey(await getMnemonic() as String));
+    
+    
 
     List<Account> acc =
         await Account.decode(await storage.read(key: 'accountList'));
+
+    setPrivateKey(await walletAddressService
+        .deriveChildWallet((await getMnemonic() as String), acc.length));
+
+
     acc.add(Account(
-        id: acc.length + 1,
+        id: acc.length,
         name: name,
         privateKey: await getPrivateKey() as String,
         publicKey: await walletAddressService.getPublicKey(
@@ -198,11 +203,11 @@ class ConfigurationService implements IConfigurationService {
     await storage.deleteAll();
   }
 
-
   @override
   Future<void> addEther(int id) async {
-    
-   List<Token> tokenList = await Token.decode(await _preferences.getString('tokenList'));;
+    List<Token> tokenList =
+        await Token.decode(await _preferences.getString('tokenList'));
+
 
     tokenList.add(Token(
         id: id,
@@ -213,7 +218,6 @@ class ConfigurationService implements IConfigurationService {
 
     String encodedData = Token.encode(tokenList);
     await _preferences.setString('tokenList', encodedData);
-
   }
 
   @override
