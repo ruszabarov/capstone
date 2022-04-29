@@ -23,7 +23,6 @@ class _LoadDataPageState extends State<LoadDataPage> {
 
     await configurationService.getAllAccounts().then((value) {
       print(value[0].publicKey);
-      print(value[1].publicKey);
     });
     await configurationService.getAllTokens().then((value) {
       print(value);

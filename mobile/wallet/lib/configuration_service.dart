@@ -161,10 +161,6 @@ class ConfigurationService implements IConfigurationService {
   Future<void> addAccount(String name) async {
     WalletAddress walletAddressService = new WalletAddress();
 
-    if (await storage.read(key: 'accountList') == null) {
-      firstAccount(name);
-    }
-
     List<Account> acc =
         await Account.decode(await storage.read(key: 'accountList'));
 
@@ -182,6 +178,8 @@ class ConfigurationService implements IConfigurationService {
     String encodedData = Account.encode(acc);
 
     await storage.write(key: 'accountList', value: encodedData);
+
+    addEther(acc.length + 1);
   }
 
   @override
