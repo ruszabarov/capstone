@@ -21,10 +21,12 @@ class _LoadDataPageState extends State<LoadDataPage> {
     ConfigurationService configurationService =
         context.read<ConfigurationService>();
 
-    // await configurationService.addEther(0);
-    await configurationService.getAllTokens().then((value) => print(value));
     await configurationService.getAllAccounts().then((value) {
-      print(value[0].privateKey);
+      print(value[0].publicKey);
+      print(value[1].publicKey);
+    });
+    await configurationService.getAllTokens().then((value) {
+      print(value);
     });
 
     // load Market data

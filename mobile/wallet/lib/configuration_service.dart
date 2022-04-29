@@ -175,9 +175,8 @@ class ConfigurationService implements IConfigurationService {
         id: acc.length,
         name: name,
         privateKey: await getPrivateKey() as String,
-        publicKey: await walletAddressService.getPublicKey(
-            await walletAddressService
-                .getPrivateKey(await getMnemonic() as String)),
+        publicKey: await walletAddressService
+            .getPublicKey(await getPrivateKey() as String),
         mnemonic: await getMnemonic() as String));
 
     String encodedData = Account.encode(acc);
@@ -205,6 +204,7 @@ class ConfigurationService implements IConfigurationService {
 
   @override
   Future<void> addEther(int id) async {
+    print("add ether");
     List<Token> tokenList =
         await Token.decode(await _preferences.getString('tokenList'));
 
