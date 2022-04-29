@@ -202,7 +202,6 @@ class ConfigurationService implements IConfigurationService {
 
   @override
   Future<void> addEther(int id) async {
-    print("add ether");
     List<Token> tokenList =
         await Token.decode(await _preferences.getString('tokenList'));
 

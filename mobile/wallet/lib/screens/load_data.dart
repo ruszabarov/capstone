@@ -7,6 +7,7 @@ import 'package:wallet/screens/market/api.dart';
 import 'package:wallet/screens/wrapper.dart';
 import 'package:wallet/wallet_setup.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoadDataPage extends StatefulWidget {
   LoadDataPage({Key? key}) : super(key: key);
@@ -21,12 +22,12 @@ class _LoadDataPageState extends State<LoadDataPage> {
     ConfigurationService configurationService =
         context.read<ConfigurationService>();
 
-    await configurationService.getAllAccounts().then((value) {
-      print(value[0].publicKey);
-    });
-    await configurationService.getAllTokens().then((value) {
-      print(value);
-    });
+    SharedPreferences _preferences = await SharedPreferences.getInstance();
+
+    if (await _preferences.getString('asd') == null ||
+        await _preferences.getString('asd') == "[]") {
+      await configurationService.firstAccount("first");
+    }
 
     // load Market data
     String request = "";
