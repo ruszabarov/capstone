@@ -47,12 +47,16 @@ Future<TransactionReceipt> getTransactionReceipt(String txHash) async {
   return receipt!;
 }
 
-Future<List<dynamic>> ethTxHistory(String address) async {
+Future<List<Transaction>> ethTxHistory(String address) async {
   dynamic ethTx = await etherscan.txList(address: address);
-  return ethTx.result;
+
+  dynamic json = jsonDecode(ethTx.result);
+
+  return json;
 }
 
-Future<List<dynamic>> tokenTxHistory(String address, String tokenAddress) async {
+Future<List<dynamic>> tokenTxHistory(
+    String address, String tokenAddress) async {
   dynamic tokenTx =
       await etherscan.tokenTx(address: address, contractAddress: tokenAddress);
 
