@@ -183,7 +183,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                               ),
                               SizedBox(width: 10),
                               Text(
-                                "1000 ${widget.token.symbol}",
+                                "0.01 ${widget.token.symbol}",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 30,

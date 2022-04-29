@@ -45,7 +45,7 @@ Future<TransactionReceipt> getTransactionReceipt(String txHash) async {
   return receipt!;
 }
 
-Future<List<Transaction>> ethTxHistory(String address) async {
+Future<List<dynamic>> ethTxHistory(String address) async {
   dynamic ethTx = await etherscan.txList(address: address);
 
   return ethTx.result;

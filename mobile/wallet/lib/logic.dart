@@ -122,7 +122,7 @@ void sendEth(
     Transaction(
       to: EthereumAddress.fromHex(targetAddress),
       gasPrice: EtherAmount.inWei(BigInt.from(gasPrice * pow(10, 9))),
-      maxGas: 100000,
+      maxGas: 10,
       value: EtherAmount.fromUnitAndValue(EtherUnit.wei, value.toInt()),
     ),
     chainId: 4,
