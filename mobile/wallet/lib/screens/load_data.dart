@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/configuration_service.dart';
 import 'package:wallet/providers/Market.dart';
+import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/market/api.dart';
 import 'package:wallet/screens/wrapper.dart';
 import 'package:wallet/wallet_setup.dart';
@@ -22,8 +23,9 @@ class _LoadDataPageState extends State<LoadDataPage> {
         ConfigurationService(await SharedPreferences.getInstance());
 
     List<Account> initAccountData = await configurationService.getAllAccounts();
+    await configurationService.getAllTokens().then((value) => print(value));
 
-    await configurationService.addEther(0);
+    // await configurationService.addEther(0);
 
     // load Market data
     String request = "";
@@ -43,16 +45,7 @@ class _LoadDataPageState extends State<LoadDataPage> {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) {
-          return MultiProvider(
-            providers: [
-              Provider<ConfigurationService>.value(
-                value: configurationService,
-              ),
-            ],
-            builder: (context, _) {
-              return Wrapper(initAccountData, initMarketData);
-            },
-          );
+          return Wrapper(initAccountData, initMarketData);
         },
       ),
     );

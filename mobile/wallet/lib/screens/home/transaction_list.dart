@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:wallet/screens/home/receipt_card.dart';
+import 'package:wallet/configuration_service.dart';
+import 'dart:math';
 
 class TransactionList extends StatelessWidget {
-  final List<Transaction> transactions;
+  final List<dynamic> transactions;
+  final String myAddress;
+  final Token token;
   final Function handleReceiptButton;
 
-  const TransactionList(this.transactions, this.handleReceiptButton);
+  const TransactionList(
+      this.transactions, this.handleReceiptButton, this.myAddress, this.token);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +64,7 @@ class TransactionList extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  transactions[index].type == 'outgoing'
+                  transactions[index].from == myAddress
                       ? Icon(
                           Icons.arrow_upward,
                           color: Colors.red,
@@ -72,7 +77,7 @@ class TransactionList extends StatelessWidget {
                     width: 5,
                   ),
                   Text(
-                    "${transactions[index].total.toString()} ETH",
+                    "${double.parse(transactions[index].value) / pow(10, 18)} ${token.symbol}",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -84,7 +89,7 @@ class TransactionList extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    transactions[index].date,
+                    transactions[index].timeStamp,
                     overflow: TextOverflow.fade,
                     softWrap: false,
                   ),

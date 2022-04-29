@@ -3,7 +3,6 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet/logic.dart';
 import 'package:wallet/providers/Market.dart';
-import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/home/wallet_details.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:web3dart/web3dart.dart';
@@ -13,7 +12,13 @@ class WalletCard extends StatefulWidget {
   final Token token;
   final int accountId;
   final Account account;
-  WalletCard(this.token, this.accountId, this.account);
+
+  WalletCard(
+      {required this.token,
+      required this.accountId,
+      required this.account,
+      required Key key})
+      : super(key: key);
 
   @override
   State<WalletCard> createState() => _WalletCardState();
@@ -37,8 +42,8 @@ class _WalletCardState extends State<WalletCard> {
         balance = ethBalance;
       });
     } else {
-      double tokenBalance = await double.parse(
-          await getTokenBalance(widget.accountId, widget.token.name));
+      double tokenBalance = await double.parse(await getTokenBalance(
+          widget.account.publicKey, widget.token.address));
 
       setState(() {
         balance = tokenBalance;
@@ -52,7 +57,8 @@ class _WalletCardState extends State<WalletCard> {
       onPressed: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => WalletDetailsPage(widget.token),
+            builder: (context) =>
+                WalletDetailsPage(widget.token, widget.account),
           ),
         );
       },

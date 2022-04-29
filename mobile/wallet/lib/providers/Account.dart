@@ -1,30 +1,22 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'Token.dart';
 import 'package:wallet/configuration_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountList extends ChangeNotifier {
   List<Account> _accounts;
 
   List<Account> get accounts => _accounts;
 
-  void addAccount(Account account) {
-    _accounts.add(account);
+  Future<void> loadAccounts() async {
+    _accounts =
+        await ConfigurationService(await SharedPreferences.getInstance())
+            .getAllAccounts();
     notifyListeners();
   }
 
-  void editName(String name) {
-    //TODO: change the right account name instead of the first one
-    // _accounts[0].name = name;
+  AccountList(this._accounts) {
+    loadAccounts();
   }
-
-  void updateTokenBalance(int index, double newBalance) {
-    // _accounts[0].tokens.tokenList[index].balance = newBalance;
-    notifyListeners();
-  }
-
-  AccountList(this._accounts) {}
 }
 
 List colorPairs = [

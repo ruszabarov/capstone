@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/providers/Navbar.dart';
 import 'package:wallet/configuration_service.dart';
+import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/home/account_card.dart';
 import 'package:wallet/screens/home/add_account_card.dart';
 import 'package:wallet/screens/home/add_account_page.dart';
@@ -56,18 +57,11 @@ class _HomeState extends State<Home> {
     }
   }
 
-  List<Token> tokenList = [];
+  // List<Token> tokenList = [];
 
   @override
   void initState() {
     super.initState();
-    loadTokens();
-  }
-
-  void loadTokens() async {
-    ConfigurationService configurationService =
-        context.read<ConfigurationService>();
-    tokenList = await configurationService.getTokens();
   }
 
   @override
@@ -137,23 +131,32 @@ class _HomeState extends State<Home> {
                           value.accounts.length
                       ? Column(
                           children: [
-                            GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 25,
-                                      mainAxisSpacing: 25),
-                              padding: EdgeInsets.all(25),
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: tokenList.length,
-                              itemBuilder: (BuildContext ctxt, int index) {
-                                return WalletCard(
-                                    tokenList[index],
-                                    accountSelectedIndex,
-                                    value.accounts[accountSelectedIndex]);
-                              },
+                            Consumer<TokenList>(
+                              builder: (context, tokenList, child) =>
+                                  GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 25,
+                                        mainAxisSpacing: 25),
+                                padding: EdgeInsets.all(25),
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                //! load tokens in load_data to avoid error
+                                itemCount: tokenList
+                                    .tokens[accountSelectedIndex].length,
+                                itemBuilder: (BuildContext ctxt, int index) {
+                                  return WalletCard(
+                                    token: tokenList
+                                        .tokens[accountSelectedIndex][index],
+                                    accountId: accountSelectedIndex,
+                                    account:
+                                        value.accounts[accountSelectedIndex],
+                                    key: UniqueKey(),
+                                  );
+                                },
+                              ),
                             ),
                             Center(
                               child: TextButton(
@@ -172,7 +175,7 @@ class _HomeState extends State<Home> {
                         )
                       : Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: AddAccountPage(),
+                          child: AddAccountPage(value.accounts.length),
                         ),
                 ),
               ),
@@ -182,7 +185,7 @@ class _HomeState extends State<Home> {
         AnimatedPositioned(
           left: 0,
           right: 0,
-          bottom: isAccountDetailsVisible ? 0 : -400,
+          bottom: isAccountDetailsVisible ? 0 : -401,
           height: 400,
           duration: Duration(milliseconds: 200),
           curve: Curves.easeOutCubic,
@@ -199,7 +202,7 @@ class _HomeState extends State<Home> {
         AnimatedPositioned(
           left: 0,
           right: 0,
-          bottom: isEditAccountVisible ? 0 : -400,
+          bottom: isEditAccountVisible ? 0 : -401,
           height: 400,
           duration: Duration(milliseconds: 200),
           curve: Curves.easeOutCubic,

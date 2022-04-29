@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/providers/Account.dart';
 import 'package:wallet/providers/Market.dart';
 import 'package:wallet/providers/Navbar.dart';
+import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/account/settings.dart';
 import 'package:wallet/screens/market/market.dart';
 import 'package:wallet/screens/shared/appBar.dart';
@@ -38,11 +40,11 @@ class _WrapperState extends State<Wrapper> {
 
   @override
   void initState() {
+    super.initState();
     _pageController = PageController();
     home = Home();
     market = MarketPage();
     account = SettingsPage();
-    super.initState();
   }
 
   @override
@@ -79,14 +81,7 @@ class _WrapperState extends State<Wrapper> {
                 });
               },
               children: <Widget>[
-                MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider<AccountList>(
-                      create: (context) => AccountList(widget.initAccountData),
-                    ),
-                  ],
-                  child: home,
-                ),
+                home,
                 market,
                 account,
               ],

@@ -3,6 +3,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/configuration_service.dart';
 import 'package:wallet/providers/Account.dart';
+import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/shared/shared.dart';
 import 'package:provider/provider.dart';
 
@@ -200,22 +201,29 @@ class _AddTokenPageState extends State<AddTokenPage> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Expanded(
-                      child: NeumorphicCard(
+                      child: Consumer<TokenList>(
+                        builder: (context, tokenList, child) => NeumorphicCard(
                           Center(
                             child: Text("ADD TOKEN"),
-                          ), () async {
-                        ConfigurationService configurationService =
-                            ConfigurationService(
-                                await SharedPreferences.getInstance());
+                          ),
+                          () async {
+                            ConfigurationService configurationService =
+                                ConfigurationService(
+                                    await SharedPreferences.getInstance());
 
-                        configurationService.addToken(
-                          widget.accountId,
-                          nameController.text,
-                          symbolController.text,
-                          addressController.text,
-                          int.parse(decimalsController.text),
-                        );
-                      }),
+                            configurationService.addToken(
+                              widget.accountId,
+                              nameController.text,
+                              symbolController.text,
+                              addressController.text,
+                              int.parse(decimalsController.text),
+                            );
+
+                            tokenList.loadTokens();
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
                     ),
                   ],
                 ),

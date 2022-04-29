@@ -1,10 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:wallet/screens/home/test_data.dart';
 import 'package:decimal/decimal.dart';
 
 class SendTransactionCard extends StatelessWidget {
   final Function exitFunction;
-  final Transaction transaction;
+  final dynamic transaction;
   SendTransactionCard(this.exitFunction, this.transaction);
 
   @override
@@ -23,7 +25,8 @@ class SendTransactionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  transaction.type == "outgoing" ? "Send" : "Receive",
+                  //! transaction.type == "outgoing" ? "Send" : "Receive",
+                  "Transaction",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -57,10 +60,23 @@ class SendTransactionCard extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(transaction.fromAddress),
+                Flexible(
+                  child: Text(
+                    transaction.from,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
                 Icon(Icons.arrow_right),
-                Text(transaction.toAddress),
+                Flexible(
+                  child: Text(
+                    transaction.to,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
               ],
             ),
             SizedBox(
@@ -73,13 +89,13 @@ class SendTransactionCard extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Nonce"),
-                Text(transaction.nonce.toString()),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text("Nonce"),
+            //     Text(transaction.nonce.toString()),
+            //   ],
+            // ),
             Divider(
               height: 20,
               thickness: 1,
@@ -89,22 +105,22 @@ class SendTransactionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Amount"),
-                Text("${transaction.amount} ETH"),
+                Text("${double.parse(transaction.value) / pow(10, 18)}  ETH"),
               ],
             ),
             spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Gas Limit (Units)"),
-                Text(transaction.gasLimit.toString()),
+                Text("Gas Price (WEI)"),
+                Text(transaction.gasPrice.toString()),
               ],
             ),
             spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Gas Used (Units)"),
+                Text("Gas Used (WEI)"),
                 Text(transaction.gasUsed.toString()),
               ],
             ),
@@ -112,54 +128,61 @@ class SendTransactionCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Base Fee (GWEI)"),
-                Text(
-                  Decimal.parse(transaction.baseFee.toString()).toString(),
-                ),
+                Text("Time Stamp"),
+                Text(transaction.timeStamp.toString()),
               ],
             ),
-            spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Priority Fee (GWEI)"),
-                Text(transaction.priorityFee.toString()),
-              ],
-            ),
-            spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Total Gas Fee"),
-                Text(
-                  Decimal.parse(transaction.totalGasFee.toString()).toString(),
-                ),
-              ],
-            ),
-            spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Max Fee Per Gas"),
-                Text(Decimal.parse(transaction.maxFeePerGas.toString())
-                    .toString()),
-              ],
-            ),
-            Divider(
-              height: 20,
-              thickness: 1,
-              color: Colors.grey,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Total"),
-                Text(
-                  "${transaction.total} ETH",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text("Base Fee (GWEI)"),
+            //     Text(
+            //       Decimal.parse(transaction.gasPrice.toString()).toString(),
+            //     ),
+            //   ],
+            // ),
+            // spacer(),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text("Priority Fee (GWEI)"),
+            //     Text(transaction.priorityFee.toString()),
+            //   ],
+            // ),
+            // spacer(),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text("Total Gas Fee"),
+            //     Text(
+            //       Decimal.parse(transaction.totalGasFee.toString()).toString(),
+            //     ),
+            //   ],
+            // ),
+            // spacer(),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text("Max Fee Per Gas"),
+            //     Text(Decimal.parse(transaction.maxFeePerGas.toString())
+            //         .toString()),
+            //   ],
+            // ),
+            // Divider(
+            //   height: 20,
+            //   thickness: 1,
+            //   color: Colors.grey,
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text("Total"),
+            //     Text(
+            //       "${transaction.total} ETH",
+            //       style: TextStyle(fontWeight: FontWeight.bold),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),

@@ -1,11 +1,19 @@
-import 'package:flutter/cupertino.dart';
-import 'package:wallet/providers/Account.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet/configuration_service.dart';
 
 class TokenList extends ChangeNotifier {
-  List<Token> _tokenList = [];
+  late List<List<Token>> _tokens;
 
-  List<Token> get tokenList => _tokenList;
+  List<List<Token>> get tokens => _tokens;
 
-  TokenList(this._tokenList) {}
+  TokenList(this._tokens) {
+    loadTokens();
+  }
+
+  Future<void> loadTokens() async {
+    _tokens = await ConfigurationService(await SharedPreferences.getInstance())
+        .getAllTokens();
+    notifyListeners();
+  }
 }
