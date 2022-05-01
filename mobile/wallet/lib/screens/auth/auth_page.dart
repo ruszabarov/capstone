@@ -86,7 +86,7 @@ class _AuthPageState extends State<AuthPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Z WALLET",
+                "EXCEL WALLET",
                 style: TextStyle(
                   fontSize: 38,
                   color: Colors.grey[200],
