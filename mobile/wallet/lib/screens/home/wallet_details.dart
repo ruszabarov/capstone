@@ -204,7 +204,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
                               ),
                               SizedBox(width: 10),
                               Text(
-                                "0.01 ${widget.token.symbol}",
+                                "${balance} ${widget.token.symbol}",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 30,
