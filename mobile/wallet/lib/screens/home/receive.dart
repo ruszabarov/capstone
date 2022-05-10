@@ -122,7 +122,7 @@ class ReceiveCard extends StatelessWidget {
                   color: Colors.white,
                 ),
                 child: QrImage(
-                  data: cryptoWallet.address,
+                  data: address,
                   version: QrVersions.auto,
                   size: 200,
                   foregroundColor: Colors.black,
