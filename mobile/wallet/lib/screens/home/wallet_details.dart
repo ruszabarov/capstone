@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wallet/logic.dart';
 import 'package:wallet/providers/Token.dart';
 import 'package:wallet/screens/home/advanced_gas.dart';
 import 'package:wallet/screens/home/receive.dart';
@@ -27,6 +28,25 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
   bool isReceiveVisible = false;
   bool isAdvancedVisible = false;
   List<dynamic> transactions = [];
+  double balance = 0;
+
+  void getBalance() async {
+    if (widget.token.symbol == 'ETH') {
+      double ethBalance =
+          await double.parse(await getEthBalance(widget.account.publicKey));
+
+      setState(() {
+        balance = ethBalance;
+      });
+    } else {
+      double tokenBalance = await double.parse(await getTokenBalance(
+          widget.account.publicKey, widget.token.address));
+
+      setState(() {
+        balance = tokenBalance;
+      });
+    }
+  }
 
   void handleSendButton() {
     setState(() {
@@ -70,6 +90,7 @@ class _WalletDetailsPageState extends State<WalletDetailsPage> {
   void initState() {
     super.initState();
     loadTransactionHistory();
+    getBalance();
   }
 
   void loadTransactionHistory() async {
